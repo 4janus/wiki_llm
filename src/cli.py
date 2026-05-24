@@ -215,6 +215,31 @@ def chat(
 
 
 @app.command()
+def advisor(
+    root: str = typer.Option("juraklar", "--root", help="Mappe med rådgivere (default: juraklar)"),
+    host: str = typer.Option("0.0.0.0", "--host", help="Chat server host address"),
+    port: int = typer.Option(8080, "--port", help="Chat server port"),
+) -> None:
+    """Start JurAklar multi-advisor chat interface."""
+    import os  # noqa: PLC0415
+
+    load_dotenv(Path(__file__).parent.parent / ".env", override=True)
+
+    try:
+        from .ui.advisor_app import start_advisor_ui  # noqa: PLC0415
+        from .models.config import LLMConfig  # noqa: PLC0415
+    except ImportError as exc:
+        typer.echo(f"[ERROR] Advisor UI not available: {exc}", err=True)
+        raise typer.Exit(1) from exc
+
+    llm_config = LLMConfig(
+        backend=os.environ.get("WIKI_BACKEND", "openrouter"),  # type: ignore[arg-type]
+        model_id=os.environ.get("WIKI_MODEL_ID", "anthropic/claude-sonnet-4-5"),
+    )
+    start_advisor_ui(root=Path(root), llm_config=llm_config, host=host, port=port)
+
+
+@app.command()
 def setup() -> None:
     """Run the interactive setup wizard to generate config/my_wiki.py and .env."""
     from .setup_wizard import run_wizard  # noqa: PLC0415
