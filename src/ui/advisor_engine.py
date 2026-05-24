@@ -128,7 +128,7 @@ class AdvisorEngine:
             for f in prompt_files:
                 fm, body = _parse_frontmatter(f.read_text(encoding="utf-8"))
                 services.append(ServiceConfig(
-                    id=int(fm.get("service_id", 0)),
+                    id=int(fm.get("service_id", 0)),  # 0 if frontmatter missing — callers should ensure all prompt files have service_id
                     title=fm.get("title", f.stem),
                     category=fm.get("category", ""),
                     prompt=body.strip(),
@@ -152,8 +152,12 @@ class AdvisorEngine:
         key = (advisor_id, service_id)
         if key not in self._engines:
             advisors = self.discover()
+            if advisor_id not in advisors:
+                raise KeyError(f"Unknown advisor '{advisor_id}'. Available: {list(advisors)}")
             advisor = advisors[advisor_id]
-            service = next(s for s in advisor.services if s.id == service_id)
+            service = next((s for s in advisor.services if s.id == service_id), None)
+            if service is None:
+                raise KeyError(f"Service {service_id} not found for advisor '{advisor_id}'")
             cfg = _make_chat_cfg(advisor.title, advisor.wiki_dir, service.prompt)
             engine = ChatEngine(cfg)  # type: ignore[arg-type]
             engine.build_index()
@@ -162,6 +166,8 @@ class AdvisorEngine:
 
     async def ask(self, advisor_id: str, service_id: int, question: str) -> str:
         """Answer a question using the appropriate ChatEngine."""
+        if self._llm is None:
+            raise RuntimeError("AdvisorEngine was created without an LLM client. Pass llm= to __init__.")
         engine = self.get_engine(advisor_id, service_id)
         return await engine.ask(question, self._llm)
 
@@ -173,7 +179,10 @@ class AdvisorEngine:
         return list(self._engines[key]._history)
 
     def clear(self, advisor_id: str, service_id: int) -> None:
-        """Clear conversation history for (advisor_id, service_id)."""
+        """Clear conversation history for (advisor_id, service_id).
+
+        No-op if the combination has never been used.
+        """
         key = (advisor_id, service_id)
         if key in self._engines:
             self._engines[key].clear_history()

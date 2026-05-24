@@ -113,3 +113,26 @@ def test_discover_caches_result():
 def test_get_history_empty_for_unknown_key():
     engine = AdvisorEngine(root=Path("."), llm=None)
     assert engine.get_history("testamente", 1) == []
+
+
+# --- Error handling ---
+
+def test_get_engine_unknown_advisor_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _make_advisor_dir(root, "testamente", "Testamente")
+        engine = AdvisorEngine(root=root, llm=None)
+        with pytest.raises(KeyError, match="Unknown advisor"):
+            engine.get_engine("nonexistent", 1)
+
+
+import asyncio
+
+
+def test_ask_without_llm_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _make_advisor_dir(root, "testamente", "Testamente")
+        engine = AdvisorEngine(root=root, llm=None)
+        with pytest.raises(RuntimeError, match="LLM client"):
+            asyncio.run(engine.ask("testamente", 1, "test question"))
