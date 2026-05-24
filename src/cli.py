@@ -10,6 +10,7 @@ Available commands:
   repair        lint + LangGraph repair agent
   run-all       all stages in order
   chat          start NiceGUI RAG chat server
+  advisor       start multi-advisor JurAklar chat interface
 
 Global options:
   --config PATH       Path to a Python WikiConfig file
@@ -27,6 +28,7 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import logging
+import os
 import sys
 from pathlib import Path
 from typing import Optional
@@ -216,15 +218,12 @@ def chat(
 
 @app.command()
 def advisor(
+    ctx: typer.Context,
     root: str = typer.Option("juraklar", "--root", help="Mappe med rådgivere (default: juraklar)"),
     host: str = typer.Option("0.0.0.0", "--host", help="Chat server host address"),
     port: int = typer.Option(8080, "--port", help="Chat server port"),
 ) -> None:
     """Start JurAklar multi-advisor chat interface."""
-    import os  # noqa: PLC0415
-
-    load_dotenv(Path(__file__).parent.parent / ".env", override=True)
-
     try:
         from .ui.advisor_app import start_advisor_ui  # noqa: PLC0415
         from .models.config import LLMConfig  # noqa: PLC0415
