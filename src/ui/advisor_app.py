@@ -41,7 +41,7 @@ def start_advisor_ui(
         RuntimeError: If no advisors are found inside *root*.
     """
     try:
-        from nicegui import app as ng_app, ui  # noqa: PLC0415
+        from nicegui import ui  # noqa: PLC0415
     except ImportError as exc:
         raise RuntimeError("nicegui not installed. Run: pip install nicegui") from exc
 
@@ -50,6 +50,8 @@ def start_advisor_ui(
 
     llm = create_client(llm_config)
     engine = AdvisorEngine(root, llm)
+    # NOTE: engine is shared across all browser connections (by design — single-user local tool).
+    # Opening multiple tabs will share conversation history.
     advisors = engine.discover()
 
     if not advisors:
@@ -87,13 +89,6 @@ def start_advisor_ui(
             for svc in current_advisor().services:
                 result.setdefault(svc.category or "Generelt", []).append(svc)
             return result
-
-        # ------------------------------------------------------------------ #
-        # Chat container (declared early so send() can reference it)
-        # ------------------------------------------------------------------ #
-        chat_scroll = ui.scroll_area().classes("w-full flex-1").style("min-height: 300px")
-        with chat_scroll:
-            chat_container = ui.column().classes("w-full gap-2 q-pa-sm")
 
         def refresh_chat() -> None:
             chat_container.clear()
@@ -158,7 +153,9 @@ def start_advisor_ui(
                 with ui.tabs(value=state["advisor"]).classes("w-full bg-grey-10") as tabs:
                     for adv_id, adv in advisors.items():
                         ui.tab(adv_id, label=adv.title)
-                tabs.on("update:model-value", lambda e: on_advisor_change(e.args))
+                tabs.on("update:model-value", lambda e: on_advisor_change(
+                    e.args[0] if isinstance(e.args, list) else e.args
+                ))
 
                 # Service chips — refreshable so they update when advisor/service changes
                 @ui.refreshable
@@ -205,9 +202,8 @@ def start_advisor_ui(
             # -------------------------------------------------------------- #
             # Chat area
             # -------------------------------------------------------------- #
-            # chat_scroll / chat_container already built above — place them here
-            # by re-rendering via refresh_chat
-            refresh_chat()
+            chat_container = ui.column().classes("w-full gap-2 q-pa-sm")
+            refresh_chat()  # populate immediately
 
             # -------------------------------------------------------------- #
             # Input row
@@ -224,19 +220,24 @@ def start_advisor_ui(
                     if not question:
                         return
                     input_box.value = ""
+                    # Capture current context before await
+                    cur_advisor = state["advisor"]
+                    cur_service = state["service"]
                     with chat_container:
                         with ui.row().classes("w-full justify-end"):
                             with ui.card().classes("bg-primary text-white q-pa-sm").style("max-width: 70%"):
                                 ui.label(question).classes("text-body2")
                         thinking = ui.label("…").classes("text-grey-5 text-body2 q-ml-sm")
                     try:
-                        answer = await engine.ask(state["advisor"], state["service"], question)
+                        answer = await engine.ask(cur_advisor, cur_service, question)
                     except Exception as exc:  # noqa: BLE001
                         answer = f"**Fejl:** {exc}"
                     thinking.delete()
-                    with chat_container:
-                        with ui.card().classes("w-full bg-grey-9 q-pa-sm"):
-                            ui.markdown(answer).classes("text-body2")
+                    # Only append if user is still on the same advisor/service
+                    if state["advisor"] == cur_advisor and state["service"] == cur_service:
+                        with chat_container:
+                            with ui.card().classes("w-full bg-grey-9 q-pa-sm"):
+                                ui.markdown(answer).classes("text-body2")
 
                 input_box.on("keydown.enter", send)
                 ui.button("Send", on_click=send).props("color=primary dense")
