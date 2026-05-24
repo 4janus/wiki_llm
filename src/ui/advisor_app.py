@@ -142,6 +142,7 @@ def start_advisor_ui(
         # ------------------------------------------------------------------ #
         with ui.header().classes("bg-grey-10 text-white q-pa-sm"):
             ui.label("⚖️ JurAklar").classes("text-h6 text-bold")
+            ui.label("Juridisk rådgivning").classes("text-caption text-grey-5 q-ml-sm")
 
         # ------------------------------------------------------------------ #
         # Main layout wrapper
@@ -250,7 +251,7 @@ def start_advisor_ui(
     ui.run(
         host=effective_host,
         port=effective_port,
-        title="JurAklar",
+        title="JurAklar — Juridisk Rådgivning",
         storage_secret=storage_secret,
         reload=False,
     )
