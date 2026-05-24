@@ -57,6 +57,38 @@ def _parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
     return {}, content
 
 
+class _FilteredWikiDir:
+    """Wraps a Path to exclude non-wiki subdirectories from rglob.
+
+    Prevents system prompts (prompts/) and raw source files (raw/) from
+    being indexed by ChatEngine's BM25 corpus.
+    """
+    _EXCLUDED_DIRS = frozenset({"prompts", "raw"})
+
+    def __init__(self, root: Path) -> None:
+        self._root = root
+
+    def rglob(self, pattern: str):
+        for p in self._root.rglob(pattern):
+            # Skip files inside excluded directories
+            if not any(part in self._EXCLUDED_DIRS for part in p.relative_to(self._root).parts):
+                yield p
+
+    def __truediv__(self, other):
+        """Support Path-like / operator if needed."""
+        return self._root / other
+
+    def __eq__(self, other):
+        if isinstance(other, _FilteredWikiDir):
+            return self._root == other._root
+        if isinstance(other, Path):
+            return self._root == other
+        return NotImplemented
+
+    def __str__(self):
+        return str(self._root)
+
+
 def _make_chat_cfg(wiki_name: str, wiki_dir: Path, prompt_text: str) -> object:
     """Create a duck-typed config object compatible with ChatEngine.
 
@@ -73,7 +105,7 @@ def _make_chat_cfg(wiki_name: str, wiki_dir: Path, prompt_text: str) -> object:
     )
     return types.SimpleNamespace(
         wiki_name=wiki_name,
-        wiki_dir=wiki_dir,
+        wiki_dir=_FilteredWikiDir(wiki_dir),  # excludes prompts/ and raw/
         prompt_chat=prompt_ns,
     )
 
@@ -99,6 +131,12 @@ class AdvisorEngine:
         """
         if self._advisors is not None:
             return self._advisors
+
+        if not self._root.exists():
+            raise FileNotFoundError(
+                f"Advisor root directory not found: {self._root}. "
+                "Create it or pass a different --root path."
+            )
 
         advisors: dict[str, AdvisorConfig] = {}
         for d in sorted(self._root.iterdir()):

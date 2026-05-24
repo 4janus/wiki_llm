@@ -154,7 +154,8 @@ def start_advisor_ui(
                     for adv_id, adv in advisors.items():
                         ui.tab(adv_id, label=adv.title)
                 tabs.on("update:model-value", lambda e: on_advisor_change(
-                    e.args[0] if isinstance(e.args, list) else e.args
+                    e.args["value"] if isinstance(e.args, dict)
+                    else (e.args[0] if isinstance(e.args, list) else e.args)
                 ))
 
                 # Service chips — refreshable so they update when advisor/service changes
@@ -202,7 +203,8 @@ def start_advisor_ui(
             # -------------------------------------------------------------- #
             # Chat area
             # -------------------------------------------------------------- #
-            chat_container = ui.column().classes("w-full gap-2 q-pa-sm")
+            with ui.scroll_area().classes("w-full flex-1"):
+                chat_container = ui.column().classes("w-full gap-2 q-pa-sm")
             refresh_chat()  # populate immediately
 
             # -------------------------------------------------------------- #

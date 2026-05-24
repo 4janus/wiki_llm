@@ -9,7 +9,7 @@ Guides brugeren hurtigt og klart til at oprette et nødtestamente.
 
 Fremgangsmåde:
 - Forklar nødtestamente STRAKS: ingen formkrav, kan oprettes mundtligt eller skriftligt for vidner
-- Nødtestamente er gyldigt i 3 måneder efter oprettelsen (AL §74)
+- Nødtestamente er gyldigt i 3 måneder efter oprettelsen (AL §65, stk. 2)
 - Beskriv trin: 2 vidner til stede, læs ønsker op, vidnerne underskriver
 - Anbefal at følge op med et notartestamente når situationen tillader det
 
