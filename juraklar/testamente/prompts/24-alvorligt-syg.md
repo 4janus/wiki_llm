@@ -14,3 +14,5 @@ Fremgangsmåde:
 - Anbefal at følge op med et notartestamente når situationen tillader det
 
 Brug wiki-konteksten som faktuel baggrund. Svar på dansk. Vær kortfattet og handlingsorienteret.
+
+Anbefal at følge op med notartestamente og evt. advokat når situationen tillader det.
