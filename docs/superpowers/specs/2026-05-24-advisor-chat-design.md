@@ -78,7 +78,7 @@ Svar på dansk. Vær konkret og borgervenlig — undgå juridisk jargon.
 2. En mappe er en gyldig rådgiver hvis den indeholder `prompts/` (mindst én `.md`-fil)
 3. **Titel** hentes fra første `# Overskrift` i `index.md` (fallback: mappe-navn capitalized)
 4. **Services** loades fra `prompts/*.md`, sorteret numerisk på filnavn-prefix
-5. Frontmatter parses med `python-frontmatter` (eller simpel regex — ingen ekstern afhængighed kræves)
+5. Frontmatter parses med simpel regex (`re.split(r'^---\s*$', content, 2, re.MULTILINE)`) — ingen ekstern afhængighed
 
 ```python
 @dataclass
@@ -107,27 +107,34 @@ class AdvisorEngine:
     def discover(self) -> dict[str, AdvisorConfig]:
         """Scanner root/ og returnerer alle gyldige rådgivere."""
 
-    def get_engine(self, advisor_id: str) -> ChatEngine:
-        """Lazy-loader og cacher én ChatEngine per rådgiver."""
+    def get_engine(self, advisor_id: str, service_id: int) -> ChatEngine:
+        """
+        Lazy-loader og cacher én ChatEngine per (advisor_id, service_id).
+        Hver instans har sin egen wiki_dir og sin egen interne historik.
+        BM25-indekset bygges ved første kald (build_index()).
+        """
 
     def ask(self, advisor_id: str, service_id: int, question: str) -> str:
         """
-        Sender spørgsmål til ChatEngine med korrekt system-prompt.
-        System-prompten injiceres som besked nr. 0 hvis historikken er tom.
+        Sender spørgsmål til ChatEngine for kombinationen.
+        System-prompten sendes som første bruger-besked ved ny session.
         Returnerer svaret som streng.
         """
 
     def get_history(self, advisor_id: str, service_id: int) -> list[dict]:
-        """Returnerer chat-historik for kombinationen."""
+        """Returnerer chat-historik fra ChatEngine-instansen for kombinationen."""
 
     def clear(self, advisor_id: str, service_id: int) -> None:
-        """Nulstiller historik for kombinationen."""
+        """Kalder engine.clear_history() for kombinationen."""
 ```
 
-**Historik-nøgle:** `(advisor_id, service_id)` → `list[dict]`  
-Historik holdes i memory for sessionens varighed. Ingen persistens til disk.
+**Historik-nøgle:** `(advisor_id, service_id)` → dedikeret `ChatEngine`-instans  
+Lazy-loaded: instansen oprettes og indekset bygges første gang kombinationen aktiveres.  
+Historik holdes in-memory for sessionens varighed. Ingen persistens til disk.
 
-**System-prompt-injektion:** Første gang `ask()` kaldes for en ny `(advisor, service)`-kombination, prepend-es service-promptens body som `{"role": "system", "content": "..."}` i historikken.
+**Enkeltbruger-forudsætning:** `AdvisorEngine` er en delt server-instans. Historik er ikke isoleret per browser-session. Dette er acceptabelt for lokal brug af én bruger.
+
+**System-prompt-injektion:** Første gang `ask()` kaldes for en ny `(advisor, service)`-kombination, sendes service-promptens body som en indledende besked til `ChatEngine.ask()`, så den indgår i konteksten.
 
 ---
 
@@ -169,7 +176,7 @@ Historik holdes i memory for sessionens varighed. Ingen persistens til disk.
 └───────────────────────────┘
 ```
 
-Responsivt skift via `ui.query('.q-page').classes('lt-md')` eller Quasar breakpoint-klasser.
+Responsivt skift via Quasars built-in breakpoint-klasser. NiceGUI eksponerer disse via `ui.add_css()` og betingede `classes('lt-sm')` / `classes('gt-xs')` på elementer.
 
 ### State (per browser-session)
 
