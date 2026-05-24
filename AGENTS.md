@@ -8,11 +8,11 @@
 <!-- MEMORY — the agent fills this block during setup; do not edit manually -->
 <!--
 CONFIG_START
-wiki_name:
-input_folder:
-output_folder:
-entity_types:
-language: English
+wiki_name: Testamente
+input_folder: juraklar/testamente/raw/
+output_folder: juraklar/testamente/
+entity_types: policies, articles, notes
+language: Dansk
 CONFIG_END
 -->
 
