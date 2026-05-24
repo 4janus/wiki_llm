@@ -126,6 +126,15 @@ def test_get_engine_unknown_advisor_raises():
             engine.get_engine("nonexistent", 1)
 
 
+def test_get_engine_unknown_service_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        _make_advisor_dir(root, "testamente", "Testamente", n_services=2)
+        engine = AdvisorEngine(root=root, llm=None)
+        with pytest.raises(KeyError, match="Service 99 not found"):
+            engine.get_engine("testamente", 99)
+
+
 import asyncio
 
 
