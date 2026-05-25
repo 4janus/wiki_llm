@@ -1,0 +1,19 @@
+International skilsmisse opstår, når et ægteskab har tilknytning til mere end ét land. Det kan være fordi en eller begge ægtefæller er udenlandske statsborgere, fordi ægteskabet er indgået i udlandet, fordi parret har boet i udlandet, eller fordi parret nu bor i forskellige lande. Den internationale dimension komplicerer tre spørgsmål: hvilken myndighed er kompetent til at behandle sagen, hvilket lands ret gælder, og vil en eventuel afgørelse blive anerkendt i udlandet.
+
+EU-forordningen Rom III (Rådets forordning nr. 1259/2010) giver ægtefæller inden for EU mulighed for at vælge, hvilken stats ret der skal finde anvendelse på deres skilsmisse. Valget skal træffes skriftligt og kan enten ske ved en aftale inden skilsmissen, eller i princippet ved enighed i starten af sagsbehandlingen. Mulige valg er: den stat, hvor parret har sædvanlig bopæl på tidspunktet for aftalen; staten for ét af statsborgerskaberne; eller den stat, hvor ansøgningen indgives. Danmark deltager i Rom III-samarbejdet.
+
+For par med bopæl i Danmark gælder som udgangspunkt dansk ret. Familieretshuset er kompetent, når mindst én ægtefælle er bosiddende i Danmark, og sagen ikke åbenlyst henhører under et andet lands kompetence. Har den ene ægtefælle bopæl i et andet EU-land, kan EU-forordningen Bruxelles IIa (og den opdaterede Bruxelles IIb fra 2022) regulere, hvilken stat der har kompetence til at behandle sagen.
+
+Anerkendelse af udenlandske skilsmisser i Danmark er reguleret af særlige regler. En skilsmisse gennemført i et andet EU-land anerkendes automatisk i Danmark via EU-forordningen, medmindre den strider mod dansk grundlæggende retsorden (ordre public). Skilsmisser fra ikke-EU-lande kræver individuel vurdering. Familieretshuset og Ankestyrelsen behandler sager om anerkendelse af udenlandske skilsmisser.
+
+Tvangsægteskaber gennemført i udlandet udgør et særligt problem. Selv om ægteskabet er gyldigt i det land, det er indgået, kan det modsætte sig den danskretlige grundopfattelse om frit samtykke. Familieretshuset kan i sådanne sager bistå den pressede ægtefælle, og der er særlige støttemuligheder for ofre for tvangsægteskab (jf. den nationale handlingsplan mod tvangsægteskaber).
+
+For ægtefæller med tilknytning til lande uden for EU — fx fra Mellemøsten, Asien eller Afrika — kan der opstå situationer, hvor en skilsmisse er gennemført efter det pågældende lands ret, men ikke anerkendes i Danmark, eller vice versa. Dette kan skabe en "haltende" ægteskabsstatus: man anses for skilt i ét land, men fortsat gift i et andet. Sådanne sager kræver juridisk rådgivning.
+
+Pensionsrettigheder og formue ved international skilsmisse er et separat komplekst spørgsmål. Bodelingen kan falde under et andet lands regler, end den primære skilsmisse. EU-forordningerne om formueforholdet for ægtefæller (nr. 2016/1103) angiver, at bodelingens lovvalg følger visse regler — men Danmark har ikke tilsluttet sig alle disse forordninger på formuerettens område.
+
+Børn i internationale sager er underlagt Haagerkonventionen om internationale bortførelse af børn (1980) og EU-forordningen Bruxelles IIb (fra 2022). Forælderret og samvær over landegrænser kræver særlig opmærksomhed for at sikre, at den ene forælder ikke ensidigt fjerner barnet til et andet land.
+
+Praktisk anbefaling: Par med international tilknytning bør søge juridisk rådgivning tidligt i forløbet — helst fra en advokat med erfaring i international familieret. Familieretshuset vejleder om kompetencespørgsmålet, men kan ikke give juridisk rådgivning om udenlandsk ret.
+
+Vigtige dokumenter i internationale sager: vielsesattest (evt. oversat og apostillestemplet), pasoplysninger på begge parter, dokumentation for bopæl i Danmark, tidligere afgørelser fra udenlandsk myndighed, og i relevante tilfælde: aftaler om lovvalg (Rom III-aftale).
