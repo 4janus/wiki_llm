@@ -8,9 +8,9 @@
 <!-- MEMORY — the agent fills this block during setup; do not edit manually -->
 <!--
 CONFIG_START
-wiki_name: Testamente
-input_folder: juraklar/testamente/raw/
-output_folder: juraklar/testamente/
+wiki_name: Ægtepagt
+input_folder: juraklar/aegtepagt/raw/
+output_folder: juraklar/aegtepagt/
 entity_types: policies, articles, notes
 language: Dansk
 CONFIG_END

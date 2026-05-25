@@ -47,7 +47,7 @@ def start_ui(cfg: WikiConfig, *, host: str = "0.0.0.0", port: int = 8080) -> Non
 
     @ui.page("/")
     async def index_page() -> None:
-        ui.dark_mode()
+        ui.dark_mode(True)
         with ui.column().classes("w-full max-w-3xl mx-auto q-pa-md"):
             ui.label(cfg.wiki_name).classes("text-h5 text-bold")
             ui.separator()

@@ -16,6 +16,10 @@ wheels/
 # Claude Code
 .claude
 
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
 # Test and coverage artifacts
 .pytest_cache/
 .coverage

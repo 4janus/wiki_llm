@@ -10,7 +10,7 @@ Available commands:
   repair        lint + LangGraph repair agent
   run-all       all stages in order
   chat          start NiceGUI RAG chat server
-  advisor       start multi-advisor JurAklar chat interface
+  advisor       start multi-advisor JuraKlar chat interface
 
 Global options:
   --config PATH       Path to a Python WikiConfig file
@@ -223,7 +223,7 @@ def advisor(
     host: str = typer.Option("0.0.0.0", "--host", help="Chat server host address"),
     port: int = typer.Option(8080, "--port", help="Chat server port"),
 ) -> None:
-    """Start JurAklar multi-advisor chat interface."""
+    """Start JuraKlar multi-advisor chat interface."""
     try:
         from .ui.advisor_app import start_advisor_ui  # noqa: PLC0415
         from .models.config import LLMConfig  # noqa: PLC0415
@@ -233,7 +233,7 @@ def advisor(
 
     llm_config = LLMConfig(
         backend=os.environ.get("WIKI_BACKEND", "openrouter"),  # type: ignore[arg-type]
-        model_id=os.environ.get("WIKI_MODEL_ID", "anthropic/claude-sonnet-4-5"),
+        model_id=os.environ.get("WIKI_MODEL_ID", "anthropic/claude-haiku-4.5"),
     )
     start_advisor_ui(root=Path(root), llm_config=llm_config, host=host, port=port)
 
