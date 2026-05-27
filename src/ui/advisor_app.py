@@ -378,6 +378,108 @@ def start_advisor_ui(
                             .on("click", lambda _s=svc: _on_service_click(_s))
                         )
 
+        # ── Chat handlers ──────────────────────────────────────────────────
+
+        async def _send() -> None:
+            raw = input_box.value.strip()
+            if not raw or not state["consent_accepted"]:
+                return
+            input_box.value = ""
+
+            if state["uploaded_docs"]:
+                doc_block = "\n\n".join(
+                    f"### Uploadet: {d['name']}\n{d['text'][:4000]}"
+                    for d in state["uploaded_docs"]
+                )
+                full_question = (
+                    f"Brugeren har uploadet følgende dokument(er):\n\n"
+                    f"{doc_block}\n\n---\n\n{raw}"
+                )
+            else:
+                full_question = raw
+
+            cur_a = state["advisor"]
+            cur_s = state["service"]
+            with chat_container:
+                _render_msg("user", raw)
+                thinking = ui.label("…").classes("text-grey-5 text-sm q-ml-sm")
+            try:
+                answer = await engine.ask(cur_a, cur_s, full_question)
+            except Exception as exc:  # noqa: BLE001
+                answer = f"**Fejl:** {exc}"
+            thinking.delete()
+            if state["advisor"] == cur_a and state["service"] == cur_s:
+                with chat_container:
+                    _render_msg("assistant", answer)
+
+        def _clear_chat() -> None:
+            engine.clear(state["advisor"], state["service"])
+            _refresh_chat()
+
+        async def _handle_upload(e) -> None:
+            try:
+                from markitdown import MarkItDown  # noqa: PLC0415
+                raw_bytes = await e.file.read()
+                ext = Path(e.file.name).suffix.lower() or ".txt"
+                result = MarkItDown().convert_stream(io.BytesIO(raw_bytes), file_extension=ext)
+                text = result.text_content or ""
+                state["uploaded_docs"].append({"name": e.file.name, "text": text})
+            except Exception as exc:  # noqa: BLE001
+                state["uploaded_docs"].append({
+                    "name": e.file.name,
+                    "text": f"(Kunne ikke parse: {exc})",
+                })
+            _refresh_upload_chips()
+
+        def _remove_doc(idx: int) -> None:
+            if 0 <= idx < len(state["uploaded_docs"]):
+                state["uploaded_docs"].pop(idx)
+            _refresh_upload_chips()
+
+        def _refresh_upload_chips() -> None:
+            upload_chips_el.clear()
+            if not state["uploaded_docs"]:
+                return
+            with upload_chips_el:
+                ui.label("📎 Dokumenter:").classes("text-xs text-grey-5")
+                for i, doc in enumerate(state["uploaded_docs"]):
+                    ui.chip(
+                        doc["name"],
+                        on_click=lambda idx=i: _remove_doc(idx),
+                    ).props("dense outline color=grey-5 removable").classes("text-xs")
+
+        def _download_chat(fmt: str = "md") -> None:
+            import re as _re  # noqa: PLC0415
+            history = engine.get_history(state["advisor"], state["service"])
+            if not history:
+                return
+            adv = advisors[state["advisor"]]
+            svc = next((s for s in adv.services if s.id == state["service"]), None)
+            title = adv.title
+            svc_title = svc.title if svc else ""
+            if fmt == "md":
+                lines = [f"# JuraKlar — {title}", f"## {svc_title}", "", "---", ""]
+                for msg in history:
+                    if msg["role"] == "user":
+                        lines += [f"**Dig:** {msg['content']}", ""]
+                    else:
+                        lines += [f"**JuraKlar:**\n\n{msg['content']}", ""]
+                content = "\n".join(lines)
+                filename, media_type = "juraklar-rådgivning.md", "text/markdown"
+            else:
+                sep = "=" * 50
+                lines = [f"JuraKlar — {title}", svc_title, "", sep, ""]
+                for msg in history:
+                    if msg["role"] == "user":
+                        lines += [f"Dig: {msg['content']}", ""]
+                    else:
+                        plain = _re.sub(r"\*{1,2}(.+?)\*{1,2}", r"\1", msg["content"])
+                        plain = _re.sub(r"#{1,6}\s+", "", plain)
+                        lines += [f"JuraKlar: {plain}", ""]
+                content = "\n".join(lines)
+                filename, media_type = "juraklar-rådgivning.txt", "text/plain"
+            ui.download(content.encode("utf-8"), filename=filename, media_type=media_type)
+
         # ── Root container ─────────────────────────────────────────────────
         with ui.element("div").classes("jk-root"):
 
@@ -429,7 +531,7 @@ def start_advisor_ui(
                     # 2d. Input row
                     with ui.element("div").classes("jk-input jk-input-locked") as input_row_el:
                         uploader = (
-                            ui.upload(on_upload=lambda e: None, auto_upload=True, multiple=True)
+                            ui.upload(on_upload=_handle_upload, auto_upload=True, multiple=True)
                             .props('accept=".pdf,.docx,.txt,.md" flat dense')
                             .style(
                                 "position:absolute;opacity:0;width:1px;height:1px;"
@@ -446,12 +548,13 @@ def start_advisor_ui(
                             .classes("flex-1")
                             .props("dense outlined dark")
                         )
-                        ui.button("Send").props("color=primary dense")
-                        ui.button("Ryd").props("flat color=grey-6 dense size=sm")
-                        with ui.button(icon="download").props("flat dense color=grey-5"):
+                        input_box.on("keydown.enter", _send)
+                        ui.button("Send", on_click=_send).props("color=primary dense")
+                        ui.button("Ryd", on_click=_clear_chat).props("flat color=grey-6 dense size=sm")
+                        with ui.button(icon="download").props("flat dense color=grey-5").tooltip("Download samtale"):
                             with ui.menu():
-                                ui.menu_item("Markdown (.md)")
-                                ui.menu_item("Ren tekst (.txt)")
+                                ui.menu_item("Markdown (.md)", on_click=lambda: _download_chat("md"))
+                                ui.menu_item("Ren tekst (.txt)", on_click=lambda: _download_chat("txt"))
 
             # 3. Mobile drawer overlay (always mounted, hidden by CSS)
             drawer_overlay_el = ui.element("div").classes("jk-drawer-overlay")
