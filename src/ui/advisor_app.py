@@ -607,7 +607,6 @@ def start_advisor_ui(
                     }""",
                 )
 
-        # ── Helper stubs (filled in later tasks) ──────────────────────────
         def _open_drawer():
             ui.run_javascript(
                 "document.querySelector('.jk-drawer-overlay').classList.add('open')"
