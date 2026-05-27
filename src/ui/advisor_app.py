@@ -24,6 +24,22 @@ from pathlib import Path
 
 from ..models.config import LLMConfig
 
+# ── Advisor display order (matches 20_rådgivere.txt top-to-bottom) ─────────
+_ADVISOR_ORDER: list[str] = [
+    "testamente", "aegtepagt", "fremtidsfuldmagt", "boligkob", "doedsbo",
+    "skilsmisse", "bodeling", "foraeldre", "samliv", "gavebrev",
+    "lejeret", "ansaettelsesret", "erstatning", "patientskade", "gaeldssanering",
+    "socialret", "forsikring", "naboret", "forbrugerret", "vaergemaal",
+]
+
+
+def _sort_advisors(advisors: dict) -> dict:
+    """Return a new dict sorted by _ADVISOR_ORDER; unknown keys appended alphabetically."""
+    known = {k: advisors[k] for k in _ADVISOR_ORDER if k in advisors}
+    unknown = {k: advisors[k] for k in sorted(advisors) if k not in known}
+    return {**known, **unknown}
+
+
 # ── CSS injiceret én gang per side ────────────────────────────────────────────
 _PAGE_CSS = """
 body, html { margin: 0; padding: 0; overflow: hidden; height: 100%; }
