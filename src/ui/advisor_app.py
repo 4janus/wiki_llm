@@ -342,8 +342,8 @@ def start_advisor_ui(
             with ui.element("div").classes("jk-body"):
 
                 # ── Sidebar (desktop) ──────────────────────────────────────
-                with ui.element("div").classes("jk-sidebar"):
-                    ui.label("(sidebar stub)").classes("text-xs")
+                with ui.element("div").classes("jk-sidebar") as sidebar_container:
+                    _sidebar_content()
 
                 # ── Main column ────────────────────────────────────────────
                 with ui.element("div").classes("jk-main"):
@@ -433,8 +433,75 @@ def start_advisor_ui(
             input_row_el.classes(add="jk-input-locked")
             input_box.props("placeholder='Acceptér consent for at starte…'")
 
-        def _refresh_sidebar():
-            pass  # implemented in Task 5
+        # ── Sidebar state helpers ──────────────────────────────────────────
+
+        sorted_advisors = _sort_advisors(advisors)
+
+        def _on_advisor_click(advisor_id: str) -> None:
+            state["advisor"] = advisor_id
+            state["category"] = None
+            adv = advisors[advisor_id]
+            state["service"] = adv.services[0].id if adv.services else None
+            _refresh_sidebar()
+            _refresh_pill_strip()
+            _refresh_chat()
+            _refresh_breadcrumb()
+            _close_drawer()
+
+        def _on_service_click(svc) -> None:
+            state["service"] = svc.id
+            input_box.value = svc.title
+            input_box.run_method("focus")
+            _refresh_sidebar()
+            _refresh_pill_strip()
+            _refresh_chat()
+            _refresh_breadcrumb()
+
+        def _on_vælg_jurist() -> None:
+            """Reset advisor selection → show all 20 again."""
+            state["advisor"] = None
+            state["category"] = None
+            state["service"] = None
+            _refresh_sidebar()
+            _refresh_pill_strip()
+            _refresh_chat()
+            _refresh_breadcrumb()
+
+        # ── Sidebar render ─────────────────────────────────────────────────
+
+        def _sidebar_content() -> None:
+            (
+                ui.label("[ VÆLG JURIST ]")
+                .classes("jk-vælg-btn")
+                .on("click", _on_vælg_jurist)
+            )
+            for adv_id, adv in sorted_advisors.items():
+                is_selected = adv_id == state["advisor"]
+                any_selected = state["advisor"] is not None
+                css = "jk-advisor"
+                if is_selected:
+                    css += " active"
+                elif any_selected:
+                    css += " dimmed"
+                (
+                    ui.label(adv.title)
+                    .classes(css)
+                    .on("click", lambda _a=adv_id: _on_advisor_click(_a))
+                )
+                if is_selected:
+                    for svc in adv.services:
+                        is_active_svc = svc.id == state["service"]
+                        svc_css = "jk-submenu active" if is_active_svc else "jk-submenu"
+                        (
+                            ui.label(f"› {svc.title}")
+                            .classes(svc_css)
+                            .on("click", lambda _s=svc: _on_service_click(_s))
+                        )
+
+        def _refresh_sidebar() -> None:
+            sidebar_container.clear()
+            with sidebar_container:
+                _sidebar_content()
 
         def _refresh_pill_strip():
             pass  # implemented in Task 7
