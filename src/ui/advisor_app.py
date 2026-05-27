@@ -291,293 +291,163 @@ def start_advisor_ui(
         ui.dark_mode(True)
         ui.add_css(_PAGE_CSS)
 
-        # ── per-side state ────────────────────────────────────────────────────
-        first_id = next(iter(advisors))
-        first_adv = advisors[first_id]
-        first_svc_id = first_adv.services[0].id if first_adv.services else 0
-
+        # ── State ─────────────────────────────────────────────────────────
         state: dict = {
-            "advisor":        first_id,
-            "category":       None,   # None = alle kategorier kollapsede
-            "service":        first_svc_id,
-            "uploaded_docs":  [],     # [{"name": str, "text": str}, ...]
+            "consent_accepted": False,
+            "advisor":          None,   # str | None
+            "category":         None,   # str | None
+            "service":          None,   # int | None
+            "uploaded_docs":    [],
+            "dark_mode":        True,
         }
 
-        # ── hjælpefunktioner ──────────────────────────────────────────────────
+        # ── Dark/light toggle ──────────────────────────────────────────────
+        dark_ref = ui.dark_mode(True)
 
-        def cur_adv():
-            return advisors[state["advisor"]]
-
-        def cats_for_cur() -> dict[str, list]:
-            result: dict[str, list] = {}
-            for svc in cur_adv().services:
-                result.setdefault(svc.category or "Generelt", []).append(svc)
-            return result
-
-        # ── chat-rendering ────────────────────────────────────────────────────
-
-        def _render_msg(role: str, content: str) -> None:
-            if role == "user":
-                with ui.row().classes("w-full justify-end q-mb-xs"):
-                    ui.label(content).classes("jk-user text-sm")
+        def _toggle_dark() -> None:
+            state["dark_mode"] = not state["dark_mode"]
+            if state["dark_mode"]:
+                dark_ref.enable()
+                ui.run_javascript("document.body.classList.remove('light-mode')")
+                toggle_btn.set_text("🌙")
             else:
-                with ui.element("div").classes("jk-bot q-mb-xs"):
-                    ui.markdown(content).classes("text-sm text-grey-2")
+                dark_ref.disable()
+                ui.run_javascript("document.body.classList.add('light-mode')")
+                toggle_btn.set_text("☀️")
 
-        def refresh_chat() -> None:
-            chat_container.clear()
-            history = engine.get_history(state["advisor"], state["service"])
-            with chat_container:
-                if not history:
-                    svc = next(
-                        (s for s in cur_adv().services if s.id == state["service"]),
-                        None,
-                    )
-                    placeholder = (
-                        f"📋 **{svc.title}**\n\nKlik Send, eller skriv dit spørgsmål nedenfor."
-                        if svc else "Vælg et emne ovenfor og stil dit spørgsmål."
-                    )
-                    with ui.element("div").classes("jk-bot q-mt-sm"):
-                        ui.markdown(placeholder).classes("text-sm text-grey-3")
-                    return
-                for msg in history:
-                    _render_msg(msg["role"], msg["content"])
-
-        # ── event-handlers ────────────────────────────────────────────────────
-
-        def on_advisor_change(advisor_id: str) -> None:
-            state["advisor"] = advisor_id
-            state["category"] = None
-            adv = advisors.get(advisor_id)
-            if adv and adv.services:
-                state["service"] = adv.services[0].id
-            nav_panel.refresh()
-            refresh_chat()
-
-        def on_category_toggle(cat_name: str) -> None:
-            state["category"] = None if state["category"] == cat_name else cat_name
-            nav_panel.refresh()
-
-        def on_question_click(svc) -> None:
-            state["service"] = svc.id
-            nav_panel.refresh()
-            input_box.value = svc.title
-            input_box.run_method("focus")
-            refresh_chat()
-
-        async def send() -> None:
-            raw = input_box.value.strip()
-            if not raw:
-                return
-            input_box.value = ""
-
-            # Byg fuld kontekst inkl. uploadede dokumenter
-            if state["uploaded_docs"]:
-                doc_block = "\n\n".join(
-                    f"### Uploadet: {d['name']}\n{d['text'][:4000]}"
-                    for d in state["uploaded_docs"]
-                )
-                full_question = (
-                    f"Brugeren har uploadet følgende dokument(er) til gennemsyn:\n\n"
-                    f"{doc_block}\n\n---\n\n{raw}"
-                )
-            else:
-                full_question = raw
-
-            cur_a = state["advisor"]
-            cur_s = state["service"]
-            with chat_container:
-                _render_msg("user", raw)          # vis kun brugerens tekst i chat
-                thinking = ui.label("…").classes("text-grey-5 text-sm q-ml-sm q-mb-xs")
-            try:
-                answer = await engine.ask(cur_a, cur_s, full_question)
-            except Exception as exc:  # noqa: BLE001
-                answer = f"**Fejl:** {exc}"
-            thinking.delete()
-            if state["advisor"] == cur_a and state["service"] == cur_s:
-                with chat_container:
-                    _render_msg("assistant", answer)
-
-        def clear_chat() -> None:
-            engine.clear(state["advisor"], state["service"])
-            refresh_chat()
-
-        async def handle_upload(e) -> None:
-            """Parser uploadet fil med MarkItDown og gemmer tekst i state."""
-            try:
-                from markitdown import MarkItDown  # noqa: PLC0415
-                raw_bytes = await e.file.read()
-                ext = Path(e.file.name).suffix.lower() or ".txt"
-                md_conv = MarkItDown()
-                result = md_conv.convert_stream(io.BytesIO(raw_bytes), file_extension=ext)
-                text = result.text_content or ""
-                state["uploaded_docs"].append({"name": e.file.name, "text": text})
-            except Exception as exc:  # noqa: BLE001
-                state["uploaded_docs"].append({
-                    "name": e.file.name,
-                    "text": f"(Kunne ikke parse: {exc})",
-                })
-            upload_chips.refresh()
-
-        def remove_doc(idx: int) -> None:
-            if 0 <= idx < len(state["uploaded_docs"]):
-                state["uploaded_docs"].pop(idx)
-            upload_chips.refresh()
-
-        def download_chat(fmt: str = "md") -> None:
-            """Download hele samtalen som Markdown eller ren tekst."""
-            import re as _re  # noqa: PLC0415
-            history = engine.get_history(state["advisor"], state["service"])
-            if not history:
-                return
-            adv = cur_adv()
-            svc = next((s for s in adv.services if s.id == state["service"]), None)
-            title = adv.title
-            svc_title = svc.title if svc else ""
-
-            if fmt == "md":
-                lines = [
-                    f"# JuraKlar — {title}",
-                    f"## {svc_title}",
-                    "",
-                    "---",
-                    "",
-                ]
-                for msg in history:
-                    if msg["role"] == "user":
-                        lines += [f"**Dig:** {msg['content']}", ""]
-                    else:
-                        lines += [f"**JuraKlar:**\n\n{msg['content']}", ""]
-                content = "\n".join(lines)
-                filename = "juraklar-rådgivning.md"
-                media_type = "text/markdown"
-            else:  # txt
-                sep = "=" * 50
-                lines = [f"JuraKlar — {title}", svc_title, "", sep, ""]
-                for msg in history:
-                    if msg["role"] == "user":
-                        lines += [f"Dig: {msg['content']}", ""]
-                    else:
-                        plain = _re.sub(r"\*{1,2}(.+?)\*{1,2}", r"\1", msg["content"])
-                        plain = _re.sub(r"#{1,6}\s+", "", plain)
-                        lines += [f"JuraKlar: {plain}", ""]
-                content = "\n".join(lines)
-                filename = "juraklar-rådgivning.txt"
-                media_type = "text/plain"
-
-            ui.download(content.encode("utf-8"), filename=filename, media_type=media_type)
-
-        # ── navigations-panel (refreshable) ───────────────────────────────────
-        @ui.refreshable
-        def nav_panel() -> None:
-            cats = cats_for_cur()
-            sel_cat = state["category"]
-
-            # Række 1: kategori-pills
-            with ui.row().classes("flex-wrap gap-2 items-center"):
-                for cat_name, svcs in cats.items():
-                    is_active = cat_name == sel_cat
-                    (
-                        ui.chip(
-                            f"{cat_name} ({len(svcs)})",
-                            on_click=lambda c=cat_name: on_category_toggle(c),
-                        )
-                        .props("dense color=primary" if is_active else "dense outline color=grey-6")
-                        .classes("cursor-pointer font-medium")
-                    )
-
-            # Række 2: spørgsmåls-pills — kun når kategori er valgt
-            if sel_cat and sel_cat in cats:
-                with ui.element("div").style("margin-top: 10px;"):
-                    ui.label(sel_cat).classes("text-grey-5").style(
-                        "font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px;"
-                    )
-                    with ui.row().classes("flex-wrap gap-2").style("margin-top: 4px;"):
-                        for svc in cats[sel_cat]:
-                            is_active_svc = svc.id == state["service"]
-                            (
-                                ui.chip(
-                                    svc.title,
-                                    on_click=lambda s=svc: on_question_click(s),
-                                )
-                                .props("dense color=primary" if is_active_svc else "dense outline color=grey-5")
-                                .classes("cursor-pointer")
-                                .style("font-size: 12px;")
-                            )
-
-        # ── uploadede filer (refreshable) ─────────────────────────────────────
-        @ui.refreshable
-        def upload_chips() -> None:
-            if not state["uploaded_docs"]:
-                return
-            ui.label("📎 Dokumenter:").classes("text-xs text-grey-5")
-            for i, doc in enumerate(state["uploaded_docs"]):
-                ui.chip(
-                    doc["name"],
-                    on_click=lambda idx=i: remove_doc(idx),
-                ).props("dense outline color=grey-5 removable").classes("text-xs")
-
-        # ── side-layout ───────────────────────────────────────────────────────
+        # ── Root container ─────────────────────────────────────────────────
         with ui.element("div").classes("jk-root"):
 
             # 1. Header
             with ui.element("div").classes("jk-header"):
-                ui.label("⚖️ JuraKlar").classes("text-h6 text-bold text-white")
-                ui.label("Juridisk rådgivning").classes("text-caption text-grey-5")
+                hamburger_btn = (
+                    ui.button("☰", on_click=lambda: _open_drawer())
+                    .classes("jk-hamburger")
+                    .props("flat dense")
+                )
+                logo_btn = (
+                    ui.label("⚖️ JuraKlar")
+                    .classes("jk-logo")
+                    .on("click", lambda: _reset_to_forside())
+                )
+                breadcrumb_label = ui.label("").classes("jk-breadcrumb")
+                ui.element("div").classes("jk-spacer")
+                toggle_btn = (
+                    ui.button("🌙", on_click=_toggle_dark)
+                    .classes("jk-toggle")
+                    .props("flat dense")
+                )
 
-            # 2. Domæne-tabs
-            with ui.element("div").classes("jk-tabs"):
-                with ui.tabs(
-                    value=state["advisor"],
-                    on_change=lambda e: on_advisor_change(e.value),
-                ).classes("w-full").props("align=left dense"):
-                    for adv_id, adv in advisors.items():
-                        ui.tab(adv_id, label=adv.title)
+            # 2. Body (sidebar + main)
+            with ui.element("div").classes("jk-body"):
 
-            # 3. Kategori + spørgsmål
-            with ui.element("div").classes("jk-nav"):
-                nav_panel()
+                # ── Sidebar (desktop) ──────────────────────────────────────
+                with ui.element("div").classes("jk-sidebar"):
+                    ui.label("(sidebar stub)").classes("text-xs")
 
-            # 4. Chat-scrollområde
-            with ui.scroll_area().classes("jk-chat"):
-                chat_container = ui.column().classes("w-full gap-1").style("padding: 16px;")
+                # ── Main column ────────────────────────────────────────────
+                with ui.element("div").classes("jk-main"):
 
-            # 5. Upload-chips (skjult når tom)
-            with ui.element("div").classes("jk-uploads"):
-                upload_chips()
+                    # 2a. Pill strip (mobile only — shown after advisor selected)
+                    pill_strip_el = ui.element("div").classes("jk-pill-strip")
 
-            # 6. Input-række
-            with ui.element("div").classes("jk-input"):
-                # Skjult upload-komponent — trigges af knappen nedenfor
-                # Uploaderen er usynlig men monteret (position:absolute, opacity:0).
-                # display:none forhindrer browseren i at åbne file-pickeren — opacity:0 gør det ikke.
-                uploader = (
-                    ui.upload(on_upload=handle_upload, auto_upload=True, multiple=True)
-                    .props('accept=".pdf,.docx,.txt,.md" flat dense')
-                    .style(
-                        "position: absolute; opacity: 0; width: 1px; height: 1px; "
-                        "overflow: hidden; pointer-events: none;"
+                    # 2b. Chat scroll area
+                    with ui.scroll_area().classes("jk-chat"):
+                        chat_container = (
+                            ui.column()
+                            .classes("w-full gap-2")
+                            .style("padding: 16px;")
+                        )
+
+                    # 2c. Upload chips (hidden when empty)
+                    with ui.element("div").classes("jk-uploads") as upload_chips_el:
+                        pass
+
+                    # 2d. Input row
+                    with ui.element("div").classes("jk-input jk-input-locked") as input_row_el:
+                        uploader = (
+                            ui.upload(on_upload=lambda e: None, auto_upload=True, multiple=True)
+                            .props('accept=".pdf,.docx,.txt,.md" flat dense')
+                            .style(
+                                "position:absolute;opacity:0;width:1px;height:1px;"
+                                "overflow:hidden;pointer-events:none;"
+                            )
+                        )
+                        ui.button(
+                            icon="attach_file",
+                            on_click=lambda: uploader.run_method("pickFiles"),
+                        ).props("flat dense color=grey-5").tooltip("Upload dokument")
+
+                        input_box = (
+                            ui.input(placeholder="Acceptér consent for at starte…")
+                            .classes("flex-1")
+                            .props("dense outlined dark")
+                        )
+                        ui.button("Send").props("color=primary dense")
+                        ui.button("Ryd").props("flat color=grey-6 dense size=sm")
+                        with ui.button(icon="download").props("flat dense color=grey-5"):
+                            with ui.menu():
+                                ui.menu_item("Markdown (.md)")
+                                ui.menu_item("Ren tekst (.txt)")
+
+            # 3. Mobile drawer overlay (always mounted, hidden by CSS)
+            drawer_overlay_el = ui.element("div").classes("jk-drawer-overlay")
+            with drawer_overlay_el:
+                with ui.element("div").classes("jk-drawer"):
+                    ui.label("✕ luk").classes("jk-drawer-close").on(
+                        "click", lambda: _close_drawer()
                     )
+                    ui.label("(drawer stub)").classes("text-xs")
+                # Tap on backdrop closes drawer
+                drawer_overlay_el.on(
+                    "click",
+                    js_handler="""(e) => {
+                        if (e.target === e.currentTarget)
+                            e.currentTarget.classList.remove('open');
+                    }""",
                 )
-                ui.button(
-                    icon="attach_file",
-                    on_click=lambda: uploader.run_method("pickFiles"),
-                ).props("flat dense color=grey-5").tooltip("Upload dokument (PDF, DOCX, TXT)")
 
-                input_box = (
-                    ui.input(placeholder="Skriv dit spørgsmål…")
-                    .classes("flex-1")
-                    .props("dense outlined dark")
+        # ── Helper stubs (filled in later tasks) ──────────────────────────
+        def _open_drawer():
+            ui.run_javascript(
+                "document.querySelector('.jk-drawer-overlay').classList.add('open')"
+            )
+
+        def _close_drawer():
+            ui.run_javascript(
+                "document.querySelector('.jk-drawer-overlay').classList.remove('open')"
+            )
+
+        def _reset_to_forside():
+            state["consent_accepted"] = False
+            state["advisor"] = None
+            state["category"] = None
+            state["service"] = None
+            _refresh_sidebar()
+            _refresh_pill_strip()
+            _refresh_chat()
+            _refresh_breadcrumb()
+            input_row_el.classes(add="jk-input-locked")
+            input_box.props("placeholder='Acceptér consent for at starte…'")
+
+        def _refresh_sidebar():
+            pass  # implemented in Task 5
+
+        def _refresh_pill_strip():
+            pass  # implemented in Task 7
+
+        def _refresh_chat():
+            pass  # implemented in Task 4
+
+        def _refresh_breadcrumb():
+            adv = advisors.get(state["advisor"]) if state["advisor"] else None
+            if adv:
+                svc = next((s for s in adv.services if s.id == state["service"]), None)
+                breadcrumb_label.set_text(
+                    f"{adv.title} · {svc.title}" if svc else adv.title
                 )
-                input_box.on("keydown.enter", send)
-                ui.button("Send", on_click=send).props("color=primary dense")
-                ui.button("Ryd", on_click=clear_chat).props("flat color=grey-6 dense size=sm")
-                with ui.button(icon="download").props("flat dense color=grey-5").tooltip("Download samtale"):
-                    with ui.menu():
-                        ui.menu_item("Markdown (.md)", on_click=lambda: download_chat("md"))
-                        ui.menu_item("Ren tekst (.txt)", on_click=lambda: download_chat("txt"))
-
-        refresh_chat()
+            else:
+                breadcrumb_label.set_text("")
 
     ui.run(
         host=effective_host,
