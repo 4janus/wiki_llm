@@ -407,6 +407,9 @@ def start_advisor_ui(
                     }""",
                 )
 
+        # Initialise page
+        _refresh_chat()
+
         # ── Helper stubs (filled in later tasks) ──────────────────────────
         def _open_drawer():
             ui.run_javascript(
@@ -436,8 +439,102 @@ def start_advisor_ui(
         def _refresh_pill_strip():
             pass  # implemented in Task 7
 
-        def _refresh_chat():
-            pass  # implemented in Task 4
+        # ── Chat rendering ─────────────────────────────────────────────────
+
+        def _render_msg(role: str, content: str) -> None:
+            if role == "user":
+                with ui.row().classes("w-full justify-end"):
+                    ui.label(content).classes("jk-user text-sm")
+            else:
+                with ui.element("div").classes("jk-bot"):
+                    ui.markdown(content).classes("text-sm")
+
+        def _refresh_chat() -> None:
+            chat_container.clear()
+            with chat_container:
+                if not state["consent_accepted"]:
+                    _render_forside()
+                    return
+                if state["advisor"] is None:
+                    with ui.element("div").classes("jk-bot"):
+                        ui.markdown(
+                            "**Vælg en jurist** i menuen til venstre for at starte."
+                        ).classes("text-sm")
+                    return
+                history = engine.get_history(state["advisor"], state["service"])
+                if not history:
+                    adv = advisors[state["advisor"]]
+                    svc = next(
+                        (s for s in adv.services if s.id == state["service"]), None
+                    )
+                    placeholder = (
+                        f"📋 **{svc.title}**\n\nKlik Send, eller skriv dit spørgsmål."
+                        if svc
+                        else "Vælg et emne i menuen og stil dit spørgsmål."
+                    )
+                    with ui.element("div").classes("jk-bot"):
+                        ui.markdown(placeholder).classes("text-sm")
+                    return
+                for msg in history:
+                    _render_msg(msg["role"], msg["content"])
+
+        def _render_forside() -> None:
+            """Render welcome text + consent box inside chat_container."""
+            with ui.element("div").classes("jk-forside"):
+                ui.label("Hvad kan JuraKlar?").classes("jk-forside-title")
+                ui.label(
+                    "JuraKlar rummer 20 AI-jurister med hver deres speciale.\n"
+                    "De kan rådgive dig om juridiske spørgsmål,\n"
+                    "lave juridiske dokumenter som testamente, ægtepagt,\n"
+                    "slutseddel, skøde, lejekontrakt og meget mere.\n"
+                    "De kan læse dine dokumenter og foreslå rettelser,\n"
+                    "finde mangler, opdatere til nyeste lov mm.\n\n"
+                    "Det hele foregår i en Chat med AI-juristen."
+                ).classes("jk-forside-text").style("white-space: pre-line;")
+
+                ui.label("Hvad koster det?").classes("jk-forside-section")
+                ui.label(
+                    "Anonym bruger kr 200. MobilePay eller Kort.\n"
+                    "Betaling først ved upload eller download.\n"
+                    "Bruger der tester og giver feedback kører Gratis,\n"
+                    "men skal angive e-mail og udfylde et lille spørgeskema efterfølgende."
+                ).classes("jk-forside-text").style("white-space: pre-line;")
+
+                with ui.element("div").classes("jk-consent-box"):
+                    ui.label("Consent").classes("jk-consent-title")
+                    ui.label(
+                        "JuraKlar er\n"
+                        "  · Lavet af AI\n"
+                        "  · Valideret af AI\n"
+                        "  · Testet af AI\n\n"
+                        "Det er på dit eget ansvar at benytte denne rådgivning."
+                    ).classes("jk-consent-body").style("white-space: pre-line;")
+
+                    continue_btn = (
+                        ui.button("[ FORTSÆT ]", on_click=_on_consent_continue)
+                        .classes("jk-continue-btn")
+                        .props("flat")
+                        .style("display: none;")
+                    )
+
+                    def _on_consent_check(e) -> None:
+                        if e.value:
+                            continue_btn.style("display: inline-block;")
+                        else:
+                            continue_btn.style("display: none;")
+
+                    ui.checkbox(
+                        "Ja, jeg har forstået det er AI og at det er mit eget ansvar",
+                        on_change=_on_consent_check,
+                    ).props("color=positive")
+
+        def _on_consent_continue() -> None:
+            state["consent_accepted"] = True
+            input_row_el.classes(remove="jk-input-locked")
+            input_box.props("placeholder='Skriv dit spørgsmål…'")
+            _refresh_chat()
+            _refresh_pill_strip()
+            _refresh_breadcrumb()
 
         def _refresh_breadcrumb():
             adv = advisors.get(state["advisor"]) if state["advisor"] else None
