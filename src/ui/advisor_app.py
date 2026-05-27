@@ -534,8 +534,28 @@ def start_advisor_ui(
                 _sidebar_content()
             _drawer_content.refresh()
 
-        def _refresh_pill_strip():
-            pass  # implemented in Task 7
+        def _refresh_pill_strip() -> None:
+            pill_strip_el.clear()
+            if not state["consent_accepted"] or state["advisor"] is None:
+                pill_strip_el.style("display: none;")
+                return
+            pill_strip_el.style("display: block;")
+            adv = advisors[state["advisor"]]
+            with pill_strip_el:
+                (
+                    ui.label(f"⚖️ {adv.title} ▾")
+                    .classes("jk-pill-advisor")
+                    .on("click", lambda: _open_drawer())
+                )
+                with ui.element("div").classes("jk-pills"):
+                    for svc in adv.services:
+                        is_active = svc.id == state["service"]
+                        pill_css = "jk-pill active" if is_active else "jk-pill inactive"
+                        (
+                            ui.label(svc.title)
+                            .classes(pill_css)
+                            .on("click", lambda _s=svc: _on_service_click(_s))
+                        )
 
         # ── Chat rendering ─────────────────────────────────────────────────
 
