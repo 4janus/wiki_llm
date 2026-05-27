@@ -44,7 +44,8 @@ def _sort_advisors(advisors: dict) -> dict:
 _PAGE_CSS = """
 /* ── Reset ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+body, html { margin: 0; padding: 0; height: 100%; overflow: hidden;
+             background: var(--bg-base) !important; }
 
 /* ── CSS Variables: Dark (default) ──────────────────────────── */
 :root {
@@ -293,7 +294,6 @@ def start_advisor_ui(
 
     @ui.page("/")
     async def index_page() -> None:  # noqa: C901
-        ui.dark_mode(True)
         ui.add_css(_PAGE_CSS)
 
         # ── State ─────────────────────────────────────────────────────────
@@ -482,38 +482,26 @@ def start_advisor_ui(
             # 2. Body (sidebar + main)
             with ui.element("div").classes("jk-body"):
 
-                # ── Sidebar (desktop) ──────────────────────────────────────
+                # ── Sidebar (desktop) — statisk pre-render, CSS-klasser opdateres dynamisk ──
                 with ui.element("div").classes("jk-sidebar"):
-                    @ui.refreshable
-                    def _sidebar_content() -> None:
-                        (
-                            ui.label("[ VÆLG JURIST ]")
-                            .classes("jk-vælg-btn")
-                            .on("click", _on_vælg_jurist)
+                    ui.label("[ VÆLG JURIST ]").classes("jk-vælg-btn").on("click", _on_vælg_jurist)
+                    _sb_adv: dict = {}   # adv_id → advisor label
+                    _sb_sub: dict = {}   # adv_id → (sub_container, [(svc_id, svc_label)])
+                    for _adv_id, _adv in sorted_advisors.items():
+                        _sb_adv[_adv_id] = (
+                            ui.label(_adv.title)
+                            .classes("jk-advisor")
+                            .on("click", lambda _a=_adv_id: _on_advisor_click(_a))
                         )
-                        for adv_id, adv in sorted_advisors.items():
-                            is_selected = adv_id == state["advisor"]
-                            any_selected = state["advisor"] is not None
-                            css = "jk-advisor"
-                            if is_selected:
-                                css += " active"
-                            elif any_selected:
-                                css += " dimmed"
-                            (
-                                ui.label(adv.title)
-                                .classes(css)
-                                .on("click", lambda _a=adv_id: _on_advisor_click(_a))
-                            )
-                            if is_selected:
-                                for svc in adv.services:
-                                    is_active_svc = svc.id == state["service"]
-                                    svc_css = "jk-submenu active" if is_active_svc else "jk-submenu"
-                                    (
-                                        ui.label(f"› {svc.title}")
-                                        .classes(svc_css)
-                                        .on("click", lambda _s=svc: _on_service_click(_s))
-                                    )
-                    _sidebar_content()
+                        _svc_list: list = []
+                        with ui.element("div").style("display:none") as _sub_div:
+                            for _svc in _adv.services:
+                                _svc_list.append((_svc.id,
+                                    ui.label(f"› {_svc.title}")
+                                    .classes("jk-submenu")
+                                    .on("click", lambda _s=_svc: _on_service_click(_s))
+                                ))
+                        _sb_sub[_adv_id] = (_sub_div, _svc_list)
 
                 # ── Main column ────────────────────────────────────────────
                 with ui.element("div").classes("jk-main"):
@@ -565,42 +553,28 @@ def start_advisor_ui(
             drawer_overlay_el = ui.element("div").classes("jk-drawer-overlay")
             with drawer_overlay_el:
                 with ui.element("div").classes("jk-drawer"):
-
                     ui.label("✕ luk").classes("jk-drawer-close").on(
                         "click", lambda: _close_drawer()
                     )
-
-                    @ui.refreshable
-                    def _drawer_content() -> None:
-                        (
-                            ui.label("[ VÆLG JURIST ]")
-                            .classes("jk-vælg-btn")
-                            .on("click", _on_vælg_jurist)
+                    # ── Drawer — statisk pre-render, spejler sidebar ───────
+                    ui.label("[ VÆLG JURIST ]").classes("jk-vælg-btn").on("click", _on_vælg_jurist)
+                    _dr_adv: dict = {}   # adv_id → advisor label
+                    _dr_sub: dict = {}   # adv_id → (sub_container, [(svc_id, svc_label)])
+                    for _adv_id, _adv in sorted_advisors.items():
+                        _dr_adv[_adv_id] = (
+                            ui.label(_adv.title)
+                            .classes("jk-advisor")
+                            .on("click", lambda _a=_adv_id: _on_advisor_click(_a))
                         )
-                        for adv_id, adv in sorted_advisors.items():
-                            is_selected = adv_id == state["advisor"]
-                            any_selected = state["advisor"] is not None
-                            css = "jk-advisor"
-                            if is_selected:
-                                css += " active"
-                            elif any_selected:
-                                css += " dimmed"
-                            (
-                                ui.label(adv.title)
-                                .classes(css)
-                                .on("click", lambda _a=adv_id: _on_advisor_click(_a))
-                            )
-                            if is_selected:
-                                for svc in adv.services:
-                                    is_active = svc.id == state["service"]
-                                    svc_css = "jk-submenu active" if is_active else "jk-submenu"
-                                    (
-                                        ui.label(f"› {svc.title}")
-                                        .classes(svc_css)
-                                        .on("click", lambda _s=svc: _on_service_click(_s))
-                                    )
-
-                    _drawer_content()
+                        _svc_list2: list = []
+                        with ui.element("div").style("display:none") as _sub_div2:
+                            for _svc in _adv.services:
+                                _svc_list2.append((_svc.id,
+                                    ui.label(f"› {_svc.title}")
+                                    .classes("jk-submenu")
+                                    .on("click", lambda _s=_svc: _on_service_click(_s))
+                                ))
+                        _dr_sub[_adv_id] = (_sub_div2, _svc_list2)
 
                 # Tap on backdrop closes drawer
                 drawer_overlay_el.on(
@@ -633,11 +607,40 @@ def start_advisor_ui(
             input_row_el.classes(add="jk-input-locked")
             input_box.props("placeholder='Acceptér consent for at starte…'")
 
-        # ── Sidebar render ─────────────────────────────────────────────────
+        # ── Sidebar render (CSS-klasse-opdatering kun, ingen DOM-ændringer) ──
 
         def _refresh_sidebar() -> None:
-            _sidebar_content.refresh()
-            _drawer_content.refresh()
+            selected = state["advisor"]
+            for adv_id in sorted_advisors:
+                sb_lbl = _sb_adv[adv_id]
+                dr_lbl = _dr_adv[adv_id]
+                sub_sb, svc_sb = _sb_sub[adv_id]
+                sub_dr, svc_dr = _dr_sub[adv_id]
+                if adv_id == selected:
+                    sb_lbl.classes(add="active", remove="dimmed")
+                    dr_lbl.classes(add="active", remove="dimmed")
+                    sub_sb.style("display:block")
+                    sub_dr.style("display:block")
+                    for svc_id, svc_lbl in svc_sb:
+                        if svc_id == state["service"]:
+                            svc_lbl.classes(add="active")
+                        else:
+                            svc_lbl.classes(remove="active")
+                    for svc_id, svc_lbl in svc_dr:
+                        if svc_id == state["service"]:
+                            svc_lbl.classes(add="active")
+                        else:
+                            svc_lbl.classes(remove="active")
+                elif selected is not None:
+                    sb_lbl.classes(add="dimmed", remove="active")
+                    dr_lbl.classes(add="dimmed", remove="active")
+                    sub_sb.style("display:none")
+                    sub_dr.style("display:none")
+                else:
+                    sb_lbl.classes(remove="active dimmed")
+                    dr_lbl.classes(remove="active dimmed")
+                    sub_sb.style("display:none")
+                    sub_dr.style("display:none")
 
         def _refresh_pill_strip() -> None:
             pill_strip_el.clear()
