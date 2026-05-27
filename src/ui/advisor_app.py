@@ -89,7 +89,7 @@ body.light-mode {
 
 /* ── Root ────────────────────────────────────────────────────── */
 .jk-root {
-  position: fixed; inset: 0;
+  position: fixed; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
   background: var(--bg-base); color: var(--text-primary);
 }
@@ -237,9 +237,11 @@ body.light-mode {
   cursor: pointer; margin-bottom: 6px; user-select: none;
 }
 
-/* ── Neutralise Quasar default layout padding ────────────────── */
+/* ── Neutralise Quasar wrapper (our jk-root covers viewport) ─── */
 .q-page-container { padding: 0 !important; }
-.q-layout { min-height: 0 !important; }
+#q-app, .q-layout, .q-page-container, .q-page {
+  background: transparent !important;
+}
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 767px) {
@@ -482,26 +484,30 @@ def start_advisor_ui(
             # 2. Body (sidebar + main)
             with ui.element("div").classes("jk-body"):
 
-                # ── Sidebar (desktop) — statisk pre-render, CSS-klasser opdateres dynamisk ──
+                # ── Sidebar (desktop) — statisk pre-render, tilstand styres via JS ──
                 with ui.element("div").classes("jk-sidebar"):
                     ui.label("[ VÆLG JURIST ]").classes("jk-vælg-btn").on("click", _on_vælg_jurist)
-                    _sb_adv: dict = {}   # adv_id → advisor label
-                    _sb_sub: dict = {}   # adv_id → (sub_container, [(svc_id, svc_label)])
+                    _sb_adv_ids: dict = {}   # adv_id → label.id (int)
+                    _sb_sub_ids: dict = {}   # adv_id → sub_div.id (int)
+                    _sb_svc_ids: dict = {}   # adv_id → [(svc_id, svc_lbl.id)]
                     for _adv_id, _adv in sorted_advisors.items():
-                        _sb_adv[_adv_id] = (
+                        _lbl = (
                             ui.label(_adv.title)
                             .classes("jk-advisor")
                             .on("click", lambda _a=_adv_id: _on_advisor_click(_a))
                         )
-                        _svc_list: list = []
+                        _sb_adv_ids[_adv_id] = _lbl.id
+                        _svc_id_list: list = []
                         with ui.element("div").style("display:none") as _sub_div:
                             for _svc in _adv.services:
-                                _svc_list.append((_svc.id,
+                                _svc_lbl = (
                                     ui.label(f"› {_svc.title}")
                                     .classes("jk-submenu")
                                     .on("click", lambda _s=_svc: _on_service_click(_s))
-                                ))
-                        _sb_sub[_adv_id] = (_sub_div, _svc_list)
+                                )
+                                _svc_id_list.append((_svc.id, _svc_lbl.id))
+                        _sb_sub_ids[_adv_id] = _sub_div.id
+                        _sb_svc_ids[_adv_id] = _svc_id_list
 
                 # ── Main column ────────────────────────────────────────────
                 with ui.element("div").classes("jk-main"):
@@ -558,23 +564,27 @@ def start_advisor_ui(
                     )
                     # ── Drawer — statisk pre-render, spejler sidebar ───────
                     ui.label("[ VÆLG JURIST ]").classes("jk-vælg-btn").on("click", _on_vælg_jurist)
-                    _dr_adv: dict = {}   # adv_id → advisor label
-                    _dr_sub: dict = {}   # adv_id → (sub_container, [(svc_id, svc_label)])
+                    _dr_adv_ids: dict = {}
+                    _dr_sub_ids: dict = {}
+                    _dr_svc_ids: dict = {}
                     for _adv_id, _adv in sorted_advisors.items():
-                        _dr_adv[_adv_id] = (
+                        _lbl2 = (
                             ui.label(_adv.title)
                             .classes("jk-advisor")
                             .on("click", lambda _a=_adv_id: _on_advisor_click(_a))
                         )
-                        _svc_list2: list = []
+                        _dr_adv_ids[_adv_id] = _lbl2.id
+                        _svc_id_list2: list = []
                         with ui.element("div").style("display:none") as _sub_div2:
                             for _svc in _adv.services:
-                                _svc_list2.append((_svc.id,
+                                _svc_lbl2 = (
                                     ui.label(f"› {_svc.title}")
                                     .classes("jk-submenu")
                                     .on("click", lambda _s=_svc: _on_service_click(_s))
-                                ))
-                        _dr_sub[_adv_id] = (_sub_div2, _svc_list2)
+                                )
+                                _svc_id_list2.append((_svc.id, _svc_lbl2.id))
+                        _dr_sub_ids[_adv_id] = _sub_div2.id
+                        _dr_svc_ids[_adv_id] = _svc_id_list2
 
                 # Tap on backdrop closes drawer
                 drawer_overlay_el.on(
@@ -607,40 +617,62 @@ def start_advisor_ui(
             input_row_el.classes(add="jk-input-locked")
             input_box.props("placeholder='Acceptér consent for at starte…'")
 
-        # ── Sidebar render (CSS-klasse-opdatering kun, ingen DOM-ændringer) ──
+        # ── Sidebar render — direkte JS DOM-manipulation (ingen NiceGUI element-update) ──
 
         def _refresh_sidebar() -> None:
             selected = state["advisor"]
+            cur_svc = state["service"]
+            lines: list[str] = []
+
+            def _g(eid: int) -> str:
+                """getElementById for a NiceGUI element (html_id = 'c' + id)."""
+                return f"document.getElementById('c{eid}')"
+
+            def _cls(eid: int, add: str = "", remove: str = "") -> None:
+                parts = []
+                if add:
+                    parts.append(f"e.classList.add('{add}')")
+                if remove:
+                    parts.append(f"e.classList.remove('{remove}')")
+                if parts:
+                    expr = ";".join(parts)
+                    lines.append(f"(function(){{var e={_g(eid)};if(e){{{expr};}}}})();")
+
+            def _disp(eid: int, show: bool) -> None:
+                val = "block" if show else "none"
+                lines.append(
+                    f"(function(){{var e={_g(eid)};if(e)e.style.display='{val}';}})();"
+                )
+
             for adv_id in sorted_advisors:
-                sb_lbl = _sb_adv[adv_id]
-                dr_lbl = _dr_adv[adv_id]
-                sub_sb, svc_sb = _sb_sub[adv_id]
-                sub_dr, svc_dr = _dr_sub[adv_id]
+                sb_eid = _sb_adv_ids[adv_id]
+                dr_eid = _dr_adv_ids[adv_id]
+                sub_sb_eid = _sb_sub_ids[adv_id]
+                sub_dr_eid = _dr_sub_ids[adv_id]
+
                 if adv_id == selected:
-                    sb_lbl.classes(add="active", remove="dimmed")
-                    dr_lbl.classes(add="active", remove="dimmed")
-                    sub_sb.style("display:block")
-                    sub_dr.style("display:block")
-                    for svc_id, svc_lbl in svc_sb:
-                        if svc_id == state["service"]:
-                            svc_lbl.classes(add="active")
-                        else:
-                            svc_lbl.classes(remove="active")
-                    for svc_id, svc_lbl in svc_dr:
-                        if svc_id == state["service"]:
-                            svc_lbl.classes(add="active")
-                        else:
-                            svc_lbl.classes(remove="active")
+                    _cls(sb_eid, add="active", remove="dimmed")
+                    _cls(dr_eid, add="active", remove="dimmed")
+                    _disp(sub_sb_eid, True)
+                    _disp(sub_dr_eid, True)
+                    for svc_id, svc_eid in _sb_svc_ids.get(adv_id, []):
+                        _cls(svc_eid, add="active") if svc_id == cur_svc else _cls(svc_eid, remove="active")
+                    for svc_id, svc_eid in _dr_svc_ids.get(adv_id, []):
+                        _cls(svc_eid, add="active") if svc_id == cur_svc else _cls(svc_eid, remove="active")
                 elif selected is not None:
-                    sb_lbl.classes(add="dimmed", remove="active")
-                    dr_lbl.classes(add="dimmed", remove="active")
-                    sub_sb.style("display:none")
-                    sub_dr.style("display:none")
+                    _cls(sb_eid, add="dimmed", remove="active")
+                    _cls(dr_eid, add="dimmed", remove="active")
+                    _disp(sub_sb_eid, False)
+                    _disp(sub_dr_eid, False)
                 else:
-                    sb_lbl.classes(remove="active dimmed")
-                    dr_lbl.classes(remove="active dimmed")
-                    sub_sb.style("display:none")
-                    sub_dr.style("display:none")
+                    _cls(sb_eid, remove="active")
+                    _cls(sb_eid, remove="dimmed")
+                    _cls(dr_eid, remove="active")
+                    _cls(dr_eid, remove="dimmed")
+                    _disp(sub_sb_eid, False)
+                    _disp(sub_dr_eid, False)
+
+            ui.run_javascript("\n".join(lines))
 
         def _refresh_pill_strip() -> None:
             pill_strip_el.clear()
