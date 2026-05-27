@@ -236,6 +236,10 @@ body.light-mode {
   cursor: pointer; margin-bottom: 6px; user-select: none;
 }
 
+/* ── Neutralise Quasar default layout padding ────────────────── */
+.q-page-container { padding: 0 !important; }
+.q-layout { min-height: 0 !important; }
+
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 767px) {
   .jk-sidebar   { display: none !important; }
@@ -349,35 +353,6 @@ def start_advisor_ui(
             _refresh_pill_strip()
             _refresh_chat()
             _refresh_breadcrumb()
-
-        def _sidebar_content() -> None:
-            (
-                ui.label("[ VÆLG JURIST ]")
-                .classes("jk-vælg-btn")
-                .on("click", _on_vælg_jurist)
-            )
-            for adv_id, adv in sorted_advisors.items():
-                is_selected = adv_id == state["advisor"]
-                any_selected = state["advisor"] is not None
-                css = "jk-advisor"
-                if is_selected:
-                    css += " active"
-                elif any_selected:
-                    css += " dimmed"
-                (
-                    ui.label(adv.title)
-                    .classes(css)
-                    .on("click", lambda _a=adv_id: _on_advisor_click(_a))
-                )
-                if is_selected:
-                    for svc in adv.services:
-                        is_active_svc = svc.id == state["service"]
-                        svc_css = "jk-submenu active" if is_active_svc else "jk-submenu"
-                        (
-                            ui.label(f"› {svc.title}")
-                            .classes(svc_css)
-                            .on("click", lambda _s=svc: _on_service_click(_s))
-                        )
 
         # ── Chat handlers ──────────────────────────────────────────────────
 
@@ -508,7 +483,36 @@ def start_advisor_ui(
             with ui.element("div").classes("jk-body"):
 
                 # ── Sidebar (desktop) ──────────────────────────────────────
-                with ui.element("div").classes("jk-sidebar") as sidebar_container:
+                with ui.element("div").classes("jk-sidebar"):
+                    @ui.refreshable
+                    def _sidebar_content() -> None:
+                        (
+                            ui.label("[ VÆLG JURIST ]")
+                            .classes("jk-vælg-btn")
+                            .on("click", _on_vælg_jurist)
+                        )
+                        for adv_id, adv in sorted_advisors.items():
+                            is_selected = adv_id == state["advisor"]
+                            any_selected = state["advisor"] is not None
+                            css = "jk-advisor"
+                            if is_selected:
+                                css += " active"
+                            elif any_selected:
+                                css += " dimmed"
+                            (
+                                ui.label(adv.title)
+                                .classes(css)
+                                .on("click", lambda _a=adv_id: _on_advisor_click(_a))
+                            )
+                            if is_selected:
+                                for svc in adv.services:
+                                    is_active_svc = svc.id == state["service"]
+                                    svc_css = "jk-submenu active" if is_active_svc else "jk-submenu"
+                                    (
+                                        ui.label(f"› {svc.title}")
+                                        .classes(svc_css)
+                                        .on("click", lambda _s=svc: _on_service_click(_s))
+                                    )
                     _sidebar_content()
 
                 # ── Main column ────────────────────────────────────────────
@@ -632,9 +636,7 @@ def start_advisor_ui(
         # ── Sidebar render ─────────────────────────────────────────────────
 
         def _refresh_sidebar() -> None:
-            sidebar_container.clear()
-            with sidebar_container:
-                _sidebar_content()
+            _sidebar_content.refresh()
             _drawer_content.refresh()
 
         def _refresh_pill_strip() -> None:
