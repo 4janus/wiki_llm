@@ -243,8 +243,9 @@ body.light-mode {
   .jk-breadcrumb { display: none; }
 }
 @media (min-width: 768px) {
-  .jk-hamburger  { display: none !important; }
+  .jk-hamburger     { display: none !important; }
   .jk-drawer-overlay { display: none !important; }
+  .jk-pill-strip    { display: none !important; }
 }
 """
 
