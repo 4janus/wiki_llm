@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JuraKlar</title>
+  <style>
+    /* ── CSS variables — dark mode (default) ─────────────────── */
+    :root {
+      --bg-deep:           #080f0c;
+      --bg-base:           #0c1510;
+      --bg-surface:        #0d1f16;
+      --bg-sidebar:        #0a1a12;
+      --bg-bubble-user:    #0d4a30;
+      --bg-bubble-bot:     #0d1f16;
+      --border:            #1a3028;
+      --accent:            #4ade99;
+      --accent-btn:        #0d4a30;
+      --accent-btn-border: #1a6040;
+      --text-primary:      #e0e0e0;
+      --text-secondary:    #8ab898;
+      --text-dim:          #3a6a50;
+      --text-muted:        #2a4a32;
+      --bubble-user-text:  #a0ffc8;
+      --bubble-bot-text:   #a0c8b4;
+    }
+
+    /* ── light mode ──────────────────────────────────────────── */
+    body.light-mode {
+      --bg-deep:           #ffffff;
+      --bg-base:           #f8fdf9;
+      --bg-surface:        #f0faf5;
+      --bg-sidebar:        #e0f5ea;
+      --bg-bubble-user:    #0a6e40;
+      --bg-bubble-bot:     #f0faf5;
+      --border:            #c8e8d8;
+      --accent:            #0a6e40;
+      --accent-btn:        #0a6e40;
+      --accent-btn-border: #087840;
+      --text-primary:      #1a3a28;
+      --text-secondary:    #3a6a50;
+      --text-dim:          #7aaa88;
+      --text-muted:        #aaccbb;
+      --bubble-user-text:  #ffffff;
+      --bubble-bot-text:   #1a3a28;
+    }
+
+    /* ── reset & base ────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 14px;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+    }
+
+    /* ── app shell ───────────────────────────────────────────── */
+    #jk-root {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── header ──────────────────────────────────────────────── */
+    #jk-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      height: 52px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    #jk-logo {
+      font-size: 22px;
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    #jk-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--accent);
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    #jk-breadcrumb {
+      flex: 1;
+      color: var(--text-secondary);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 8px;
+    }
+
+    #jk-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    #jk-theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    #jk-theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── main body (sidebar + chat) ──────────────────────────── */
+    #jk-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── sidebar ─────────────────────────────────────────────── */
+    #jk-sidebar {
+      width: 200px;
+      min-width: 200px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 12px 0;
+      flex-shrink: 0;
+      transition: pointer-events 0.2s;
+    }
+
+    #jk-sidebar.locked {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .sidebar-heading {
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+    }
+
+    .adv-item {
+      cursor: pointer;
+      padding: 7px 14px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .adv-item:hover { background: var(--bg-surface); color: var(--text-primary); }
+    .adv-item.active {
+      border-left-color: var(--accent);
+      color: var(--accent);
+      background: var(--bg-surface);
+    }
+    .adv-item.dimmed { opacity: 0.35; }
+
+    .adv-services {
+      display: none;
+      padding-bottom: 4px;
+    }
+    .adv-services.open { display: block; }
+
+    .svc-item {
+      cursor: pointer;
+      padding: 5px 14px 5px 24px;
+      font-size: 12px;
+      color: var(--text-dim);
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .svc-item:hover { background: var(--bg-surface); color: var(--text-secondary); }
+    .svc-item.active { color: var(--accent); font-weight: 600; }
+
+    /* ── mobile drawer overlay ───────────────────────────────── */
+    #jk-drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+    }
+    #jk-drawer-overlay.open { display: block; }
+
+    #jk-drawer {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: min(80vw, 300px);
+      height: 100%;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 201;
+      padding: 12px 0;
+      transition: left 0.25s ease;
+    }
+    #jk-drawer.open { left: 0; }
+
+    /* ── chat area ───────────────────────────────────────────── */
+    #jk-chat-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--bg-base);
+    }
+
+    /* ── pill strip (mobile) ─────────────────────────────────── */
+    #jk-pills {
+      display: none;
+      gap: 6px;
+      padding: 8px 12px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+    }
+    #jk-pills.visible { display: flex; }
+
+    .pill-btn {
+      flex-shrink: 0;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .pill-btn:hover, .pill-btn.active {
+      background: var(--accent-btn);
+      border-color: var(--accent-btn-border);
+      color: var(--accent);
+    }
+
+    /* ── messages ────────────────────────────────────────────── */
+    #jk-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .msg-row.user { flex-direction: row-reverse; }
+
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .bubble.user {
+      background: var(--bg-bubble-user);
+      color: var(--bubble-user-text);
+      border-bottom-right-radius: 4px;
+    }
+    .bubble.bot {
+      background: var(--bg-bubble-bot);
+      color: var(--bubble-bot-text);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── info / status messages ──────────────────────────────── */
+    .msg-info {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      padding: 8px 0;
+    }
+
+    /* ── consent panel ───────────────────────────────────────── */
+    #jk-consent-panel {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 32px 24px;
+      max-width: 600px;
+      margin: auto;
+    }
+    #jk-consent-panel.visible { display: flex; }
+
+    .consent-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .consent-body {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    .consent-check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .consent-check-row input[type="checkbox"] { margin-top: 3px; accent-color: var(--accent); }
+
+    #jk-consent-btn {
+      display: none;
+      align-self: flex-start;
+      padding: 10px 28px;
+      border-radius: 8px;
+      border: 1px solid var(--accent-btn-border);
+      background: var(--accent-btn);
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: opacity 0.15s;
+    }
+    #jk-consent-btn.visible { display: inline-block; }
+    #jk-consent-btn:hover { opacity: 0.8; }
+
+    /* ── input row ───────────────────────────────────────────── */
+    #jk-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    #jk-input-row.locked {
+      opacity: 0.38;
+      pointer-events: none;
+    }
+
+    #jk-upload-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+    #jk-upload-btn:hover { color: var(--accent); }
+
+    #jk-upload-input { display: none; }
+
+    #jk-text-input {
+      flex: 1;
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      padding: 8px 12px;
+      font-size: 14px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      line-height: 1.5;
+      min-height: 38px;
+      max-height: 120px;
+    }
+    #jk-text-input:focus { border-color: var(--accent); }
+    #jk-text-input::placeholder { color: var(--text-dim); }
+
+    #jk-send-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--accent-btn-border);
+      background: var(--accent-btn);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+    #jk-send-btn:hover { opacity: 0.8; }
+    #jk-send-btn:disabled { opacity: 0.4; cursor: default; }
+
+    /* ── download button ─────────────────────────────────────── */
+    #jk-download-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    #jk-download-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    #jk-download-btn:hover { color: var(--accent); }
+
+    #jk-download-menu {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 4px);
+      right: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-width: 140px;
+      z-index: 50;
+      overflow: hidden;
+    }
+    #jk-download-menu.open { display: block; }
+
+    .dl-option {
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: background 0.15s;
+    }
+    .dl-option:hover { background: var(--bg-base); color: var(--text-primary); }
+
+    /* ── upload chips ────────────────────────────────────────── */
+    #jk-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px 14px 0;
+      background: var(--bg-surface);
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--accent-btn-border);
+      background: var(--accent-btn);
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    .chip-remove {
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      margin-left: 2px;
+      opacity: 0.7;
+    }
+    .chip-remove:hover { opacity: 1; }
+
+    /* ── typing indicator ────────────────────────────────────── */
+    .typing-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      margin: 0 2px;
+      animation: blink 1.2s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.2; }
+      40% { opacity: 1; }
+    }
+
+    /* ── scrollbar ───────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+    /* ── mobile breakpoint ───────────────────────────────────── */
+    @media (max-width: 767px) {
+      #jk-sidebar { display: none; }
+      #jk-hamburger { display: block; }
+
+      #jk-pills.visible { display: flex; }
+
+      .bubble { max-width: 88%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="jk-root">
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header id="jk-header">
+    <button id="jk-hamburger" aria-label="Åbn menu">☰</button>
+    <span id="jk-logo" title="Nulstil" role="button" tabindex="0">⚖️</span>
+    <span id="jk-title" title="Nulstil" role="button" tabindex="0">JuraKlar</span>
+    <div id="jk-breadcrumb"></div>
+    <button id="jk-theme-toggle" title="Skift tema">🌙</button>
+  </header>
+
+  <!-- ── BODY ────────────────────────────────────────────────── -->
+  <div id="jk-body">
+
+    <!-- ── DESKTOP SIDEBAR ─────────────────────────────────── -->
+    <nav id="jk-sidebar" aria-label="Juridiske rådgivere">
+      <div class="sidebar-heading">Vælg jurist</div>
+      <div id="jk-sidebar-list"></div>
+    </nav>
+
+    <!-- ── CHAT WRAPPER ────────────────────────────────────── -->
+    <div id="jk-chat-wrapper">
+
+      <!-- pill strip (mobile) -->
+      <div id="jk-pills"></div>
+
+      <!-- messages -->
+      <div id="jk-messages">
+        <!-- consent panel lives here initially -->
+        <div id="jk-consent-panel" class="visible">
+          <div class="consent-title">Velkommen til JuraKlar</div>
+          <div class="consent-body">
+            JuraKlar er et AI-baseret juridisk informationsværktøj.
+            Det er vigtigt, at du forstår, at informationerne herunder er
+            <strong>generel vejledning</strong> og ikke juridisk rådgivning.
+            Konsulter altid en autoriseret advokat i din specifikke sag.<br><br>
+            Dine samtaler behandles fortroligt og bruges ikke til træning af AI-modeller.
+          </div>
+          <label class="consent-check-row">
+            <input type="checkbox" id="jk-consent-check" />
+            Jeg forstår, at JuraKlar giver generel juridisk information og ikke personlig rådgivning.
+          </label>
+          <button id="jk-consent-btn">FORTSÆT</button>
+        </div>
+      </div>
+
+      <!-- upload chips -->
+      <div id="jk-chips"></div>
+
+      <!-- input row -->
+      <div id="jk-input-row" class="locked">
+        <button id="jk-upload-btn" title="Upload dokument">📎</button>
+        <input type="file" id="jk-upload-input" accept=".txt,.pdf,.doc,.docx,.png,.jpg,.jpeg" />
+        <textarea
+          id="jk-text-input"
+          rows="1"
+          placeholder="Stil dit juridiske spørgsmål…"
+        ></textarea>
+        <button id="jk-send-btn">Send</button>
+        <div id="jk-download-wrap">
+          <button id="jk-download-btn" title="Download samtale">💾</button>
+          <div id="jk-download-menu">
+            <div class="dl-option" data-fmt="md">Markdown (.md)</div>
+            <div class="dl-option" data-fmt="txt">Ren tekst (.txt)</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /jk-chat-wrapper -->
+  </div><!-- /jk-body -->
+
+</div><!-- /jk-root -->
+
+<!-- ── MOBILE DRAWER OVERLAY ──────────────────────────────── -->
+<div id="jk-drawer-overlay"></div>
+<nav id="jk-drawer" aria-label="Juridiske rådgivere (mobil)">
+  <div class="sidebar-heading">Vælg jurist</div>
+  <div id="jk-drawer-list"></div>
+</nav>
+
+<script>
+/* ================================================================
+   JuraKlar — vanilla JS SPA
+   ================================================================ */
+
+/* ── Helpers ─────────────────────────────────────────────────── */
+function getOrCreateSessionId() {
+  const key = 'jk_session_id';
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    localStorage.setItem(key, id);
+  }
+  return id;
+}
+
+/* ── State ───────────────────────────────────────────────────── */
+const state = {
+  consentAccepted: false,
+  advisor: null,        // advisor_id string | null
+  service: null,        // service_id integer | null
+  uploadedDocs: [],     // [{name, text}]
+  sessionId: getOrCreateSessionId(),
+  advisors: [],         // fetched from GET /api/advisors on load
+  history: {},          // key: `${advisor_id}:${service_id}` → [{role, content}]
+  streaming: false,
+};
+
+/* ── DOM refs ────────────────────────────────────────────────── */
+const $sidebarList    = document.getElementById('jk-sidebar-list');
+const $drawerList     = document.getElementById('jk-drawer-list');
+const $messages       = document.getElementById('jk-messages');
+const $consentPanel   = document.getElementById('jk-consent-panel');
+const $consentCheck   = document.getElementById('jk-consent-check');
+const $consentBtn     = document.getElementById('jk-consent-btn');
+const $inputRow       = document.getElementById('jk-input-row');
+const $textInput      = document.getElementById('jk-text-input');
+const $sendBtn        = document.getElementById('jk-send-btn');
+const $uploadBtn      = document.getElementById('jk-upload-btn');
+const $uploadInput    = document.getElementById('jk-upload-input');
+const $chips          = document.getElementById('jk-chips');
+const $pills          = document.getElementById('jk-pills');
+const $breadcrumb     = document.getElementById('jk-breadcrumb');
+const $sidebar        = document.getElementById('jk-sidebar');
+const $themeToggle    = document.getElementById('jk-theme-toggle');
+const $hamburger      = document.getElementById('jk-hamburger');
+const $drawerOverlay  = document.getElementById('jk-drawer-overlay');
+const $drawer         = document.getElementById('jk-drawer');
+const $downloadBtn    = document.getElementById('jk-download-btn');
+const $downloadMenu   = document.getElementById('jk-download-menu');
+const $logo           = document.getElementById('jk-logo');
+const $title          = document.getElementById('jk-title');
+
+/* ── Theme toggle ────────────────────────────────────────────── */
+let isDark = true;
+$themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.body.classList.toggle('light-mode', !isDark);
+  $themeToggle.textContent = isDark ? '🌙' : '☀️';
+});
+
+/* ── Logo / title reset ──────────────────────────────────────── */
+function resetToConsent() {
+  state.consentAccepted = false;
+  state.advisor = null;
+  state.service = null;
+  state.uploadedDocs = [];
+  state.history = {};
+  renderAll();
+}
+[$logo, $title].forEach(el => {
+  el.addEventListener('click', resetToConsent);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') resetToConsent(); });
+});
+
+/* ── Drawer (mobile) ─────────────────────────────────────────── */
+function openDrawer() {
+  $drawerOverlay.classList.add('open');
+  $drawer.classList.add('open');
+}
+function closeDrawer() {
+  $drawerOverlay.classList.remove('open');
+  $drawer.classList.remove('open');
+}
+$hamburger.addEventListener('click', openDrawer);
+$drawerOverlay.addEventListener('click', closeDrawer);
+
+/* ── Consent ─────────────────────────────────────────────────── */
+$consentCheck.addEventListener('change', () => {
+  if ($consentCheck.checked) {
+    $consentBtn.classList.add('visible');
+  } else {
+    $consentBtn.classList.remove('visible');
+  }
+});
+
+$consentBtn.addEventListener('click', () => {
+  state.consentAccepted = true;
+  renderAll();
+});
+
+/* ── Render helpers ──────────────────────────────────────────── */
+function scrollChat() {
+  $messages.scrollTop = $messages.scrollHeight;
+}
+
+function renderBreadcrumb() {
+  if (!state.advisor) { $breadcrumb.textContent = ''; return; }
+  const adv = state.advisors.find(a => a.id === state.advisor);
+  if (!adv) { $breadcrumb.textContent = ''; return; }
+  if (state.service) {
+    const svc = adv.services.find(s => s.id === state.service);
+    $breadcrumb.textContent = svc ? `${adv.title} › ${svc.title}` : adv.title;
+  } else {
+    $breadcrumb.textContent = adv.title;
+  }
+}
+
+function buildAdvisorList(container, onSelectAdvisor, onSelectService) {
+  container.innerHTML = '';
+  state.advisors.forEach(adv => {
+    const isActive  = state.advisor === adv.id;
+    const isDimmed  = state.advisor !== null && !isActive;
+    const item = document.createElement('div');
+    item.className = 'adv-item' + (isActive ? ' active' : '') + (isDimmed ? ' dimmed' : '');
+    item.textContent = adv.title;
+    item.addEventListener('click', () => onSelectAdvisor(adv.id));
+    container.appendChild(item);
+
+    if (isActive) {
+      const svcList = document.createElement('div');
+      svcList.className = 'adv-services open';
+      adv.services.forEach(svc => {
+        const si = document.createElement('div');
+        si.className = 'svc-item' + (state.service === svc.id ? ' active' : '');
+        si.textContent = '› ' + svc.title;
+        si.addEventListener('click', e => {
+          e.stopPropagation();
+          onSelectService(svc);
+        });
+        svcList.appendChild(si);
+      });
+      container.appendChild(svcList);
+    }
+  });
+}
+
+function renderSidebar() {
+  // Desktop sidebar
+  if (!state.consentAccepted) {
+    $sidebar.classList.add('locked');
+  } else {
+    $sidebar.classList.remove('locked');
+  }
+
+  const selectAdvisor = (id) => {
+    state.advisor = id;
+    const adv = state.advisors.find(a => a.id === id);
+    if (adv && adv.services.length > 0) {
+      state.service = adv.services[0].id;
+    }
+    closeDrawer();
+    renderAll();
+  };
+
+  const selectService = (svc) => {
+    state.service = svc.id;
+    $textInput.value = svc.title;
+    $textInput.focus();
+    closeDrawer();
+    renderAll();
+  };
+
+  buildAdvisorList($sidebarList, selectAdvisor, selectService);
+  buildAdvisorList($drawerList, selectAdvisor, selectService);
+}
+
+function renderPills() {
+  if (state.advisor === null || window.innerWidth >= 768) {
+    $pills.classList.remove('visible');
+    $pills.innerHTML = '';
+    return;
+  }
+  const adv = state.advisors.find(a => a.id === state.advisor);
+  if (!adv) { $pills.classList.remove('visible'); return; }
+  $pills.classList.add('visible');
+  $pills.innerHTML = '';
+  adv.services.forEach(svc => {
+    const btn = document.createElement('button');
+    btn.className = 'pill-btn' + (state.service === svc.id ? ' active' : '');
+    btn.textContent = svc.title;
+    btn.addEventListener('click', () => {
+      state.service = svc.id;
+      $textInput.value = svc.title;
+      $textInput.focus();
+      renderAll();
+    });
+    $pills.appendChild(btn);
+  });
+}
+
+function renderMessages() {
+  // Clear non-consent content
+  // Keep consent panel or rebuild messages
+  $messages.innerHTML = '';
+
+  if (!state.consentAccepted) {
+    $consentPanel.classList.add('visible');
+    $messages.appendChild($consentPanel);
+    return;
+  }
+
+  $consentPanel.classList.remove('visible');
+
+  if (state.advisor === null) {
+    const info = document.createElement('div');
+    info.className = 'msg-info';
+    info.textContent = 'Vælg en jurist i menuen til venstre for at starte.';
+    $messages.appendChild(info);
+    return;
+  }
+
+  const key = `${state.advisor}:${state.service}`;
+  const msgs = state.history[key] || [];
+
+  if (msgs.length === 0) {
+    const adv = state.advisors.find(a => a.id === state.advisor);
+    const svc = adv && state.service !== null ? adv.services.find(s => s.id === state.service) : null;
+    const info = document.createElement('div');
+    info.className = 'msg-info';
+    info.textContent = svc
+      ? `Klar til at hjælpe med "${svc.title}". Stil dit spørgsmål nedenfor.`
+      : `Klar til at hjælpe med ${adv ? adv.title : ''}. Stil dit spørgsmål nedenfor.`;
+    $messages.appendChild(info);
+    return;
+  }
+
+  msgs.forEach(msg => {
+    const row = document.createElement('div');
+    row.className = 'msg-row ' + msg.role;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble ' + (msg.role === 'user' ? 'user' : 'bot');
+    bubble.textContent = msg.content;
+    row.appendChild(bubble);
+    $messages.appendChild(row);
+  });
+
+  scrollChat();
+}
+
+function renderInputRow() {
+  if (state.consentAccepted && state.advisor !== null) {
+    $inputRow.classList.remove('locked');
+  } else {
+    $inputRow.classList.add('locked');
+  }
+}
+
+function renderChips() {
+  $chips.innerHTML = '';
+  state.uploadedDocs.forEach((doc, idx) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `<span>${doc.name}</span><span class="chip-remove" data-idx="${idx}">×</span>`;
+    chip.querySelector('.chip-remove').addEventListener('click', () => {
+      state.uploadedDocs.splice(idx, 1);
+      renderChips();
+    });
+    $chips.appendChild(chip);
+  });
+}
+
+function renderAll() {
+  renderSidebar();
+  renderMessages();
+  renderPills();
+  renderInputRow();
+  renderChips();
+  renderBreadcrumb();
+}
+
+/* ── Send message ────────────────────────────────────────────── */
+async function sendMessage() {
+  const question = $textInput.value.trim();
+  if (!question || state.streaming) return;
+  if (!state.advisor || state.service === null) return;
+
+  $textInput.value = '';
+  state.streaming = true;
+  $sendBtn.disabled = true;
+
+  const key = `${state.advisor}:${state.service}`;
+  if (!state.history[key]) state.history[key] = [];
+  state.history[key].push({ role: 'user', content: question });
+
+  // Add user bubble immediately
+  renderMessages();
+
+  // Bot typing bubble
+  const row = document.createElement('div');
+  row.className = 'msg-row assistant';
+  const botBubble = document.createElement('div');
+  botBubble.className = 'bubble bot';
+  botBubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  row.appendChild(botBubble);
+  $messages.appendChild(row);
+  scrollChat();
+
+  let fullAnswer = '';
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        advisor_id: state.advisor,
+        service_id: state.service,
+        question,
+        docs: state.uploadedDocs,
+        session_id: state.sessionId,
+      }),
+    });
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const payload = line.slice(6);
+          if (payload === '[DONE]') break;
+          try {
+            const parsed = JSON.parse(payload);
+            if (parsed.error) {
+              fullAnswer += `[Fejl: ${parsed.error}]`;
+            } else if (parsed.t !== undefined) {
+              fullAnswer += parsed.t;
+            }
+            botBubble.textContent = fullAnswer;
+            scrollChat();
+          } catch (_) {}
+        }
+      }
+    }
+  } catch (err) {
+    fullAnswer = `[Netværksfejl: ${err.message}]`;
+    botBubble.textContent = fullAnswer;
+  }
+
+  // Persist to history
+  state.history[key].push({ role: 'assistant', content: fullAnswer });
+  state.streaming = false;
+  $sendBtn.disabled = false;
+}
+
+$sendBtn.addEventListener('click', sendMessage);
+
+$textInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// Auto-resize textarea
+$textInput.addEventListener('input', () => {
+  $textInput.style.height = 'auto';
+  $textInput.style.height = Math.min($textInput.scrollHeight, 120) + 'px';
+});
+
+/* ── File upload ─────────────────────────────────────────────── */
+$uploadBtn.addEventListener('click', () => $uploadInput.click());
+
+$uploadInput.addEventListener('change', async () => {
+  const file = $uploadInput.files[0];
+  if (!file) return;
+  $uploadInput.value = '';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('session_id', state.sessionId);
+
+  try {
+    const resp = await fetch('/api/upload', { method: 'POST', body: formData });
+    if (resp.ok) {
+      const data = await resp.json();
+      state.uploadedDocs.push({ name: data.name, text: data.text });
+      renderChips();
+    }
+  } catch (err) {
+    console.error('Upload fejlede:', err);
+  }
+});
+
+/* ── Download ────────────────────────────────────────────────── */
+$downloadBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (!state.advisor || state.service === null) return;
+  $downloadMenu.classList.toggle('open');
+});
+
+$downloadMenu.querySelectorAll('.dl-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const fmt = opt.dataset.fmt;
+    window.location.href = `/api/download/${state.advisor}/${state.service}?fmt=${fmt}`;
+    $downloadMenu.classList.remove('open');
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!$downloadBtn.contains(e.target) && !$downloadMenu.contains(e.target)) {
+    $downloadMenu.classList.remove('open');
+  }
+});
+
+/* ── Responsive: hide/show pills on resize ───────────────────── */
+window.addEventListener('resize', () => {
+  renderPills();
+});
+
+/* ── Bootstrap: load advisors ────────────────────────────────── */
+(async function init() {
+  try {
+    const resp = await fetch('/api/advisors');
+    if (resp.ok) {
+      state.advisors = await resp.json();
+    }
+  } catch (err) {
+    console.warn('Kunne ikke hente rådgivere:', err);
+  }
+  renderAll();
+})();
+</script>
+</body>
+</html>
