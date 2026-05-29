@@ -802,11 +802,14 @@ function renderPills() {
 }
 
 function renderMessages() {
+  if (state.streaming) return;   // never clobber live stream
   // Clear non-consent content
   // Keep consent panel or rebuild messages
   $messages.innerHTML = '';
 
   if (!state.consentAccepted) {
+    if ($consentCheck) $consentCheck.checked = false;
+    if ($consentBtn) $consentBtn.classList.remove('visible');
     $consentPanel.classList.add('visible');
     $messages.appendChild($consentPanel);
     return;
@@ -863,11 +866,17 @@ function renderChips() {
   state.uploadedDocs.forEach((doc, idx) => {
     const chip = document.createElement('div');
     chip.className = 'chip';
-    chip.innerHTML = `<span>${doc.name}</span><span class="chip-remove" data-idx="${idx}">×</span>`;
-    chip.querySelector('.chip-remove').addEventListener('click', () => {
+    const nameEl = document.createElement('span');
+    nameEl.textContent = doc.name;  // safe — no innerHTML
+    chip.appendChild(nameEl);
+    const removeEl = document.createElement('span');
+    removeEl.className = 'chip-remove';
+    removeEl.textContent = '×';
+    removeEl.addEventListener('click', () => {
       state.uploadedDocs.splice(idx, 1);
       renderChips();
     });
+    chip.appendChild(removeEl);
     $chips.appendChild(chip);
   });
 }
@@ -923,20 +932,25 @@ async function sendMessage() {
       }),
     });
 
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = '';
+    if (!resp.ok) {
+      fullAnswer = `[Serverfejl: ${resp.status}]`;
+      botBubble.textContent = fullAnswer;
+    } else {
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, { stream: true });
-      const lines = buf.split('\n');
-      buf = lines.pop();
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
+      let sseComplete = false;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
           const payload = line.slice(6);
-          if (payload === '[DONE]') break;
+          if (payload === '[DONE]') { sseComplete = true; break; }
           try {
             const parsed = JSON.parse(payload);
             if (parsed.error) {
@@ -948,6 +962,7 @@ async function sendMessage() {
             scrollChat();
           } catch (_) {}
         }
+        if (sseComplete) break;
       }
     }
   } catch (err) {
