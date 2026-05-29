@@ -2,7 +2,7 @@
 
 ## Hvad er et Saneringsforslag?
 
-Et saneringsforslag er det konkrete dokument, der fastlægger vilkårene for din gieldssanering. Det er udarbejdet af Skifteretten og viser præcis:
+Et saneringsforslag er det konkrete dokument, der fastlægger vilkårene for din gældssanering. Det er udarbejdet af Skifteretten og viser præcis:
 
 - Hvad du skal betale månedligt til kreditorerne
 - Hvad du beholder til dit eget underhold (rådighedsbeløb)
@@ -85,7 +85,7 @@ Kreditorer modtager 18 øre for hver krone. De resterende 82% eftergives.
 
 ## Dividenden
 
-Dividenden er den procentdel af det samlede krav, som kreditorer modtager. Typiske dividender i gieldssaneringssager:
+Dividenden er den procentdel af det samlede krav, som kreditorer modtager. Typiske dividender i gældssaneringssager:
 
 | Indkomst og gield | Typisk dividende |
 |-------------------|-----------------|

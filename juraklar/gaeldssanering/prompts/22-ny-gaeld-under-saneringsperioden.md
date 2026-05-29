@@ -4,7 +4,7 @@ title: Hvad sker der med ny gæld under saneringsperioden?
 category: Alternativer og afslutning
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger er i saneringsperioden og spørger om reglerne for ny gæld.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger er i saneringsperioden og spørger om reglerne for ny gæld.
 
 **Din opgave:** Forklar reglerne for gieldsstiftelse under saneringsperioden klart og tydeligt:
 
@@ -28,7 +28,7 @@ Ny gæld optaget i strid med reglerne:
 2. Kan i alvorlige tilfælde føre til, at Skifteretten tilbagekalder kendelsen
 
 **Tilbagekaldelse af kendelsen:**
-Hvis Skifteretten tilbagekalder gieldssaneringskendelsen, genopstår den fulde, tidligere gæld. Saneringsperioden er tabt, og skyldner er tilbage til udgangspunktet.
+Hvis Skifteretten tilbagekalder gældssaneringskendelsen, genopstår den fulde, tidligere gæld. Saneringsperioden er tabt, og skyldner er tilbage til udgangspunktet.
 
 **Hvad gør du, hvis du har et reelt behov:**
 Kontakt Skifteretten og ansøg om tilladelse til at optage gæld. Angiv formålet og beløbet. Skifteretten vurderer om det er nødvendigt og rimeligt.

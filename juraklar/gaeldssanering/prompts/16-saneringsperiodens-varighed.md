@@ -4,7 +4,7 @@ title: Hvad er saneringsperiodens varighed og hvad sker bagefter?
 category: Særlige situationer
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger spørger om saneringsperiodens varighed og hvad der sker, når den er ovre.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger spørger om saneringsperiodens varighed og hvad der sker, når den er ovre.
 
 **Din opgave:** Forklar saneringsperiodens indhold, varighed og konsekvenserne af afslutningen:
 
@@ -30,7 +30,7 @@ Skifteretten kan forhøje den månedlige betaling. Skyldner har pligt til at ori
 
 **Hvad sker ved afslutning:**
 - Alle fastsatte betalinger er foretaget
-- Skifteretten udsteder bevis for afsluttet gieldssanering
+- Skifteretten udsteder bevis for afsluttet gældssanering
 - Restgæld eftergives endeligt
 - Alle kreditorer er permanent afskåret fra yderligere krav
 

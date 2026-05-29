@@ -4,7 +4,7 @@ title: Hvad sker der med min bil?
 category: Aktiver og gæld
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger spørger, om de kan beholde deres bil under gieldssanering.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger spørger, om de kan beholde deres bil under gældssanering.
 
 **Din opgave:** Forklar bilsituationen:
 
@@ -20,7 +20,7 @@ Skifteretten accepterer normalt, at skyldner beholder en bil, hvis:
 - Bilens friværdi er betydelig og burde gå til kreditorer
 
 **Biler med billån (ejendomsforbehold):**
-Hvis bilen er købt på kredit med ejendomsforbehold, har långiveren en sikkerhedsret. Denne kreditor er ikke bundet af gieldssaneringen — skyldner skal fortsat betale billånet, ellers kan långiveren tage bilen.
+Hvis bilen er købt på kredit med ejendomsforbehold, har långiveren en sikkerhedsret. Denne kreditor er ikke bundet af gældssaneringen — skyldner skal fortsat betale billånet, ellers kan långiveren tage bilen.
 
 **Vurderingskriterier:**
 Skifteretten ser på:

@@ -2,11 +2,11 @@
 
 ## Oversigt
 
-Dette tema samler ressourcer om alternativer til gieldssanering samt de økonomiske og skattemæssige konsekvenser af gieldssanering.
+Dette tema samler ressourcer om alternativer til gældssanering samt de økonomiske og skattemæssige konsekvenser af gældssanering.
 
 ## Centrale Spørgsmål dette Tema Dækker
 
-- Hvad er alternativerne til gieldssanering?
+- Hvad er alternativerne til gældssanering?
 - Hvornår er frivillig akkord bedre?
 - Hvad er de skattemæssige konsekvenser?
 - Hvad sker der med SU-gæld?
@@ -20,10 +20,10 @@ Dette tema samler ressourcer om alternativer til gieldssanering samt de økonomi
 - [Alternativer vejledning](../articles/alternativer-vejledning.md) — sammenligning af løsninger
 
 ### Raw Materiale
-- [Alternativer til gieldssanering](../raw/alternativer-til-gaeldssanering.md) — oversigt over alternativer
+- [Alternativer til gældssanering](../raw/alternativer-til-gaeldssanering.md) — oversigt over alternativer
 
 ### Politikker
-- [Skattemæssige konsekvenser](../policies/skattemassige-konsekvenser.md) — skattebehandling ved gieldssanering og akkord
+- [Skattemæssige konsekvenser](../policies/skattemassige-konsekvenser.md) — skattebehandling ved gældssanering og akkord
 
 ## Alternativer — Sammenligning
 
@@ -67,20 +67,20 @@ Dette tema samler ressourcer om alternativer til gieldssanering samt de økonomi
 
 ## Kreditvurdering
 
-Gieldssanering medfører registrering i **RKI/Experian** som følge af misligholdelse inden saneringen. Registreringen slettes normalt 5 år efter oprettelsen eller ved betaling/afsluttet sag.
+Gældssanering medfører registrering i **RKI/Experian** som følge af misligholdelse inden saneringen. Registreringen slettes normalt 5 år efter oprettelsen eller ved betaling/afsluttet sag.
 
-Gieldssaneringskendelsen offentliggøres i Statstidende, hvilket er offentligt tilgængeligt.
+Gældssaneringskendelsen offentliggøres i Statstidende, hvilket er offentligt tilgængeligt.
 
 ## Relaterede Temaer
 
-- [Gieldssanering og Betingelser](./Gældssanering og Betingelser.md)
+- [Gældssanering og Betingelser](./Gældssanering og Betingelser.md)
 - [Saneringsprocessen](./Saneringsprocessen.md)
 
 ## Relevante Rådgivningsservices
 
 - Service 12: Hvad sker der med min SU-gæld?
 - Service 13: Hvad sker der skattemæssigt?
-- Service 14: Hvad er alternativer til gieldssanering?
+- Service 14: Hvad er alternativer til gældssanering?
 - Service 15: Kan gæld til SKAT saneres?
 - Service 20: Hvad er konsekvenser for min kreditvurdering?
 - Service 21: Hvad er frivillig akkord og hvornår er det bedre?

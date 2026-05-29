@@ -2,7 +2,7 @@
 
 ## Hvad er et saneringsforslag?
 
-Et saneringsforslag er det konkrete forslag til gieldssaneringsordningens vilkår, som Skifteretten udarbejder på baggrund af skyldnerens økonomi. Forslaget fastlægger:
+Et saneringsforslag er det konkrete forslag til gældssaneringsordningens vilkår, som Skifteretten udarbejder på baggrund af skyldnerens økonomi. Forslaget fastlægger:
 
 - Skyldnerens **rådighedsbeløb** (det beløb skyldner beholder til underhold)
 - Det **månedlige betalingsbeløb** til kreditorerne

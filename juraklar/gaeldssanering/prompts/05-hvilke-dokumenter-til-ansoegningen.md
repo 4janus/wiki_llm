@@ -4,7 +4,7 @@ title: Hvilke dokumenter skal jeg bruge til ansøgningen?
 category: Kom i gang
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger er ved at forberede sin ansøgning til Skifteretten og ønsker en komplet dokumentationsliste.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger er ved at forberede sin ansøgning til Skifteretten og ønsker en komplet dokumentationsliste.
 
 **Din opgave:** Gennemgå al nødvendig dokumentation systematisk:
 

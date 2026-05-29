@@ -1,12 +1,12 @@
-# Alternativer til Gieldssanering — Vejledning
+# Alternativer til Gældssanering — Vejledning
 
 ## Indledning
 
-Gieldssanering er ikke den eneste løsning, når gieldet er uhåndterbart. Afhængigt af din situation, gieldens sammensætning og kreditorernes holdning kan alternative løsninger være hurtigere, billigere og mere fleksible. Denne vejledning hjælper dig med at vurdere alternativerne.
+Gældssanering er ikke den eneste løsning, når gieldet er uhåndterbart. Afhængigt af din situation, gieldens sammensætning og kreditorernes holdning kan alternative løsninger være hurtigere, billigere og mere fleksible. Denne vejledning hjælper dig med at vurdere alternativerne.
 
-## Hvornår er Gieldssanering ikke Nødvendig?
+## Hvornår er Gældssanering ikke Nødvendig?
 
-Gieldssanering er et "tungt" instrument — en retslig procedure der varer 5 år og medfører offentliggørelse i Statstidende. Overvej alternativerne, hvis:
+Gældssanering er et "tungt" instrument — en retslig procedure der varer 5 år og medfører offentliggørelse i Statstidende. Overvej alternativerne, hvis:
 
 - Du har relativt få kreditorer, der er villige til at forhandle
 - Din gæld primært er til SKAT (særlige ordninger findes)
@@ -19,11 +19,11 @@ Gieldssanering er et "tungt" instrument — en retslig procedure der varer 5 år
 En **frivillig akkord** er en aftale direkte med kreditorerne om delvis eftergivelse af gieldet — uden Skifterettens involvering.
 
 **Fordele:**
-- Hurtigere end formel gieldssanering (måneder frem for år)
+- Hurtigere end formel gældssanering (måneder frem for år)
 - Ingen offentliggørelse i Statstidende
 - Ingen 5-årig saneringsperiode
 - Fleksible vilkår — kan skræddersys til situationen
-- Kreditorer kan tilbydes bedre aftale end dividenden ved gieldssanering
+- Kreditorer kan tilbydes bedre aftale end dividenden ved gældssanering
 
 **Ulemper:**
 - Kræver typisk tilslutning fra alle kreditorer
@@ -32,7 +32,7 @@ En **frivillig akkord** er en aftale direkte med kreditorerne om delvis eftergiv
 - Ingen automatisk beskyttelse mod inddrivelse
 
 **Skattespørgsmål:**
-Gæld eftergivet ved frivillig akkord kan — modsat gieldssanering via Skifteretten — i visse situationer være skattepligtig. Kontakt altid en revisor, inden aftalen indgås.
+Gæld eftergivet ved frivillig akkord kan — modsat gældssanering via Skifteretten — i visse situationer være skattepligtig. Kontakt altid en revisor, inden aftalen indgås.
 
 **Hvornår er frivillig akkord bedst:**
 - Du har 2-5 kreditorer, og alle er samarbejdsvillige
@@ -52,7 +52,7 @@ Hvis din gield primært er **skattegæld** (moms, skat, AM-bidrag), har SKAT egn
 Ring til SKAT på 72 22 18 18 eller brug Tastselv på skat.dk. Forklar din situation og anmod om en betalingsordning.
 
 **Begrænsninger:**
-SKAT vil normalt ikke eftergive hovedstolen (selve skattebeløbet), men kan eftergive renter og gebyrer. Hvis skattegieldet er meget stort og udgør din primære gieldsbyrde, kan gieldssanering stadig være nødvendig.
+SKAT vil normalt ikke eftergive hovedstolen (selve skattebeløbet), men kan eftergive renter og gebyrer. Hvis skattegieldet er meget stort og udgør din primære gieldsbyrde, kan gældssanering stadig være nødvendig.
 
 **Vigtigt:** Ubesvarede henvendelser fra SKAT kan føre til lønindeholdelse og udlæg. Kontakt SKAT proaktivt.
 
@@ -66,7 +66,7 @@ Bolig med friværdi på 400.000 kr. og samlet gæld på 600.000 kr. — salg af 
 **Fordele:**
 - Hurtig løsning
 - Ingen 5-årig saneringsperiode
-- Kreditorer modtager typisk mere end ved gieldssanering
+- Kreditorer modtager typisk mere end ved gældssanering
 
 **Ulemper:**
 - Du mister aktiver (måske dit hjem)
@@ -81,13 +81,13 @@ Bolig med friværdi på 400.000 kr. og samlet gæld på 600.000 kr. — salg af 
 - Vurdering af hvilken løsning der er bedst
 - Forhandling med kreditorer på dine vegne
 - Hjælp til at udarbejde budgetter og betalingsplaner
-- Vejledning om ansøgning om gieldssanering
+- Vejledning om ansøgning om gældssanering
 
 **Kontakt:**
 Din kommunes socialforvaltning eller borgerservice kan henvise dig til den kommunale gieldsrådgiver.
 
 **Anbefaling:**
-Kommunal gieldsrådgivning er altid et godt første skridt — inden du beslutter dig for gieldssanering eller frivillig akkord. Det er gratis, og rådgiveren har erfaring med alle typer gieldsproblemer.
+Kommunal gieldsrådgivning er altid et godt første skridt — inden du beslutter dig for gældssanering eller frivillig akkord. Det er gratis, og rådgiveren har erfaring med alle typer gieldsproblemer.
 
 ## Alternativ 5: Gieldskonsolidering
 
@@ -102,7 +102,7 @@ Kræver at du kan optage et konsolideringslån, hvilket forudsætter en vis kred
 
 ## Sammenligning: Hvad Skal du Vælge?
 
-| Faktor | Gieldssanering | Frivillig Akkord | SKAT-aftale | Salg af aktiver |
+| Faktor | Gældssanering | Frivillig Akkord | SKAT-aftale | Salg af aktiver |
 |--------|----------------|------------------|-------------|-----------------|
 | Kræver kreditortilslutning | Nej | Ja | Kun SKAT | Nej |
 | Offentlig (Statstidende) | Ja | Nej | Nej | Nej |
@@ -118,10 +118,10 @@ Afhængigt af din situation:
 1. **Start med kommunal gieldsrådgivning** — gratis og uvildigt
 2. **Overvej frivillig akkord** — hurtigere, mere fleksibelt, men kræver kreditorernes frivillige deltagelse
 3. **Sælg aktiver**, hvis muligt — hurtig løsning
-4. **Gieldssanering** — når ingen af ovenstående er mulige eller tilstrækkelige
+4. **Gældssanering** — når ingen af ovenstående er mulige eller tilstrækkelige
 
 ## Referencer
 
-- [Alternativer til gieldssanering — raw](../raw/alternativer-til-gaeldssanering.md)
+- [Alternativer til gældssanering — raw](../raw/alternativer-til-gaeldssanering.md)
 - [Skattemæssige konsekvenser](../policies/skattemassige-konsekvenser.md)
-- [Hvad er gieldssanering](./hvad-er-gaeldssanering.md)
+- [Hvad er gældssanering](./hvad-er-gaeldssanering.md)

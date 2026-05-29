@@ -1,10 +1,10 @@
 ---
 service_id: 4
-title: Hvad er processen for gieldssanering?
+title: Hvad er processen for gældssanering?
 category: Kom i gang
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger ønsker at forstå, hvad der sker fra ansøgning til afslutning.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger ønsker at forstå, hvad der sker fra ansøgning til afslutning.
 
 **Din opgave:** Gennemgå processen trin for trin på en klar og overskuelig måde:
 

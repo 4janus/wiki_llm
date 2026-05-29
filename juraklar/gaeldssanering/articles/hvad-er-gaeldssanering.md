@@ -1,31 +1,31 @@
-# Hvad er Gieldssanering?
+# Hvad er Gældssanering?
 
 ## Definition
 
-Gieldssanering er en **retslig ordning** i Danmark, der giver privatpersoner med håbløs gæld mulighed for at opnå delvis eftergivelse af deres gæld via en kendelse fra Skifteretten. Ordningen er hjemlet i **konkurslovens kapitel 25-29**.
+Gældssanering er en **retslig ordning** i Danmark, der giver privatpersoner med håbløs gæld mulighed for at opnå delvis eftergivelse af deres gæld via en kendelse fra Skifteretten. Ordningen er hjemlet i **konkurslovens kapitel 25-29**.
 
 Formålet er at give skyldnere, der permanent er ude af stand til at betale deres gæld, et **nyt start** — en chance for at deltage i det normale samfundsliv uden en livslang gældsforpligtelse, der aldrig kan indfries.
 
 ## Grundprincippet
 
-Gieldssanering bygger på følgende grundprincipper:
+Gældssanering bygger på følgende grundprincipper:
 
 1. **Skyldner betaler hvad der er muligt:** Over en periode på 5 år betaler skyldner et fast månedligt beløb til kreditorerne, beregnet ud fra skyldnerens betalingsevne.
 
 2. **Resten eftergives:** Den del af gieldet, som skyldner ikke kan betale over 5 år, eftergives endeligt. Kreditorer kan ikke efterfølgende kræve mere.
 
-3. **Bindende for alle kreditorer:** En gieldssaneringskendelse fra Skifteretten er bindende for alle usikrede kreditorer — ingen enkelt kreditor kan stille sig i vejen.
+3. **Bindende for alle kreditorer:** En gældssaneringskendelse fra Skifteretten er bindende for alle usikrede kreditorer — ingen enkelt kreditor kan stille sig i vejen.
 
 4. **Skattefri eftergivelse:** Gæld eftergivet via Skifterettens kendelse beskattes ikke hos skyldner.
 
-## Hvem er gieldssanering for?
+## Hvem er gældssanering for?
 
-Gieldssanering er primært beregnet til **privatpersoner** (ikke aktive erhvervsdrivende), der:
+Gældssanering er primært beregnet til **privatpersoner** (ikke aktive erhvervsdrivende), der:
 
 - Har ophobet gæld, der langt overstiger deres betalingsevne
 - Ikke kan forvente en indkomststigning, der gør tilbagebetaling mulig
 - Har handlet ærligt og redligt over for kreditorer
-- Ikke har fået gieldssanering inden for de seneste 10 år
+- Ikke har fået gældssanering inden for de seneste 10 år
 
 **Typiske situationer:**
 - Tab af arbejde kombineret med høj forbrugsgæld
@@ -33,19 +33,19 @@ Gieldssanering er primært beregnet til **privatpersoner** (ikke aktive erhvervs
 - Sygdom der permanent har reduceret arbejdsevnen
 - Ophør af selvstændig virksomhed med efterfølgende privatgæld
 
-## Hvad gieldssanering ikke er
+## Hvad gældssanering ikke er
 
-Det er vigtigt at skelne gieldssanering fra beslægtede begreber:
+Det er vigtigt at skelne gældssanering fra beslægtede begreber:
 
-- **Gieldssanering er ikke konkurs:** I konkurs realiseres skyldnerens aktiver til betaling af kreditorer. Gieldssanering er en løbende betalingsordning over 5 år, og skyldner mister ikke nødvendigvis sine aktiver.
+- **Gældssanering er ikke konkurs:** I konkurs realiseres skyldnerens aktiver til betaling af kreditorer. Gældssanering er en løbende betalingsordning over 5 år, og skyldner mister ikke nødvendigvis sine aktiver.
 
-- **Gieldssanering er ikke en frivillig aftale:** Det er en retslig kendelse, der binder alle kreditorer — uanset om de er enige.
+- **Gældssanering er ikke en frivillig aftale:** Det er en retslig kendelse, der binder alle kreditorer — uanset om de er enige.
 
-- **Gieldssanering er ikke gratis gæld:** Skyldner betaler alt hvad der er muligt over 5 år. Det er ikke en nem udvej, men et sidste instrument for dem i ægte håbløs gieldssituation.
+- **Gældssanering er ikke gratis gæld:** Skyldner betaler alt hvad der er muligt over 5 år. Det er ikke en nem udvej, men et sidste instrument for dem i ægte håbløs gieldssituation.
 
 ## Hvad sker der praktisk?
 
-### Før gieldssaneringen
+### Før gældssaneringen
 
 Skyldner indgiver ansøgning til den lokale Skifteret med dokumentation for sin økonomi. Skifteretten vurderer, om betingelserne er opfyldt, og afsiger en indledende kendelse.
 
@@ -56,7 +56,7 @@ Skyldner indgiver ansøgning til den lokale Skifteret med dokumentation for sin 
 - Skyldner må ikke stifte ny gæld
 - Kreditorer kan ikke gøre inddrivelsesskridt for den sanerede gæld
 
-### Efter gieldssaneringen
+### Efter gældssaneringen
 
 - Restgælden eftergives endeligt
 - Skyldner er gældfri (bortset fra eventuel pantesikret gæld)
@@ -72,7 +72,7 @@ Typisk modtager kreditorer en dividende på **5-25%** af det oprindelige krav. R
 
 ## Vigtige undtagelser
 
-Ikke al gæld er omfattet af gieldssanering:
+Ikke al gæld er omfattet af gældssanering:
 
 - **Realkreditlån og pantesikret gæld** — disse kreditorer kan ikke tvinges til akkord
 - **SU-gæld** — kan normalt ikke saneres
@@ -83,31 +83,31 @@ Se [Betingelser og undtagelser](../raw/betingelser-og-undtagelser.md) for en kom
 
 ## Skattemæssig behandling
 
-Gæld eftergivet via Skifterettens gieldssaneringskendelse er **100% skattefri** i henhold til ligningsloven § 24. Skyldner skal ikke betale skat af den eftergivne gæld — hverken af beløbets størrelse eller af den "fordel", det indebærer.
+Gæld eftergivet via Skifterettens gældssaneringskendelse er **100% skattefri** i henhold til ligningsloven § 24. Skyldner skal ikke betale skat af den eftergivne gæld — hverken af beløbets størrelse eller af den "fordel", det indebærer.
 
 Dette adskiller sig fra frivillig akkord, der i visse tilfælde kan være skattepligtig. Se [Skattemæssige konsekvenser](../policies/skattemassige-konsekvenser.md) for detaljer.
 
 ## Alternativer
 
-Gieldssanering er ikke altid den bedste løsning. Alternativerne inkluderer:
+Gældssanering er ikke altid den bedste løsning. Alternativerne inkluderer:
 
 - Frivillig akkord med kreditorer
 - Betalingsordning hos SKAT
 - Kommunal gieldsrådgivning
 - Salg af aktiver og afdrag
 
-Se [Alternativer til gieldssanering](./alternativer-vejledning.md) for en sammenligning.
+Se [Alternativer til gældssanering](./alternativer-vejledning.md) for en sammenligning.
 
 ## Hvornår søger man?
 
-Gieldssanering bør overvejes, når:
+Gældssanering bør overvejes, når:
 
 - Gieldens størrelse overstiger hvad der kan betales inden for en rimelig årrække (typisk 10-15 år)
 - Der ikke er udsigt til en væsentlig indkomststigning
 - Ingen af alternativerne er realistiske
 - Skyldner er klar til at gennemgå en 5-årig disciplineret betalingsperiode
 
-En gieldsrådgiver (kommunal) eller advokat kan hjælpe med at vurdere, om gieldssanering er den rette vej.
+En gieldsrådgiver (kommunal) eller advokat kan hjælpe med at vurdere, om gældssanering er den rette vej.
 
 ## Lovgrundlag
 

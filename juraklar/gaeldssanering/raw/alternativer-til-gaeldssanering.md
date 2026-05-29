@@ -8,14 +8,14 @@ Gældssanering er ikke den eneste vej ud af en håbløs gieldssituation. Afhæng
 2. Betalingsordning hos SKAT
 3. Salg af aktiver og afdragsordning
 4. Kommunal gieldsrådgivning
-5. Privat gieldssanering (uden Skifteretten)
+5. Privat gældssanering (uden Skifteretten)
 
 ## Frivillig Akkord
 
 En frivillig akkord er en **aftale direkte med kreditorerne** om delvis eftergivelse af gieldet uden involvering af Skifteretten. Akkorden kræver normalt tilslutning fra alle (eller langt de fleste) kreditorer.
 
 **Fordele:**
-- Hurtigere end formel gieldssanering
+- Hurtigere end formel gældssanering
 - Ingen offentliggørelse i Statstidende
 - Fleksible vilkår kan forhandles
 - Ingen fast 5-årsperiode
@@ -28,7 +28,7 @@ En frivillig akkord er en **aftale direkte med kreditorerne** om delvis eftergiv
 **Skattepligt ved frivillig akkord:**
 Gæld eftergivet via frivillig akkord kan i princippet være skattepligtig for skyldneren. Det afhænger af den konkrete situation og typen af gield. Kontakt altid en revisor eller skatteadvokat, inden en frivillig akkord indgås.
 
-Til sammenligning: Gæld eftergivet via Skifterettens gieldssaneringskendelse er **skattefri** (se `../policies/skattemassige-konsekvenser.md`).
+Til sammenligning: Gæld eftergivet via Skifterettens gældssaneringskendelse er **skattefri** (se `../policies/skattemassige-konsekvenser.md`).
 
 ## Betalingsordning hos SKAT
 
@@ -62,7 +62,7 @@ Kommunerne tilbyder i henhold til **lov om gieldsrådgivning** gratis rådgivnin
 - Hjælpe med at udarbejde budgetter
 - Vejlede om, hvilken løsning der er bedst i den konkrete situation
 
-Kommunal gieldsrådgivning er en god første instans — inden man tager skridt til enten frivillig akkord eller formel gieldssanering.
+Kommunal gieldsrådgivning er en god første instans — inden man tager skridt til enten frivillig akkord eller formel gældssanering.
 
 ## Privat Gieldskonsolidering
 
@@ -70,9 +70,9 @@ Privat gieldskonsolidering indebærer, at skyldner optager ét nyt lån til at i
 
 **Forudsætning:** Skyldner skal kunne optage et konsolideringslån, hvilket kræver en vis kreditværdighed. Denne løsning er sjældent tilgængelig for skyldnere med alvorlige gieldsproblemer.
 
-## Sammenligning: Gieldssanering vs. Frivillig Akkord
+## Sammenligning: Gældssanering vs. Frivillig Akkord
 
-| Kriterium | Gieldssanering | Frivillig Akkord |
+| Kriterium | Gældssanering | Frivillig Akkord |
 |-----------|----------------|------------------|
 | Kræver enstemmighed | Nej — binder alle kreditorer | Ja (normalt) |
 | Offentliggørelse | Ja (Statstidende) | Nej |

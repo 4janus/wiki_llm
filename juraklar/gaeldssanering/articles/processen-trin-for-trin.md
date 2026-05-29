@@ -1,8 +1,8 @@
-# Gieldssanering — Processen Trin for Trin
+# Gældssanering — Processen Trin for Trin
 
 ## Introduktion
 
-En gieldssaneringssag er en retslig procedure, der gennemføres ved **Skifteretten** (den lokale byret). Processen tager typisk 6-18 måneder fra ansøgning til endelig kendelse, hvorefter saneringsperioden på 5 år begynder.
+En gældssaneringssag er en retslig procedure, der gennemføres ved **Skifteretten** (den lokale byret). Processen tager typisk 6-18 måneder fra ansøgning til endelig kendelse, hvorefter saneringsperioden på 5 år begynder.
 
 Denne vejledning gennemgår hvert trin detaljeret, så du ved, hvad du kan forvente.
 
@@ -34,7 +34,7 @@ Dokumenter alle faste udgifter: husleje, el, varme, forsikringer, transport, tel
 
 **Hvad ansøgningen skal indeholde:**
 - Personoplysninger og kontaktinformation
-- En erklæring om at betingelserne for gieldssanering er opfyldt
+- En erklæring om at betingelserne for gældssanering er opfyldt
 - Fuldstændig kreditorliste
 - Al dokumentation for økonomi
 
@@ -57,7 +57,7 @@ Skifteretten indkalder skyldneren til et **indledende møde** (normalt inden for
 - Sagen fortsætter: Yderligere dokumentation kræves
 - Indledende kendelse afsiges
 
-## Trin 4: Indledende Kendelse om Gieldssanering
+## Trin 4: Indledende Kendelse om Gældssanering
 
 Hvis Skifteretten finder betingelserne umiddelbart opfyldt, afsiges en **indledende kendelse**.
 
@@ -95,11 +95,11 @@ Kreditorer kan gøre **indsigelse** mod:
 - Betingelserne (skyldner opfylder ikke kravene)
 - Specifikke krav (kravet bør ikke være med i saneringen)
 
-Skifteretten behandler indsigelserne. En enkelt kreditors indsigelse forhindrer ikke automatisk gieldssanering.
+Skifteretten behandler indsigelserne. En enkelt kreditors indsigelse forhindrer ikke automatisk gældssanering.
 
 ## Trin 8: Afsluttende Møde og Endelig Kendelse
 
-Det **afsluttende møde** afholdes, og Skifteretten afsiger den **endelige kendelse om gieldssanering**.
+Det **afsluttende møde** afholdes, og Skifteretten afsiger den **endelige kendelse om gældssanering**.
 
 **Den endelige kendelse:**
 - Fastlægger de endelige vilkår
@@ -124,7 +124,7 @@ Skifteretten kan tilbagekalde kendelsen — herefter gælder den fulde gæld ige
 
 Når saneringsperioden er udløbet:
 
-- Skifteretten udsteder bevis for afsluttet gieldssanering
+- Skifteretten udsteder bevis for afsluttet gældssanering
 - Restgælden eftergives endeligt
 - Alle kreditorer er bundet — ingen yderligere krav kan fremsættes
 - Skyldner er gældfri og har nyt start
@@ -143,7 +143,7 @@ Når saneringsperioden er udløbet:
 
 ## Advokat — Nødvendigt eller Ej?
 
-Det er ikke lovpligtigt at have en advokat i en gieldssaneringssag. Men det anbefales, da:
+Det er ikke lovpligtigt at have en advokat i en gældssaneringssag. Men det anbefales, da:
 - Ansøgningens dokumentation skal være fuldstændig
 - Indsigelsesbehandling kan kræve juridisk argumentation
 - En advokat kender Skifterettens forventninger
@@ -152,7 +152,7 @@ Retshjælpsforsikring eller fri proces kan dække advokatudgifterne. Se [Service
 
 ## Referencer
 
-- [Hvad er gieldssanering](./hvad-er-gaeldssanering.md)
+- [Hvad er gældssanering](./hvad-er-gaeldssanering.md)
 - [Betingelser vejledning](./betingelser-vejledning.md)
 - [Saneringsforslag og budget](./saneringsforslag-og-budget.md)
 - [Processen hos Skifteretten — raw](../raw/processen-hos-skifteretten.md)

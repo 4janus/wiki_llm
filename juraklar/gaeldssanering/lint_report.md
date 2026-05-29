@@ -1,4 +1,4 @@
-# Lint Rapport — Gieldssanering Wiki
+# Lint Rapport — Gældssanering Wiki
 
 **Dato:** 2026-05-25
 **Status:** Oprettet — ikke kørt automatisk lint

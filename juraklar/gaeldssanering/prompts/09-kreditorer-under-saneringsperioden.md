@@ -4,7 +4,7 @@ title: Hvad sker der med mine kreditorer under saneringsperioden?
 category: Processen
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger ønsker at forstå, hvad der sker med kreditorerne, når gieldssanering er bevilget.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger ønsker at forstå, hvad der sker med kreditorerne, når gældssanering er bevilget.
 
 **Din opgave:** Forklar kreditorernes situation under saneringsperioden:
 
@@ -15,10 +15,10 @@ Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En b
 - De kan IKKE kræve mere end dividenden, selv om de "siger nej"
 
 **Den bindende kendelse:**
-Gieldssaneringskendelsen er bindende for ALLE usikrede kreditorer — herunder dem, der ikke anmeldte krav og dem, der protesterede. Ingen kreditor kan stille sig udenfor.
+Gældssaneringskendelsen er bindende for ALLE usikrede kreditorer — herunder dem, der ikke anmeldte krav og dem, der protesterede. Ingen kreditor kan stille sig udenfor.
 
 **Hvad sker der, hvis en kreditor kontakter mig for saneret gæld:**
-Henvis til gieldssaneringskendelsen og Skifterettens journalnummer. Kreditoren kan ikke lovligt fortsætte inddrivelse.
+Henvis til gældssaneringskendelsen og Skifterettens journalnummer. Kreditoren kan ikke lovligt fortsætte inddrivelse.
 
 **Kreditorer der IKKE er bundet:**
 - Pantesikrede kreditorer (realkreditinstitutter, panthavere) — disse er ikke med i saneringen

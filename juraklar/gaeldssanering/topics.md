@@ -1,10 +1,10 @@
-# Emner — Gieldssanering
+# Emner — Gældssanering
 
 Dette dokument giver et overblik over alle emner, der behandles i denne wiki.
 
 ## Overordnede Emner
 
-### 1. Hvad er Gieldssanering
+### 1. Hvad er Gældssanering
 
 - Definition og formål
 - Lovgrundlag (Konkursloven kap. 25-29)
@@ -13,13 +13,13 @@ Dette dokument giver et overblik over alle emner, der behandles i denne wiki.
 - Forskel fra konkurs og frivillig akkord
 
 **Ressourcer:**
-- [Hvad er gieldssanering](articles/hvad-er-gaeldssanering.md)
-- [Konkursloven gieldssanering](raw/konkursloven-gaeldssanering.md)
+- [Hvad er gældssanering](articles/hvad-er-gaeldssanering.md)
+- [Konkursloven gældssanering](raw/konkursloven-gaeldssanering.md)
 - [Konkurslov kapitel 25-29](policies/konkurslov-kapitel-25-29.md)
 
 ---
 
-### 2. Betingelser for Gieldssanering
+### 2. Betingelser for Gældssanering
 
 - Insolvens
 - Håbløs gæld
@@ -118,7 +118,7 @@ Dette dokument giver et overblik over alle emner, der behandles i denne wiki.
 
 ---
 
-### 9. Alternativer til Gieldssanering
+### 9. Alternativer til Gældssanering
 
 - Frivillig akkord
 - SKAT-betalingsordning
@@ -128,7 +128,7 @@ Dette dokument giver et overblik over alle emner, der behandles i denne wiki.
 
 **Ressourcer:**
 - [Alternativer vejledning](articles/alternativer-vejledning.md)
-- [Alternativer til gieldssanering](raw/alternativer-til-gaeldssanering.md)
+- [Alternativer til gældssanering](raw/alternativer-til-gaeldssanering.md)
 
 ---
 
@@ -163,6 +163,6 @@ Dette dokument giver et overblik over alle emner, der behandles i denne wiki.
 
 | Emne | Tema |
 |------|------|
-| Definition og betingelser | [Gieldssanering og Betingelser](themes/Gældssanering og Betingelser.md) |
+| Definition og betingelser | [Gældssanering og Betingelser](themes/Gældssanering og Betingelser.md) |
 | Processen og saneringsforslag | [Saneringsprocessen](themes/Saneringsprocessen.md) |
 | Alternativer og skat | [Alternativer og Økonomi](themes/Alternativer og Økonomi.md) |

@@ -1,8 +1,8 @@
-# Politik: Skattemæssige Konsekvenser af Gieldssanering
+# Politik: Skattemæssige Konsekvenser af Gældssanering
 
 ## Udgangspunkt: Skattefrihed ved kendelse
 
-Det klare udgangspunkt i dansk skatteret er, at gæld eftergivet via **Skifterettens gieldssaneringskendelse er skattefri** for skyldneren. Hjemlen findes i **ligningsloven § 24**, der fastslår, at eftergivelse af gæld sket af hensyn til skyldnerens manglende betalingsevne ikke udgør en skattepligtig indkomst.
+Det klare udgangspunkt i dansk skatteret er, at gæld eftergivet via **Skifterettens gældssaneringskendelse er skattefri** for skyldneren. Hjemlen findes i **ligningsloven § 24**, der fastslår, at eftergivelse af gæld sket af hensyn til skyldnerens manglende betalingsevne ikke udgør en skattepligtig indkomst.
 
 Dette er en meget vigtig forskel sammenlignet med frivillig akkord, hvor situationen er mere kompleks.
 
@@ -12,11 +12,11 @@ Dette er en meget vigtig forskel sammenlignet med frivillig akkord, hvor situati
 
 Bestemmelsen fastslår, at beløb, der er modtaget som led i eftergivelse af gæld, der er sket af hensyn til skyldnerens manglende betalingsevne, ikke medregnes ved opgørelsen af den skattepligtige indkomst.
 
-Den konkrete regel er: Eftergivelse af gæld via en retlig ordning (gieldssanering ved Skifteretten) er skattefri, forudsat eftergivelsen er begrundet i skyldnerens manglende betalingsevne — og ikke i andre forretningsmæssige hensyn.
+Den konkrete regel er: Eftergivelse af gæld via en retlig ordning (gældssanering ved Skifteretten) er skattefri, forudsat eftergivelsen er begrundet i skyldnerens manglende betalingsevne — og ikke i andre forretningsmæssige hensyn.
 
-## Gieldssanering via Skifteretten — Skattefri
+## Gældssanering via Skifteretten — Skattefri
 
-Når Skifteretten afsiger kendelse om gieldssanering, og kreditorer derved er tvunget til at acceptere en lavere dividende end det fulde krav, er den eftergivne del **skattefri** for skyldneren.
+Når Skifteretten afsiger kendelse om gældssanering, og kreditorer derved er tvunget til at acceptere en lavere dividende end det fulde krav, er den eftergivne del **skattefri** for skyldneren.
 
 **Eksempel:**
 - Samlet gæld: 1.500.000 kr.
@@ -44,7 +44,7 @@ Frivillig akkord bør altid drøftes med en **revisor eller skatteadvokat** inde
 
 Skyldnerens eventuelle skattegæld behandles på samme måde som anden usikret gæld:
 
-- SKAT anmeldes som kreditor i gieldssaneringssagen
+- SKAT anmeldes som kreditor i gældssaneringssagen
 - SKAT modtager dividenden på linje med øvrige kreditorer
 - SKAT's resterende krav eftergives
 
@@ -56,7 +56,7 @@ Skyldner kan fortsat fratrække renteudgifter på den resterende gæld under san
 
 ## Skattemæssig Behandling af Aktiver
 
-Hvis skyldner i forbindelse med gieldssaneringen sælger aktiver:
+Hvis skyldner i forbindelse med gældssaneringen sælger aktiver:
 
 - **Fast ejendom**: Avance ved salg beskattes efter de normale regler (ejendomsavance). Fritagelse kan gælde for helårsbolig (parcelhusreglen).
 - **Bil og løsøre**: Avance er normalt ikke skattepligtig for private (beskattes ikke som indkomst)
@@ -64,26 +64,26 @@ Hvis skyldner i forbindelse med gieldssaneringen sælger aktiver:
 
 ## Pensionsopsparing
 
-Pensionsopsparing er som udgangspunkt beskyttet mod kreditorforfølgning og påvirkes normalt ikke af gieldssanering. Der er ingen skattemæssige konsekvenser for pensionsopsparingen som følge af gieldssaneringen alene.
+Pensionsopsparing er som udgangspunkt beskyttet mod kreditorforfølgning og påvirkes normalt ikke af gældssanering. Der er ingen skattemæssige konsekvenser for pensionsopsparingen som følge af gældssaneringen alene.
 
 ## Fremadrettet Skattemæssig Situation
 
-Efter gieldssaneringen er afsluttet:
+Efter gældssaneringen er afsluttet:
 
 - Skyldner har ikke gæld, der trækker rentefradrag
 - Skyldner starter på "bar bund" skattemæssigt
-- Ingen fremtidige skattemæssige konsekvenser af den afsluttede gieldssanering
+- Ingen fremtidige skattemæssige konsekvenser af den afsluttede gældssanering
 
 ## Anbefaling
 
 Skattemæssige konsekvenser er komplekse og afhænger af den konkrete situation. Konsultér altid en **revisor** eller **skatteadvokat**, inden du tager stilling til:
 
-- Valget mellem gieldssanering og frivillig akkord
-- Salg af aktiver som led i gieldssaneringen
+- Valget mellem gældssanering og frivillig akkord
+- Salg af aktiver som led i gældssaneringen
 - Behandling af erhvervsmæssig gæld
 
 ## Referencer
 
-- [Hvad er gieldssanering](../articles/hvad-er-gaeldssanering.md)
-- [Alternativer til gieldssanering](../articles/alternativer-vejledning.md)
+- [Hvad er gældssanering](../articles/hvad-er-gaeldssanering.md)
+- [Alternativer til gældssanering](../articles/alternativer-vejledning.md)
 - [Alternativer — raw](../raw/alternativer-til-gaeldssanering.md)

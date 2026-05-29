@@ -4,7 +4,7 @@ title: Hvad er "håbløs gæld"?
 category: Kom i gang
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger spørger specifikt, hvad der menes med "håbløs gæld" — og om deres situation opfylder dette krav.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger spørger specifikt, hvad der menes med "håbløs gæld" — og om deres situation opfylder dette krav.
 
 **Din opgave:** Forklar begrebet "håbløs gæld" grundigt og hjælp borgeren med at vurdere deres situation:
 
@@ -34,4 +34,4 @@ Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En b
 
 **Relevante ressourcer:**
 - [Betingelser vejledning](../articles/betingelser-vejledning.md)
-- [Hvad er gieldssanering](../articles/hvad-er-gaeldssanering.md)
+- [Hvad er gældssanering](../articles/hvad-er-gaeldssanering.md)

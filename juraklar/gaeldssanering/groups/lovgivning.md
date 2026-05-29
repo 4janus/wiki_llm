@@ -1,6 +1,6 @@
 # Gruppe: Lovgivning
 
-Denne gruppe samler alle ressourcer, der omhandler det lovmæssige grundlag for gieldssanering.
+Denne gruppe samler alle ressourcer, der omhandler det lovmæssige grundlag for gældssanering.
 
 ## Love og Bestemmelser
 
@@ -8,7 +8,7 @@ Denne gruppe samler alle ressourcer, der omhandler det lovmæssige grundlag for 
 
 | Lov | Relevans |
 |-----|---------|
-| Konkursloven kap. 25-29 (lbkg. nr. 11/2014) | Primært retsgrundlag for gieldssanering |
+| Konkursloven kap. 25-29 (lbkg. nr. 11/2014) | Primært retsgrundlag for gældssanering |
 | Retsplejeloven | Skifterettens processuelle regler |
 | Ligningsloven § 24 | Skattefrihed for eftergivet gæld |
 | Lov om gieldsrådgivning | Kommunal gieldsrådgivning |
@@ -20,7 +20,7 @@ Denne gruppe samler alle ressourcer, der omhandler det lovmæssige grundlag for 
 
 ## Raw Lovmateriale
 
-- [Konkursloven gieldssanering](../raw/konkursloven-gaeldssanering.md) — lovgrundlaget sammenfattet
+- [Konkursloven gældssanering](../raw/konkursloven-gaeldssanering.md) — lovgrundlaget sammenfattet
 - [Betingelser og undtagelser](../raw/betingelser-og-undtagelser.md) — lovens betingelser og undtagelser
 
 ## Centrale Lovregler

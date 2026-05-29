@@ -4,7 +4,7 @@ title: Hvad er dividende og hvad forventer kreditorerne?
 category: Processen
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger ønsker at forstå, hvad dividende er, og hvad kreditorerne kan forvente at modtage.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger ønsker at forstå, hvad dividende er, og hvad kreditorerne kan forvente at modtage.
 
 **Din opgave:** Forklar dividende og kreditorsituationen:
 
@@ -36,7 +36,7 @@ Betalingen fordeles pro-rata. En kreditor med 40% af gieldet modtager 40% af bet
 - Anfægte specifikke krav
 
 **Hvad kan kreditorer ikke gøre:**
-- Forhindre gieldssaneringen alene ved at sige nej
+- Forhindre gældssaneringen alene ved at sige nej
 - Kræve mere end dividenden efter kendelsen
 - Gøre udlæg for saneret gæld
 

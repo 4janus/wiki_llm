@@ -4,7 +4,7 @@ title: Hvad er et saneringsforslag og hvad er rådighedsbeløbet?
 category: Processen
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger ønsker at forstå, hvad saneringsforslaget indeholder, og hvad rådighedsbeløbet er.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger ønsker at forstå, hvad saneringsforslaget indeholder, og hvad rådighedsbeløbet er.
 
 **Din opgave:** Forklar saneringsforslaget og rådighedsbeløbet klart:
 

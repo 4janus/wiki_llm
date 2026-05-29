@@ -4,9 +4,9 @@ title: Hvad er frivillig akkord og hvornår er det bedre?
 category: Alternativer og afslutning
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger overvejer frivillig akkord som alternativ til formel gieldssanering og spørger om fordele og ulemper.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger overvejer frivillig akkord som alternativ til formel gældssanering og spørger om fordele og ulemper.
 
-**Din opgave:** Forklar frivillig akkord grundigt og hjælp borgeren med at vurdere, hvornår det er bedre end gieldssanering:
+**Din opgave:** Forklar frivillig akkord grundigt og hjælp borgeren med at vurdere, hvornår det er bedre end gældssanering:
 
 **Hvad er frivillig akkord:**
 En frivillig akkord er en aftale direkte med kreditorerne om delvis eftergivelse af gieldet — uden Skifterettens involvering. Det er en privat aftale.
@@ -16,11 +16,11 @@ En frivillig akkord er en aftale direkte med kreditorerne om delvis eftergivelse
 2. **Ingen offentliggørelse:** Aftalen er ikke i Statstidende
 3. **Fleksibel:** Vilkår aftales frit med hver enkelt kreditor
 4. **Ingen 5-årig saneringsperiode:** Aftalen kan rumme engangsbetalinger eller kortere perioder
-5. **Kreditorer kan tilbydes bedre vilkår** end ved formel gieldssanering
+5. **Kreditorer kan tilbydes bedre vilkår** end ved formel gældssanering
 
 **Ulemper ved frivillig akkord:**
 1. **Kræver ALLE kreditorers frivillige accept** — én creditor kan sige nej og blokere
-2. **Kan være skattepligtig** — modsat gieldssanering, der altid er skattefri
+2. **Kan være skattepligtig** — modsat gældssanering, der altid er skattefri
 3. **Ingen automatisk beskyttelse** mod inddrivelse i forhandlingsperioden
 4. **Vanskeligt med mange kreditorer** — praktisk svært at forhandle med 10+ kreditorer
 
@@ -30,7 +30,7 @@ En frivillig akkord er en aftale direkte med kreditorerne om delvis eftergivelse
 - Du kan tilbyde en hurtig kontantbetaling (kreditorer sparer tid)
 - Du ønsker at undgå offentlighed i Statstidende
 
-**Hvornår er gieldssanering bedst:**
+**Hvornår er gældssanering bedst:**
 - Du har mange kreditorer (svært at opnå enstemmighed)
 - En stor kreditor vil ikke forhandle
 - Du ønsker juridisk sikkerhed og bindende kendelse

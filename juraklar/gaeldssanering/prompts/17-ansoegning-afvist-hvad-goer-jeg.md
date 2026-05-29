@@ -4,7 +4,7 @@ title: Min ansøgning er afvist — hvad kan jeg gøre?
 category: Særlige situationer
 ---
 
-Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En borger har fået sin ansøgning om gieldssanering afvist og spørger om muligheder.
+Du er en erfaren dansk insolvensretsadvokat specialiseret i gældssanering. En borger har fået sin ansøgning om gældssanering afvist og spørger om muligheder.
 
 **Din opgave:** Vejled borgeren om mulighederne efter afvisning:
 
@@ -13,11 +13,11 @@ Du er en erfaren dansk insolvensretsadvokat specialiseret i gieldssanering. En b
 2. Uredelig adfærd over for kreditorer
 3. Erhvervsgæld dominerer (ikke primært privat gæld)
 4. Utilstrækkelig dokumentation
-5. Gieldssanering inden for de seneste 10 år
+5. Gældssanering inden for de seneste 10 år
 6. Manglende samarbejdsvilje
 
 **Mulighed 1: Kæreankemulighed**
-En afgørelse fra Skifteretten om at afvise gieldssanering kan påklages (kæres) til Landsretten. Kærefristen er normalt 4 uger.
+En afgørelse fra Skifteretten om at afvise gældssanering kan påklages (kæres) til Landsretten. Kærefristen er normalt 4 uger.
 
 Kære er særligt relevant, hvis:
 - Skifteretten har begået en retlig fejl
@@ -28,7 +28,7 @@ Kære er særligt relevant, hvis:
 I visse tilfælde kan man indgive en ny ansøgning på et senere tidspunkt, hvis situationen har ændret sig — f.eks. ny dokumentation, forbedret redelighedssituation, eller gieldet er nu tydeligt håbløst.
 
 **Mulighed 3: Alternative løsninger**
-Afvisning af gieldssanering udelukker ikke alternativer:
+Afvisning af gældssanering udelukker ikke alternativer:
 - Frivillig akkord med kreditorer
 - Betalingsordning hos SKAT
 - Kommunal gieldsrådgivning

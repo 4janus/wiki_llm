@@ -1,22 +1,22 @@
-# Politik: Konkursloven Kapitel 25-29 — Gieldssanering
+# Politik: Konkursloven Kapitel 25-29 — Gældssanering
 
 ## Lovgrundlag og status
 
-**Lovbekendtgørelse nr. 11 af 6. januar 2014** med efterfølgende ændringer udgør det primære retsgrundlag for gieldssanering i Danmark. Konkurslovens kapitel 25-29 regulerer udtømmende:
+**Lovbekendtgørelse nr. 11 af 6. januar 2014** med efterfølgende ændringer udgør det primære retsgrundlag for gældssanering i Danmark. Konkurslovens kapitel 25-29 regulerer udtømmende:
 
-- Betingelserne for at opnå gieldssanering
+- Betingelserne for at opnå gældssanering
 - Sagsbehandlingsproceduren ved Skifteretten
 - Saneringsperiodens indhold og varighed
 - Kreditorernes rettigheder og pligter
-- Afslutning og konsekvenser af gieldssanering
+- Afslutning og konsekvenser af gældssanering
 
 Loven er hjemlet i den generelle kompetence til at regulere insolvensforhold og udgør en selvstændig ordning adskilt fra konkursreglerne i konkurslovens øvrige kapitler.
 
-## Kapitel 25 — Betingelser for gieldssanering (§§ 197-199)
+## Kapitel 25 — Betingelser for gældssanering (§§ 197-199)
 
 ### § 197 — Grundbetingelserne
 
-Gieldssanering kan meddeles en skyldner, der:
+Gældssanering kan meddeles en skyldner, der:
 
 1. Er **insolvent** — aktiver dækker ikke passiver
 2. Har **håbløs gield** — gieldens størrelse og skyldnerens betalingsevne er i så åbenlyst misforhold, at tilbagebetaling inden for rimelig tid er udelukket
@@ -26,18 +26,18 @@ Bestemmelsen er skønsmæssig — Skifteretten foretager en samlet vurdering af,
 
 ### § 198 — Krav om redlighed
 
-Gieldssanering forudsætter, at skyldner:
+Gældssanering forudsætter, at skyldner:
 
 - Ikke har udvist uredelig adfærd over for kreditorer
-- Ikke har opsamlet gield med henblik på gieldssanering
-- Ikke tidligere inden for 10 år har opnået gieldssanering
+- Ikke har opsamlet gield med henblik på gældssanering
+- Ikke tidligere inden for 10 år har opnået gældssanering
 - Er samarbejdsvillig og ærlig over for Skifteretten
 
-Uredelig adfærd er en absolut hindring for gieldssanering. Skifteretten foretager en konkret og individuel vurdering.
+Uredelig adfærd er en absolut hindring for gældssanering. Skifteretten foretager en konkret og individuel vurdering.
 
 ### § 199 — Undtagede krav
 
-Følgende krav er ikke omfattet af gieldssanering:
+Følgende krav er ikke omfattet af gældssanering:
 
 - Krav sikret ved pant (realkreditlån, pantebrev mv.)
 - Bøder pålagt ved straffedom
@@ -58,7 +58,7 @@ Skifteretten indkalder til indledende møde og vurderer, om betingelserne umidde
 
 ### Indledende kendelse
 
-Afsiges der indledende kendelse om gieldssanering, offentliggøres denne i Statstidende med en frist for kreditorer til at anmelde krav.
+Afsiges der indledende kendelse om gældssanering, offentliggøres denne i Statstidende med en frist for kreditorer til at anmelde krav.
 
 ### Saneringsforslaget
 
@@ -70,7 +70,7 @@ På baggrund af skyldnerens økonomi udarbejdes et saneringsforslag med:
 
 ### Afsluttende kendelse
 
-Efter behandling af kreditorkrav og eventuelle indsigelser afsiger Skifteretten endelig kendelse om gieldssanering.
+Efter behandling af kreditorkrav og eventuelle indsigelser afsiger Skifteretten endelig kendelse om gældssanering.
 
 ## Kapitel 27 — Saneringsperiodens indhold (§§ 210-215)
 
@@ -90,7 +90,7 @@ Skifteretten kan tilbagekalde kendelsen, hvis skyldner:
 
 Når saneringsperioden er udløbet og alle betalinger er foretaget:
 - Restgælden eftergives endeligt
-- Skifteretten udsteder bevis for afsluttet gieldssanering
+- Skifteretten udsteder bevis for afsluttet gældssanering
 - Ingen kreditorer kan herefter kræve mere end dividenden
 
 ## Kapitel 29 — Særlige bestemmelser (§§ 219-222)

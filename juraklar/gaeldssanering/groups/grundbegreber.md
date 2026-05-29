@@ -1,10 +1,10 @@
 # Gruppe: Grundbegreber
 
-Denne gruppe samler alle ressourcer, der forklarer de juridiske og praktiske grundbegreber inden for gieldssanering.
+Denne gruppe samler alle ressourcer, der forklarer de juridiske og praktiske grundbegreber inden for gældssanering.
 
 ## Primær Ressource
 
-- [Juridiske grundbegreber — gieldssanering](../notes/juridiske-grundbegreber-gaeldssanering.md) — komplet ordliste
+- [Juridiske grundbegreber — gældssanering](../notes/juridiske-grundbegreber-gaeldssanering.md) — komplet ordliste
 
 ## Vigtigste Begreber — Hurtigt Overblik
 
@@ -20,8 +20,8 @@ Denne gruppe samler alle ressourcer, der forklarer de juridiske og praktiske gru
 | Panteret | Sikkerhedsret i aktiv |
 | Pro-rata | Forholdsmæssig fordeling |
 | Rådighedsbeløb | Hvad skyldner beholder til underhold |
-| Saneringsforslag | Konkrete vilkår for gieldssaneringen |
-| Skifteretten | Retten der behandler gieldssaneringssager |
+| Saneringsforslag | Konkrete vilkår for gældssaneringen |
+| Skifteretten | Retten der behandler gældssaneringssager |
 
 ### Kreditortyper
 
@@ -44,7 +44,7 @@ Denne gruppe samler alle ressourcer, der forklarer de juridiske og praktiske gru
 
 ## Temaer der Bruger disse Begreber
 
-- [Gieldssanering og Betingelser](../themes/Gældssanering og Betingelser.md)
+- [Gældssanering og Betingelser](../themes/Gældssanering og Betingelser.md)
 - [Saneringsprocessen](../themes/Saneringsprocessen.md)
 - [Alternativer og Økonomi](../themes/Alternativer og Økonomi.md)
 

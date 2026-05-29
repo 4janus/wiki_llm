@@ -1,8 +1,8 @@
-# Betingelser for Gieldssanering — Vejledning
+# Betingelser for Gældssanering — Vejledning
 
 ## Indledning
 
-For at opnå gieldssanering skal skyldneren opfylde en række betingelser, der alle er fastsat i konkurslovens kapitel 25-29. Betingelserne er kumulative — alle skal være opfyldt. Denne vejledning gennemgår betingelserne med praktiske eksempler.
+For at opnå gældssanering skal skyldneren opfylde en række betingelser, der alle er fastsat i konkurslovens kapitel 25-29. Betingelserne er kumulative — alle skal være opfyldt. Denne vejledning gennemgår betingelserne med praktiske eksempler.
 
 ## Betingelse 1: Insolvens
 
@@ -37,7 +37,7 @@ For at opnå gieldssanering skal skyldneren opfylde en række betingelser, der a
 - Bevidst at have skjult aktiver for kreditorer
 - At have optaget lån med falske oplysninger
 - At have overdraget aktiver til familiemedlemmer for at undgå kreditorforfølgning
-- At have skabt gæld med henblik på gieldssanering
+- At have skabt gæld med henblik på gældssanering
 
 **Hvad er samarbejdsvilje:**
 - Møde op til retsmøder
@@ -51,19 +51,19 @@ For at opnå gieldssanering skal skyldneren opfylde en række betingelser, der a
 
 **Hvad kræves:** Gieldet stammer primært fra private (ikke-erhvervsmæssige) forhold.
 
-**I praksis:** Gieldssanering er ikke beregnet til erhvervsdrivende, der har drevet virksomhed med erhvervsmæssig gæld. Dog er tidligere selvstændige ikke automatisk udelukkede, hvis virksomheden er ophørt, og gieldet nu er personlig hæftelse.
+**I praksis:** Gældssanering er ikke beregnet til erhvervsdrivende, der har drevet virksomhed med erhvervsmæssig gæld. Dog er tidligere selvstændige ikke automatisk udelukkede, hvis virksomheden er ophørt, og gieldet nu er personlig hæftelse.
 
-**Eksempel:** En person, der stoppede som selvstændig tømrer for 3 år siden og nu er lønmodtager med privatgæld fra den ophørte virksomhed, kan i visse tilfælde søge gieldssanering — men sagen er mere kompleks.
+**Eksempel:** En person, der stoppede som selvstændig tømrer for 3 år siden og nu er lønmodtager med privatgæld fra den ophørte virksomhed, kan i visse tilfælde søge gældssanering — men sagen er mere kompleks.
 
-## Betingelse 5: Ikke Gieldssanering inden for 10 År
+## Betingelse 5: Ikke Gældssanering inden for 10 År
 
-**Hvad kræves:** Skyldneren har ikke fået gieldssanering inden for de seneste 10 år.
+**Hvad kræves:** Skyldneren har ikke fået gældssanering inden for de seneste 10 år.
 
 **I praksis:** Reglen skal forhindre systematisk misbrug af ordningen. Der er ingen dispensationsmulighed for denne betingelse.
 
 ## Betingelse 6: Ingen Spekulationsgæld
 
-**Hvad kræves:** Skyldneren har ikke bevidst opsamlet gæld med det formål at opnå gieldssanering bagefter.
+**Hvad kræves:** Skyldneren har ikke bevidst opsamlet gæld med det formål at opnå gældssanering bagefter.
 
 **I praksis:** Skifteretten ser med skepsis på, hvis en skyldner kort inden ansøgningen har optaget betydelige lån. Gæld optaget i god tro (f.eks. forbrugsgæld til nødvendige udgifter) falder ikke ind under dette.
 
@@ -81,13 +81,13 @@ Hvis blot én betingelse ikke er opfyldt, vil Skifteretten afvise ansøgningen. 
 ## Særlige Tilfælde
 
 **Selvstændige og tidligere selvstændige:**
-Selvstændige erhvervsdrivende i aktiv drift kan normalt ikke søge gieldssanering (de kan søge akkord). Ophørte selvstændige kan søge, men processen er mere kompleks — se [Særlige situationer: Selvstændige](../prompts/).
+Selvstændige erhvervsdrivende i aktiv drift kan normalt ikke søge gældssanering (de kan søge akkord). Ophørte selvstændige kan søge, men processen er mere kompleks — se [Særlige situationer: Selvstændige](../prompts/).
 
 **Ægtefæller:**
-Ægtefæller kan søge gieldssanering samlet — men begge ægtefællers økonomi indgår i vurderingen.
+Ægtefæller kan søge gældssanering samlet — men begge ægtefællers økonomi indgår i vurderingen.
 
 **Undtagede kravtyper:**
-Selv om betingelserne for gieldssanering er opfyldt, gælder saneringen ikke for alle kravtyper. Se [Betingelser og undtagelser](../raw/betingelser-og-undtagelser.md).
+Selv om betingelserne for gældssanering er opfyldt, gælder saneringen ikke for alle kravtyper. Se [Betingelser og undtagelser](../raw/betingelser-og-undtagelser.md).
 
 ## Dokumentation der støtter din ansøgning
 

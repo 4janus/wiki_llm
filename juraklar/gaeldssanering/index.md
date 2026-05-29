@@ -1,16 +1,16 @@
-# Gieldssanering
+# Gældssanering
 
-Denne wiki dækker gieldssanering i Danmark — den retslige ordning der giver privatpersoner med håbløs gæld mulighed for et nyt start via Skifteretten.
+Denne wiki dækker gældssanering i Danmark — den retslige ordning der giver privatpersoner med håbløs gæld mulighed for et nyt start via Skifteretten.
 
-## Hvad er Gieldssanering?
+## Hvad er Gældssanering?
 
-Gieldssanering er en ordning hjemlet i **konkurslovens kapitel 25-29**, der giver privatpersoner mulighed for delvis eftergivelse af gæld via en kendelse fra Skifteretten. Skyldner betaler et fast månedligt beløb i 5 år — resten eftergives. Ordningen binder alle usikrede kreditorer og er skattefri.
+Gældssanering er en ordning hjemlet i **konkurslovens kapitel 25-29**, der giver privatpersoner mulighed for delvis eftergivelse af gæld via en kendelse fra Skifteretten. Skyldner betaler et fast månedligt beløb i 5 år — resten eftergives. Ordningen binder alle usikrede kreditorer og er skattefri.
 
 ## Kom Hurtigt i Gang
 
 | Spørgsmål | Ressource |
 |-----------|-----------|
-| Hvad er gieldssanering? | [Artikel: Hvad er gieldssanering](articles/hvad-er-gaeldssanering.md) |
+| Hvad er gældssanering? | [Artikel: Hvad er gældssanering](articles/hvad-er-gaeldssanering.md) |
 | Kan jeg søge? | [Artikel: Betingelser vejledning](articles/betingelser-vejledning.md) |
 | Hvordan søger jeg? | [Artikel: Processen trin for trin](articles/processen-trin-for-trin.md) |
 | Hvad skal jeg betale? | [Artikel: Saneringsforslag og budget](articles/saneringsforslag-og-budget.md) |
@@ -53,7 +53,7 @@ gaeldssanering/
 
 ## Temaer
 
-- [Gieldssanering og Betingelser](themes/Gældssanering og Betingelser.md) — definition, betingelser, hvem kan søge
+- [Gældssanering og Betingelser](themes/Gældssanering og Betingelser.md) — definition, betingelser, hvem kan søge
 - [Saneringsprocessen](themes/Saneringsprocessen.md) — processen, saneringsforslag, kreditorerne
 - [Alternativer og Økonomi](themes/Alternativer og Økonomi.md) — alternativer, skat, særlige gieldstyper
 

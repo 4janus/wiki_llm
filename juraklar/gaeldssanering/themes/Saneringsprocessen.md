@@ -2,11 +2,11 @@
 
 ## Oversigt
 
-Dette tema dækker selve processen for gieldssanering — fra ansøgning til Skifteretten til afslutning af saneringsperioden. Herunder saneringsforslaget, rådighedsbeløbet og kreditorernes rettigheder.
+Dette tema dækker selve processen for gældssanering — fra ansøgning til Skifteretten til afslutning af saneringsperioden. Herunder saneringsforslaget, rådighedsbeløbet og kreditorernes rettigheder.
 
 ## Centrale Spørgsmål dette Tema Dækker
 
-- Hvordan søger jeg gieldssanering?
+- Hvordan søger jeg gældssanering?
 - Hvad sker der ved Skifteretten?
 - Hvad er saneringsforslaget og hvad indebærer det?
 - Hvad er rådighedsbeløbet?
@@ -70,16 +70,16 @@ Gieldseftergivelse og nyt start
 
 ## Relaterede Temaer
 
-- [Gieldssanering og Betingelser](./Gældssanering og Betingelser.md)
+- [Gældssanering og Betingelser](./Gældssanering og Betingelser.md)
 - [Alternativer og Økonomi](./Alternativer og Økonomi.md)
 
 ## Relevante Rådgivningsservices
 
-- Service 4: Hvad er processen for gieldssanering?
+- Service 4: Hvad er processen for gældssanering?
 - Service 7: Hvad er et saneringsforslag og hvad er rådighedsbeløbet?
 - Service 8: Hvad er dividende og hvad forventer kreditorerne?
 - Service 9: Hvad sker der med mine kreditorer?
 - Service 10: Hvad sker der med mit hjem/lejemål?
 - Service 11: Hvad sker der med min bil?
 - Service 16: Hvad er saneringsperiodens varighed?
-- Service 25: Gieldssanering er afsluttet — hvad sker nu?
+- Service 25: Gældssanering er afsluttet — hvad sker nu?
