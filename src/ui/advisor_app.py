@@ -110,7 +110,12 @@ def _create_app(
             full_question = req.question
 
         async def _stream() -> Any:
-            answer = await engine.ask(req.advisor_id, req.service_id, full_question)
+            try:
+                answer = await engine.ask(req.advisor_id, req.service_id, full_question)
+            except Exception as exc:  # noqa: BLE001
+                yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+                yield "data: [DONE]\n\n"
+                return
             words = answer.split(" ")
             for i, word in enumerate(words):
                 token = word if i == 0 else " " + word
@@ -137,7 +142,7 @@ def _create_app(
             text = result.text_content or ""
         except Exception as exc:  # noqa: BLE001
             text = f"(Kunne ikke parse: {exc})"
-        return {"name": file.filename, "text": text}
+        return {"name": file.filename or "unknown", "text": text}
 
     @app.get("/api/download/{advisor_id}/{service_id}")
     async def download_chat(
