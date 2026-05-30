@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
@@ -44,6 +44,33 @@ class _ChatRequest(BaseModel):
     session_id: str = ""
 
 
+class _ReviewRequest(BaseModel):
+    advisor_id: str
+    rating: int
+    comment: str = ""
+    email: str
+
+
+class _TokenValidateRequest(BaseModel):
+    token: str
+    advisor_id: str
+    service_id: int
+    fmt: str
+
+
+class _StripeCheckoutRequest(BaseModel):
+    advisor_id: str
+    service_id: int
+    fmt: str
+
+
+class _StripeVerifyRequest(BaseModel):
+    session_id: str
+    advisor_id: str
+    service_id: int
+    fmt: str
+
+
 def _create_app(
     root: Path,
     llm_config: LLMConfig,
@@ -71,6 +98,9 @@ def _create_app(
             f"Ingen rådgivere fundet i {root}. "
             "Opret undermapper med en prompts/-mappe."
         )
+
+    from .db import init_db  # noqa: PLC0415
+    init_db()
 
     static_dir = Path(__file__).parent / "static"
     static_dir.mkdir(parents=True, exist_ok=True)
@@ -144,12 +174,17 @@ def _create_app(
             text = f"(Kunne ikke parse: {exc})"
         return {"name": file.filename or "unknown", "text": text}
 
-    @app.get("/api/download/{advisor_id}/{service_id}")
-    async def download_chat(
-        advisor_id: str,
-        service_id: int,
-        fmt: str = "md",
-    ) -> Response:
+    @app.get("/api/download")
+    async def download_chat(grant_id: str) -> Response:
+        from .db import consume_grant  # noqa: PLC0415
+        grant = consume_grant(grant_id)
+        if not grant:
+            raise HTTPException(403, "Ugyldig eller udløbet download-tilladelse")
+
+        advisor_id = grant["advisor_id"]
+        service_id = grant["service_id"]
+        fmt = grant["fmt"]
+
         history = engine.get_history(advisor_id, service_id)
         all_advisors = engine.discover()
         adv = all_advisors.get(advisor_id)
@@ -167,6 +202,45 @@ def _create_app(
             body = "\n".join(lines)
             filename = "juraklar-raadgivning.md"
             media_type = "text/markdown"
+        elif fmt == "html":
+            rows = ""
+            for msg in history:
+                if msg["role"] == "user":
+                    safe = msg["content"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                    rows += f'<div class="msg user"><span class="label">Dig</span><p>{safe}</p></div>\n'
+                else:
+                    rows += f'<div class="msg bot"><span class="label">JuraKlar</span><div class="md-body">{msg["content"]}</div></div>\n'
+            body = f"""<!DOCTYPE html>
+<html lang="da"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JuraKlar — {title}</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@13/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<style>
+  body{{font-family:system-ui,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;color:#1a3a28;background:#f8fdf9}}
+  h1{{color:#0a6e40}}h2{{color:#3a6a50;margin-top:0}}
+  .header{{border-bottom:2px solid #c8e8d8;padding-bottom:16px;margin-bottom:24px}}
+  .msg{{margin-bottom:20px;padding:14px 18px;border-radius:10px}}
+  .msg.user{{background:#e0f5ea;border-left:4px solid #0a6e40}}
+  .msg.bot{{background:#fff;border:1px solid #c8e8d8}}
+  .label{{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#3a6a50}}
+  .msg.user .label{{color:#0a6e40}}
+  p{{margin:0 0 .6em}}p:last-child{{margin-bottom:0}}
+  table{{border-collapse:collapse;width:100%;margin:.6em 0;font-size:.9em}}
+  th,td{{border:1px solid #c8e8d8;padding:7px 12px;text-align:left;vertical-align:top}}
+  th{{background:#e0f5ea;color:#0a6e40;font-weight:700}}
+  tr:nth-child(even) td{{background:#f0faf5}}
+  code{{background:#e0f5ea;border-radius:4px;padding:1px 5px;font-size:.88em}}
+  pre{{background:#e0f5ea;border-radius:6px;padding:12px;overflow-x:auto}}
+  footer{{margin-top:40px;font-size:12px;color:#7aaa88;border-top:1px solid #c8e8d8;padding-top:12px}}
+</style></head><body>
+<div class="header"><h1>JuraKlar</h1><h2>{title}{" — " + svc_title if svc_title else ""}</h2></div>
+{rows}
+<footer>Genereret af JuraKlar · Generel juridisk information, ikke personlig rådgivning</footer>
+<script>marked.use({{breaks:true,gfm:true}});document.querySelectorAll('.md-body').forEach(el=>{{el.innerHTML=DOMPurify.sanitize(marked.parse(el.textContent));}});</script>
+</body></html>"""
+            filename = "juraklar-raadgivning.html"
+            media_type = "text/html"
         else:
             sep = "=" * 50
             lines = [f"JuraKlar — {title}", svc_title, "", sep, ""]
@@ -186,6 +260,61 @@ def _create_app(
             media_type=media_type,
             headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
+
+    @app.post("/api/review")
+    async def submit_review(req: _ReviewRequest) -> dict:
+        from .db import create_token  # noqa: PLC0415
+        if not 1 <= req.rating <= 5:
+            raise HTTPException(400, "Bedømmelse skal være 1–5")
+        token = create_token(req.email, req.advisor_id, req.rating, req.comment or None)
+        return {"token": f"{token[:4]}-{token[4:]}"}
+
+    @app.post("/api/token/validate")
+    async def validate_token(req: _TokenValidateRequest) -> dict:
+        from .db import validate_and_consume_token, create_grant  # noqa: PLC0415
+        if not validate_and_consume_token(req.token):
+            raise HTTPException(400, "Ugyldig eller udløbet kode")
+        grant_id = create_grant(req.advisor_id, req.service_id, req.fmt)
+        return {"grant_id": grant_id}
+
+    @app.post("/api/stripe/checkout")
+    async def stripe_checkout(req: _StripeCheckoutRequest) -> dict:
+        import stripe  # noqa: PLC0415
+        stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
+        if not stripe.api_key:
+            raise HTTPException(503, "Stripe ikke konfigureret")
+        base_url = os.getenv("BASE_URL", "http://localhost:8080")
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card", "mobilepay"],
+            line_items=[{
+                "price_data": {
+                    "currency": "dkk",
+                    "product_data": {"name": "JuraKlar — Download samtale"},
+                    "unit_amount": 19900,
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=(
+                f"{base_url}/?stripe_success=1"
+                f"&session_id={{CHECKOUT_SESSION_ID}}"
+                f"&advisor={req.advisor_id}&service={req.service_id}&fmt={req.fmt}"
+            ),
+            cancel_url=f"{base_url}/",
+            metadata={"advisor_id": req.advisor_id, "service_id": str(req.service_id), "fmt": req.fmt},
+        )
+        return {"checkout_url": session.url}
+
+    @app.post("/api/stripe/verify")
+    async def stripe_verify(req: _StripeVerifyRequest) -> dict:
+        import stripe  # noqa: PLC0415
+        from .db import create_grant  # noqa: PLC0415
+        stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
+        session = stripe.checkout.Session.retrieve(req.session_id)
+        if session.payment_status != "paid":
+            raise HTTPException(402, "Betaling ikke gennemført")
+        grant_id = create_grant(req.advisor_id, req.service_id, req.fmt)
+        return {"grant_id": grant_id}
 
     return app
 

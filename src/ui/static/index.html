@@ -611,6 +611,145 @@
     }
     .dl-option:hover { background: var(--bg-base); color: var(--text-primary); }
 
+    /* ── anti-copy on bot bubbles ────────────────────────────── */
+    .bubble.bot { user-select: none; }
+
+    /* ── paywall modal ───────────────────────────────────────── */
+    #jk-paywall-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+    #jk-paywall-overlay.open { display: flex; }
+
+    #jk-paywall-modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: min(480px, 94vw);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .pw-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .pw-fmt-tag {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--accent);
+      background: var(--accent-btn);
+      border: 1px solid var(--accent-btn-border);
+      border-radius: 5px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .pw-tabs {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .pw-tab {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 9px 0;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .pw-tab:first-child { border-right: 1px solid var(--border); }
+    .pw-tab.active { background: var(--accent-btn); color: var(--accent-btn-text); }
+    .pw-tab:hover:not(.active) { background: var(--bg-base); color: var(--text-primary); }
+
+    .pw-panel { display: none; flex-direction: column; gap: 14px; }
+    .pw-panel.active { display: flex; }
+
+    .pw-price {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: center;
+      padding: 4px 0;
+    }
+    .pw-price small { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
+
+    .pw-pay-btn {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--accent-btn-border);
+      background: var(--accent-btn);
+      color: var(--accent-btn-text);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      width: 100%;
+    }
+    .pw-pay-btn:hover { opacity: 0.85; }
+    .pw-pay-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .pw-methods { text-align: center; font-size: 12px; color: var(--text-dim); }
+
+    .pw-token-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .pw-token-input {
+      width: 100%;
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      padding: 10px 14px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+      outline: none;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      box-sizing: border-box;
+    }
+    .pw-token-input:focus { border-color: var(--accent); }
+    .pw-token-input::placeholder { font-weight: 400; letter-spacing: 0; font-size: 14px; }
+
+    .pw-error {
+      font-size: 13px;
+      color: #e05555;
+      text-align: center;
+      min-height: 18px;
+    }
+
+    .pw-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .pw-close:hover { color: var(--text-secondary); }
+
     /* ── upload chips ────────────────────────────────────────── */
     #jk-chips {
       display: flex;
@@ -798,6 +937,46 @@
 
 </div><!-- /jk-root -->
 
+<!-- ── PAYWALL MODAL ──────────────────────────────────────── -->
+<div id="jk-paywall-overlay">
+  <div id="jk-paywall-modal">
+    <button class="pw-close" id="jk-pw-close">×</button>
+    <div class="pw-title">Download samtale <span class="pw-fmt-tag" id="jk-pw-fmt-label"></span></div>
+
+    <div class="pw-tabs">
+      <button class="pw-tab active" data-tab="pay">Betal 199 kr</button>
+      <button class="pw-tab" data-tab="token">Jeg har en kode</button>
+    </div>
+
+    <!-- Pay panel -->
+    <div class="pw-panel active" id="pw-panel-pay">
+      <div class="pw-price">199 kr <small>engangsbetaling</small></div>
+      <button class="pw-pay-btn" id="jk-stripe-btn">Betal med kort eller MobilePay</button>
+      <div class="pw-methods">Visa · Mastercard · MobilePay</div>
+      <div class="pw-error" id="pw-pay-error"></div>
+    </div>
+
+    <!-- Token panel -->
+    <div class="pw-panel" id="pw-panel-token">
+      <div class="pw-token-label">Indtast din 8-tegns tester-kode:</div>
+      <input
+        type="text"
+        id="jk-token-input"
+        class="pw-token-input"
+        placeholder="XXXX-XXXX"
+        maxlength="9"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="pw-pay-btn" id="jk-token-btn">Validér kode og download</button>
+      <div class="pw-error" id="pw-token-error"></div>
+      <div style="font-size:12px;color:var(--text-dim);text-align:center">
+        Få en gratis kode ved at anmelde JuraKlar under <em>Bliv tester</em>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── MOBILE DRAWER OVERLAY ──────────────────────────────── -->
 <div id="jk-drawer-overlay"></div>
 <nav id="jk-drawer" aria-label="Juridiske rådgivere (mobil)">
@@ -983,9 +1162,125 @@ om: `
 tester: `
 <h1>Bliv tester</h1>
 <p class="info-lead">
-  JuraKlar er i beta. Vi leder efter brugere, der vil hjælpe os med at teste og forbedre systemet.
+  JuraKlar er i beta. Send en anmeldelse og få en gratis <strong>tester-kode</strong> —
+  den giver dig én gratis download af en samtale. Koden er gyldig i 14 dage.
 </p>
-<p>Indhold kommer snart. Kontakt os i mellemtiden via siden <em>Kontakt</em>.</p>
+
+<h2>Skriv en anmeldelse</h2>
+
+<div id="tester-form-wrap">
+  <div style="display:flex;flex-direction:column;gap:16px;max-width:480px">
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <label style="font-size:13px;color:var(--text-secondary)">Hvilken jurist brugte du? *</label>
+      <select id="tf-advisor" style="background:var(--bg-base);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);padding:9px 12px;font-size:14px;font-family:inherit;outline:none">
+        <option value="">Vælg jurist…</option>
+      </select>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <label style="font-size:13px;color:var(--text-secondary)">Bedømmelse *</label>
+      <div id="tf-stars" style="display:flex;gap:6px;font-size:28px;cursor:pointer">
+        <span data-star="1">☆</span>
+        <span data-star="2">☆</span>
+        <span data-star="3">☆</span>
+        <span data-star="4">☆</span>
+        <span data-star="5">☆</span>
+      </div>
+      <input type="hidden" id="tf-rating" value="0" />
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <label style="font-size:13px;color:var(--text-secondary)">Kommentar <span style="opacity:.6">(valgfrit)</span></label>
+      <textarea id="tf-comment" rows="3" placeholder="Hvad fungerede godt eller skidt?"
+        style="background:var(--bg-base);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);padding:9px 12px;font-size:14px;font-family:inherit;resize:vertical;outline:none"></textarea>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <label style="font-size:13px;color:var(--text-secondary)">Email *</label>
+      <input id="tf-email" type="email" placeholder="din@email.dk"
+        style="background:var(--bg-base);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);padding:9px 12px;font-size:14px;font-family:inherit;outline:none" />
+    </div>
+
+    <div id="tf-error" style="font-size:13px;color:#e05555;min-height:18px"></div>
+
+    <button id="tf-submit"
+      style="padding:11px 28px;border-radius:8px;border:1px solid var(--accent-btn-border);background:var(--accent-btn);color:var(--accent-btn-text);font-size:15px;font-weight:700;cursor:pointer;align-self:flex-start;transition:opacity .15s">
+      Send anmeldelse og få kode
+    </button>
+  </div>
+</div>
+
+<div id="tester-token-wrap" style="display:none;max-width:480px">
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:15px;font-weight:700;color:var(--text-primary)">Tak for din anmeldelse! 🎉</div>
+    <div style="font-size:13px;color:var(--text-secondary)">Din tester-kode er:</div>
+    <div id="tester-token-display" style="font-size:32px;font-weight:800;letter-spacing:.18em;color:var(--accent);font-family:'SFMono-Regular',Consolas,monospace;text-align:center;padding:8px 0"></div>
+    <div style="font-size:12px;color:var(--text-dim);text-align:center">Gyldig i 14 dage · Bruges ved download af en samtale · Engangsbrug</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Populate advisor dropdown from state (populated after init)
+  function populateTfAdvisors() {
+    const sel = document.getElementById('tf-advisor');
+    if (!sel || sel.options.length > 1) return;
+    state.advisors.forEach(a => {
+      const o = document.createElement('option');
+      o.value = a.id; o.textContent = a.title;
+      sel.appendChild(o);
+    });
+  }
+  // Try immediately and again after a short delay (advisors may not be loaded yet)
+  setTimeout(populateTfAdvisors, 800);
+
+  // Star rating
+  const stars = document.querySelectorAll('#tf-stars span');
+  const ratingInput = document.getElementById('tf-rating');
+  function setStars(n) {
+    ratingInput.value = n;
+    stars.forEach((s, i) => { s.textContent = i < n ? '★' : '☆'; s.style.color = i < n ? 'var(--accent)' : 'var(--text-dim)'; });
+  }
+  stars.forEach(s => {
+    s.addEventListener('click', () => setStars(parseInt(s.dataset.star)));
+    s.addEventListener('mouseover', () => stars.forEach((x, i) => { x.textContent = i < parseInt(s.dataset.star) ? '★' : '☆'; }));
+  });
+  document.getElementById('tf-stars').addEventListener('mouseleave', () => setStars(parseInt(ratingInput.value)));
+
+  // Submit
+  document.getElementById('tf-submit').addEventListener('click', async () => {
+    const advisor_id = document.getElementById('tf-advisor').value;
+    const rating = parseInt(ratingInput.value);
+    const comment = document.getElementById('tf-comment').value.trim();
+    const email = document.getElementById('tf-email').value.trim();
+    const errEl = document.getElementById('tf-error');
+    errEl.textContent = '';
+
+    if (!advisor_id) { errEl.textContent = 'Vælg en jurist'; return; }
+    if (!rating) { errEl.textContent = 'Giv en bedømmelse'; return; }
+    if (!email || !email.includes('@')) { errEl.textContent = 'Indtast en gyldig email'; return; }
+
+    const btn = document.getElementById('tf-submit');
+    btn.disabled = true;
+    try {
+      const resp = await fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ advisor_id, rating, comment, email }),
+      });
+      if (!resp.ok) { const e = await resp.json(); throw new Error(e.detail || 'Fejl'); }
+      const { token } = await resp.json();
+      document.getElementById('tester-token-display').textContent = token;
+      document.getElementById('tester-form-wrap').style.display = 'none';
+      document.getElementById('tester-token-wrap').style.display = 'block';
+    } catch (err) {
+      errEl.textContent = err.message;
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
 `,
 
 kontakt: `
@@ -1353,73 +1648,131 @@ $downloadBtn.addEventListener('click', e => {
   $downloadMenu.classList.toggle('open');
 });
 
-function downloadAsHtml() {
-  const adv = state.advisors.find(a => a.id === state.advisor);
-  const svc = adv && state.service !== null ? adv.services.find(s => s.id === state.service) : null;
-  const title = adv ? adv.title : '';
-  const svcTitle = svc ? svc.title : '';
-  const key = `${state.advisor}:${state.service}`;
-  const msgs = state.history[key] || [];
+/* ── Paywall ─────────────────────────────────────────────────── */
+const $paywallOverlay = document.getElementById('jk-paywall-overlay');
+const $pwFmtLabel     = document.getElementById('jk-pw-fmt-label');
+const $pwClose        = document.getElementById('jk-pw-close');
+const $stripeBtn      = document.getElementById('jk-stripe-btn');
+const $tokenInput     = document.getElementById('jk-token-input');
+const $tokenBtn       = document.getElementById('jk-token-btn');
+const $pwPayError     = document.getElementById('pw-pay-error');
+const $pwTokenError   = document.getElementById('pw-token-error');
 
-  const rows = msgs.map(msg => {
-    if (msg.role === 'user') {
-      return `<div class="msg user"><span class="label">Dig</span><p>${msg.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p></div>`;
-    }
-    return `<div class="msg bot"><span class="label">JuraKlar</span>${DOMPurify.sanitize(marked.parse(msg.content))}</div>`;
-  }).join('\n');
+let _pendingFmt = null;
 
-  const html = `<!DOCTYPE html>
-<html lang="da">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JuraKlar — ${title}</title>
-<style>
-  body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #1a3a28; background: #f8fdf9; }
-  h1 { color: #0a6e40; } h2 { color: #3a6a50; margin-top: 0; }
-  .header { border-bottom: 2px solid #c8e8d8; padding-bottom: 16px; margin-bottom: 24px; }
-  .msg { margin-bottom: 20px; padding: 14px 18px; border-radius: 10px; }
-  .msg.user { background: #e0f5ea; border-left: 4px solid #0a6e40; }
-  .msg.bot { background: #fff; border: 1px solid #c8e8d8; }
-  .label { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; color: #3a6a50; }
-  .msg.user .label { color: #0a6e40; }
-  p { margin: 0 0 .6em; } p:last-child { margin-bottom: 0; }
-  table { border-collapse: collapse; width: 100%; margin: .6em 0; font-size: .9em; }
-  th, td { border: 1px solid #c8e8d8; padding: 7px 12px; text-align: left; vertical-align: top; }
-  th { background: #e0f5ea; color: #0a6e40; font-weight: 700; }
-  tr:nth-child(even) td { background: #f0faf5; }
-  code { background: #e0f5ea; border-radius: 4px; padding: 1px 5px; font-size: .88em; }
-  pre { background: #e0f5ea; border-radius: 6px; padding: 12px; overflow-x: auto; }
-  pre code { background: none; padding: 0; }
-  blockquote { border-left: 3px solid #0a6e40; margin: .5em 0; padding: 4px 12px; color: #3a6a50; }
-  footer { margin-top: 40px; font-size: 12px; color: #7aaa88; border-top: 1px solid #c8e8d8; padding-top: 12px; }
-</style>
-</head>
-<body>
-<div class="header"><h1>JuraKlar</h1><h2>${title}${svcTitle ? ' — ' + svcTitle : ''}</h2></div>
-${rows}
-<footer>Genereret af JuraKlar · Generel juridisk information, ikke personlig rådgivning</footer>
-</body>
-</html>`;
+const FMT_LABELS = { html: 'HTML (.html)', md: 'Markdown (.md)', txt: 'Ren tekst (.txt)' };
 
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'juraklar-raadgivning.html';
-  a.click();
-  URL.revokeObjectURL(url);
+function openPaywall(fmt) {
+  _pendingFmt = fmt;
+  $pwFmtLabel.textContent = FMT_LABELS[fmt] || fmt;
+  $pwPayError.textContent = '';
+  $pwTokenError.textContent = '';
+  $tokenInput.value = '';
+  $paywallOverlay.classList.add('open');
 }
+
+function closePaywall() {
+  $paywallOverlay.classList.remove('open');
+}
+
+$pwClose.addEventListener('click', closePaywall);
+$paywallOverlay.addEventListener('click', e => { if (e.target === $paywallOverlay) closePaywall(); });
+
+document.querySelectorAll('.pw-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pw-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pw-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(`pw-panel-${tab.dataset.tab}`).classList.add('active');
+  });
+});
+
+// Format token input: auto-insert hyphen after 4 chars
+$tokenInput.addEventListener('input', () => {
+  let v = $tokenInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (v.length > 4) v = v.slice(0, 4) + '-' + v.slice(4, 8);
+  $tokenInput.value = v;
+});
+
+async function executeDownload(grantId) {
+  window.location.href = `/api/download?grant_id=${encodeURIComponent(grantId)}`;
+  closePaywall();
+}
+
+$stripeBtn.addEventListener('click', async () => {
+  if (!state.advisor || state.service === null || !_pendingFmt) return;
+  $stripeBtn.disabled = true;
+  $pwPayError.textContent = '';
+  try {
+    const resp = await fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ advisor_id: state.advisor, service_id: state.service, fmt: _pendingFmt }),
+    });
+    if (!resp.ok) throw new Error((await resp.json()).detail || 'Fejl');
+    const { checkout_url } = await resp.json();
+    window.location.href = checkout_url;
+  } catch (err) {
+    $pwPayError.textContent = err.message;
+    $stripeBtn.disabled = false;
+  }
+});
+
+$tokenBtn.addEventListener('click', async () => {
+  const raw = $tokenInput.value.trim();
+  if (!raw || !state.advisor || state.service === null || !_pendingFmt) return;
+  $tokenBtn.disabled = true;
+  $pwTokenError.textContent = '';
+  try {
+    const resp = await fetch('/api/token/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: raw, advisor_id: state.advisor, service_id: state.service, fmt: _pendingFmt }),
+    });
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.detail || 'Ugyldig kode');
+    }
+    const { grant_id } = await resp.json();
+    await executeDownload(grant_id);
+  } catch (err) {
+    $pwTokenError.textContent = err.message;
+  } finally {
+    $tokenBtn.disabled = false;
+  }
+});
+
+// Stripe success redirect handler
+(function handleStripeReturn() {
+  const params = new URLSearchParams(window.location.search);
+  if (!params.get('stripe_success')) return;
+  const sessionId = params.get('session_id');
+  const advisor   = params.get('advisor');
+  const service   = parseInt(params.get('service'), 10);
+  const fmt       = params.get('fmt');
+  // Strip query string cleanly
+  window.history.replaceState({}, '', '/');
+  if (!sessionId || !advisor || !fmt) return;
+  (async () => {
+    try {
+      const resp = await fetch('/api/stripe/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, advisor_id: advisor, service_id: service, fmt }),
+      });
+      if (!resp.ok) { alert('Betaling ikke bekræftet. Kontakt support.'); return; }
+      const { grant_id } = await resp.json();
+      window.location.href = `/api/download?grant_id=${encodeURIComponent(grant_id)}`;
+    } catch (_) {
+      alert('Netværksfejl ved bekræftelse af betaling.');
+    }
+  })();
+})();
 
 $downloadMenu.querySelectorAll('.dl-option').forEach(opt => {
   opt.addEventListener('click', () => {
-    const fmt = opt.dataset.fmt;
-    if (fmt === 'html') {
-      downloadAsHtml();
-    } else {
-      window.location.href = `/api/download/${state.advisor}/${state.service}?fmt=${fmt}`;
-    }
     $downloadMenu.classList.remove('open');
+    openPaywall(opt.dataset.fmt);
   });
 });
 
