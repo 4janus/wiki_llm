@@ -1,4 +1,4 @@
-# Wiki: Bodelingsaftale (Skilsmisse)
+# Bodelingsaftale (Skilsmisse)
 
 Juridisk wiki om bodeling ved separation, skilsmisse og dødsfald i Danmark.
 

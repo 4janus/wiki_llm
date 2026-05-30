@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JuraKlar</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked@13/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
   <style>
     /* ── CSS variables — dark mode (default) ─────────────────── */
     :root {
@@ -176,24 +178,6 @@
       color: var(--accent);
       background: var(--bg-surface);
     }
-    .adv-item.dimmed { opacity: 0.35; }
-
-    .adv-services {
-      display: none;
-      padding-bottom: 4px;
-    }
-    .adv-services.open { display: block; }
-
-    .svc-item {
-      cursor: pointer;
-      padding: 5px 14px 5px 24px;
-      font-size: 12px;
-      color: var(--text-dim);
-      transition: background 0.15s, color 0.15s;
-      user-select: none;
-    }
-    .svc-item:hover { background: var(--bg-surface); color: var(--text-secondary); }
-    .svc-item.active { color: var(--accent); font-weight: 600; }
 
     /* ── mobile drawer overlay ───────────────────────────────── */
     #jk-drawer-overlay {
@@ -227,36 +211,6 @@
       flex-direction: column;
       overflow: hidden;
       background: var(--bg-base);
-    }
-
-    /* ── pill strip (mobile) ─────────────────────────────────── */
-    #jk-pills {
-      display: none;
-      gap: 6px;
-      padding: 8px 12px;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-surface);
-      flex-shrink: 0;
-    }
-    #jk-pills.visible { display: flex; }
-
-    .pill-btn {
-      flex-shrink: 0;
-      padding: 5px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      color: var(--text-secondary);
-      font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .pill-btn:hover, .pill-btn.active {
-      background: var(--accent-btn);
-      border-color: var(--accent-btn-border);
-      color: var(--accent);
     }
 
     /* ── messages ────────────────────────────────────────────── */
@@ -295,6 +249,85 @@
       border-bottom-left-radius: 4px;
       border: 1px solid var(--border);
     }
+
+    /* ── markdown rendering inside bot bubble ───────────────── */
+    .bubble.bot { overflow-x: auto; }
+
+    .bubble.bot p { margin: 0 0 0.6em; }
+    .bubble.bot p:last-child { margin-bottom: 0; }
+
+    .bubble.bot h1, .bubble.bot h2, .bubble.bot h3,
+    .bubble.bot h4, .bubble.bot h5, .bubble.bot h6 {
+      margin: 0.8em 0 0.3em;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+    }
+    .bubble.bot h1 { font-size: 1.15em; }
+    .bubble.bot h2 { font-size: 1.05em; }
+    .bubble.bot h3, .bubble.bot h4,
+    .bubble.bot h5, .bubble.bot h6 { font-size: 0.95em; }
+
+    .bubble.bot ul, .bubble.bot ol {
+      margin: 0.4em 0 0.6em 1.4em;
+      padding: 0;
+    }
+    .bubble.bot li { margin-bottom: 0.2em; }
+
+    .bubble.bot strong { font-weight: 700; color: var(--text-primary); }
+    .bubble.bot em { font-style: italic; }
+
+    .bubble.bot code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .bubble.bot pre {
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      margin: 0.5em 0;
+    }
+    .bubble.bot pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85em;
+    }
+
+    .bubble.bot table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.6em 0;
+      font-size: 0.88em;
+    }
+    .bubble.bot th, .bubble.bot td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .bubble.bot th {
+      background: var(--bg-surface);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .bubble.bot tr:nth-child(even) td { background: var(--bg-surface); }
+
+    .bubble.bot blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 0.5em 0;
+      padding: 4px 12px;
+      color: var(--text-secondary);
+    }
+
+    /* wider bot bubble to accommodate tables */
+    .bubble.bot { max-width: 85%; }
 
     /* ── info / status messages ──────────────────────────────── */
     .msg-info {
@@ -507,13 +540,52 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 
+    /* ── service welcome panel ───────────────────────────────── */
+    .svc-welcome-panel {
+      max-width: 560px;
+      width: 100%;
+      margin: 24px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .svc-welcome-heading {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .svc-welcome-heading strong { color: var(--accent); font-weight: 700; }
+
+    .svc-question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      max-height: calc(100vh - 280px);
+    }
+
+    .svc-question-item {
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .svc-question-item:hover {
+      background: var(--accent-btn);
+      border-color: var(--accent-btn-border);
+      color: var(--accent-btn-text);
+    }
+
     /* ── mobile breakpoint ───────────────────────────────────── */
     @media (max-width: 767px) {
       #jk-sidebar { display: none; }
       #jk-hamburger { display: block; }
-
-      #jk-pills.visible { display: flex; }
-
       .bubble { max-width: 88%; }
     }
   </style>
@@ -543,9 +615,6 @@
     <!-- ── CHAT WRAPPER ────────────────────────────────────── -->
     <div id="jk-chat-wrapper">
 
-      <!-- pill strip (mobile) -->
-      <div id="jk-pills"></div>
-
       <!-- messages -->
       <div id="jk-messages">
         <!-- consent panel lives here initially -->
@@ -560,7 +629,7 @@
           </div>
           <label class="consent-check-row">
             <input type="checkbox" id="jk-consent-check" />
-            Jeg forstår, at JuraKlar giver generel juridisk information og ikke personlig rådgivning.
+            Jeg forstår, at JuraKlar er AI baseret og giver generel juridisk information og ikke personlig rådgivning.
           </label>
           <button id="jk-consent-btn">FORTSÆT</button>
         </div>
@@ -582,6 +651,7 @@
         <div id="jk-download-wrap">
           <button id="jk-download-btn" title="Download samtale">💾</button>
           <div id="jk-download-menu">
+            <div class="dl-option" data-fmt="html">HTML (.html)</div>
             <div class="dl-option" data-fmt="md">Markdown (.md)</div>
             <div class="dl-option" data-fmt="txt">Ren tekst (.txt)</div>
           </div>
@@ -606,6 +676,11 @@
    ================================================================ */
 
 /* ── Helpers ─────────────────────────────────────────────────── */
+marked.use({ breaks: true, gfm: true });
+function renderMarkdown(text) {
+  return DOMPurify.sanitize(marked.parse(text));
+}
+
 function getOrCreateSessionId() {
   const key = 'jk_session_id';
   let id = localStorage.getItem(key);
@@ -644,7 +719,6 @@ const $sendBtn        = document.getElementById('jk-send-btn');
 const $uploadBtn      = document.getElementById('jk-upload-btn');
 const $uploadInput    = document.getElementById('jk-upload-input');
 const $chips          = document.getElementById('jk-chips');
-const $pills          = document.getElementById('jk-pills');
 const $breadcrumb     = document.getElementById('jk-breadcrumb');
 const $sidebar        = document.getElementById('jk-sidebar');
 const $themeToggle    = document.getElementById('jk-theme-toggle');
@@ -721,32 +795,15 @@ function renderBreadcrumb() {
   }
 }
 
-function buildAdvisorList(container, onSelectAdvisor, onSelectService) {
+function buildAdvisorList(container, onSelectAdvisor) {
   container.innerHTML = '';
   state.advisors.forEach(adv => {
-    const isActive  = state.advisor === adv.id;
-    const isDimmed  = state.advisor !== null && !isActive;
+    const isActive = state.advisor === adv.id;
     const item = document.createElement('div');
-    item.className = 'adv-item' + (isActive ? ' active' : '') + (isDimmed ? ' dimmed' : '');
+    item.className = 'adv-item' + (isActive ? ' active' : '');
     item.textContent = adv.title;
     item.addEventListener('click', () => onSelectAdvisor(adv.id));
     container.appendChild(item);
-
-    if (isActive) {
-      const svcList = document.createElement('div');
-      svcList.className = 'adv-services open';
-      adv.services.forEach(svc => {
-        const si = document.createElement('div');
-        si.className = 'svc-item' + (state.service === svc.id ? ' active' : '');
-        si.textContent = '› ' + svc.title;
-        si.addEventListener('click', e => {
-          e.stopPropagation();
-          onSelectService(svc);
-        });
-        svcList.appendChild(si);
-      });
-      container.appendChild(svcList);
-    }
   });
 }
 
@@ -768,40 +825,8 @@ function renderSidebar() {
     renderAll();
   };
 
-  const selectService = (svc) => {
-    state.service = svc.id;
-    $textInput.value = svc.title;
-    $textInput.focus();
-    closeDrawer();
-    renderAll();
-  };
-
-  buildAdvisorList($sidebarList, selectAdvisor, selectService);
-  buildAdvisorList($drawerList, selectAdvisor, selectService);
-}
-
-function renderPills() {
-  if (state.advisor === null || window.innerWidth >= 768) {
-    $pills.classList.remove('visible');
-    $pills.innerHTML = '';
-    return;
-  }
-  const adv = state.advisors.find(a => a.id === state.advisor);
-  if (!adv) { $pills.classList.remove('visible'); return; }
-  $pills.classList.add('visible');
-  $pills.innerHTML = '';
-  adv.services.forEach(svc => {
-    const btn = document.createElement('button');
-    btn.className = 'pill-btn' + (state.service === svc.id ? ' active' : '');
-    btn.textContent = svc.title;
-    btn.addEventListener('click', () => {
-      state.service = svc.id;
-      $textInput.value = svc.title;
-      $textInput.focus();
-      renderAll();
-    });
-    $pills.appendChild(btn);
-  });
+  buildAdvisorList($sidebarList, selectAdvisor);
+  buildAdvisorList($drawerList, selectAdvisor);
 }
 
 function renderMessages() {
@@ -833,13 +858,35 @@ function renderMessages() {
 
   if (msgs.length === 0) {
     const adv = state.advisors.find(a => a.id === state.advisor);
-    const svc = adv && state.service !== null ? adv.services.find(s => s.id === state.service) : null;
-    const info = document.createElement('div');
-    info.className = 'msg-info';
-    info.textContent = svc
-      ? `Klar til at hjælpe med "${svc.title}". Stil dit spørgsmål nedenfor.`
-      : `Klar til at hjælpe med ${adv ? adv.title : ''}. Stil dit spørgsmål nedenfor.`;
-    $messages.appendChild(info);
+    const panel = document.createElement('div');
+    panel.className = 'svc-welcome-panel';
+
+    const heading = document.createElement('div');
+    heading.className = 'svc-welcome-heading';
+    heading.appendChild(document.createTextNode('Du har valgt '));
+    const strong = document.createElement('strong');
+    strong.textContent = adv ? adv.title : '';
+    heading.appendChild(strong);
+    heading.appendChild(document.createTextNode('. Her er spørgsmål du kan prøve, eller brug chatfeltet:'));
+    panel.appendChild(heading);
+
+    const list = document.createElement('div');
+    list.className = 'svc-question-list';
+    if (adv) {
+      adv.services.forEach(svc => {
+        const item = document.createElement('div');
+        item.className = 'svc-question-item';
+        item.textContent = svc.title;
+        item.addEventListener('click', () => {
+          state.service = svc.id;
+          $textInput.value = svc.title;
+          $textInput.focus();
+        });
+        list.appendChild(item);
+      });
+    }
+    panel.appendChild(list);
+    $messages.appendChild(panel);
     return;
   }
 
@@ -848,7 +895,11 @@ function renderMessages() {
     row.className = 'msg-row ' + msg.role;
     const bubble = document.createElement('div');
     bubble.className = 'bubble ' + (msg.role === 'user' ? 'user' : 'bot');
-    bubble.textContent = msg.content;
+    if (msg.role === 'user') {
+      bubble.textContent = msg.content;
+    } else {
+      bubble.innerHTML = renderMarkdown(msg.content);
+    }
     row.appendChild(bubble);
     $messages.appendChild(row);
   });
@@ -887,7 +938,6 @@ function renderChips() {
 function renderAll() {
   renderSidebar();
   renderMessages();
-  renderPills();
   renderInputRow();
   renderChips();
   renderBreadcrumb();
@@ -937,7 +987,7 @@ async function sendMessage() {
 
     if (!resp.ok) {
       fullAnswer = `[Serverfejl: ${resp.status}]`;
-      botBubble.textContent = fullAnswer;
+      botBubble.innerHTML = renderMarkdown(fullAnswer);
     } else {
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -961,7 +1011,7 @@ async function sendMessage() {
             } else if (parsed.t !== undefined) {
               fullAnswer += parsed.t;
             }
-            botBubble.textContent = fullAnswer;
+            botBubble.innerHTML = renderMarkdown(fullAnswer);
             scrollChat();
           } catch (_) {}
         }
@@ -970,7 +1020,7 @@ async function sendMessage() {
     }
   } catch (err) {
     fullAnswer = `[Netværksfejl: ${err.message}]`;
-    botBubble.textContent = fullAnswer;
+    botBubble.innerHTML = renderMarkdown(fullAnswer);
   }
 
   // Persist to history
@@ -1025,10 +1075,72 @@ $downloadBtn.addEventListener('click', e => {
   $downloadMenu.classList.toggle('open');
 });
 
+function downloadAsHtml() {
+  const adv = state.advisors.find(a => a.id === state.advisor);
+  const svc = adv && state.service !== null ? adv.services.find(s => s.id === state.service) : null;
+  const title = adv ? adv.title : '';
+  const svcTitle = svc ? svc.title : '';
+  const key = `${state.advisor}:${state.service}`;
+  const msgs = state.history[key] || [];
+
+  const rows = msgs.map(msg => {
+    if (msg.role === 'user') {
+      return `<div class="msg user"><span class="label">Dig</span><p>${msg.content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p></div>`;
+    }
+    return `<div class="msg bot"><span class="label">JuraKlar</span>${DOMPurify.sanitize(marked.parse(msg.content))}</div>`;
+  }).join('\n');
+
+  const html = `<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JuraKlar — ${title}</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #1a3a28; background: #f8fdf9; }
+  h1 { color: #0a6e40; } h2 { color: #3a6a50; margin-top: 0; }
+  .header { border-bottom: 2px solid #c8e8d8; padding-bottom: 16px; margin-bottom: 24px; }
+  .msg { margin-bottom: 20px; padding: 14px 18px; border-radius: 10px; }
+  .msg.user { background: #e0f5ea; border-left: 4px solid #0a6e40; }
+  .msg.bot { background: #fff; border: 1px solid #c8e8d8; }
+  .label { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; color: #3a6a50; }
+  .msg.user .label { color: #0a6e40; }
+  p { margin: 0 0 .6em; } p:last-child { margin-bottom: 0; }
+  table { border-collapse: collapse; width: 100%; margin: .6em 0; font-size: .9em; }
+  th, td { border: 1px solid #c8e8d8; padding: 7px 12px; text-align: left; vertical-align: top; }
+  th { background: #e0f5ea; color: #0a6e40; font-weight: 700; }
+  tr:nth-child(even) td { background: #f0faf5; }
+  code { background: #e0f5ea; border-radius: 4px; padding: 1px 5px; font-size: .88em; }
+  pre { background: #e0f5ea; border-radius: 6px; padding: 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  blockquote { border-left: 3px solid #0a6e40; margin: .5em 0; padding: 4px 12px; color: #3a6a50; }
+  footer { margin-top: 40px; font-size: 12px; color: #7aaa88; border-top: 1px solid #c8e8d8; padding-top: 12px; }
+</style>
+</head>
+<body>
+<div class="header"><h1>JuraKlar</h1><h2>${title}${svcTitle ? ' — ' + svcTitle : ''}</h2></div>
+${rows}
+<footer>Genereret af JuraKlar · Generel juridisk information, ikke personlig rådgivning</footer>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'juraklar-raadgivning.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 $downloadMenu.querySelectorAll('.dl-option').forEach(opt => {
   opt.addEventListener('click', () => {
     const fmt = opt.dataset.fmt;
-    window.location.href = `/api/download/${state.advisor}/${state.service}?fmt=${fmt}`;
+    if (fmt === 'html') {
+      downloadAsHtml();
+    } else {
+      window.location.href = `/api/download/${state.advisor}/${state.service}?fmt=${fmt}`;
+    }
     $downloadMenu.classList.remove('open');
   });
 });
@@ -1037,11 +1149,6 @@ document.addEventListener('click', e => {
   if (!$downloadBtn.contains(e.target) && !$downloadMenu.contains(e.target)) {
     $downloadMenu.classList.remove('open');
   }
-});
-
-/* ── Responsive: hide/show pills on resize ───────────────────── */
-window.addEventListener('resize', () => {
-  renderPills();
 });
 
 /* ── Bootstrap: load advisors ────────────────────────────────── */

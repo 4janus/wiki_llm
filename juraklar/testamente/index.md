@@ -1,4 +1,4 @@
-# Testamente — Indeks
+# Testamente
 
 > Juridisk wiki om testamente i Danmark. Borgervenlig rådgivning baseret på gældende lovgivning.
 > Oprettet 2026-05-24. Sprog: Dansk.

@@ -1,4 +1,4 @@
-# Skilsmisse og Separation — Wiki Index
+# Skilsmisse og Separation
 
 Denne wiki dækker dansk ret om separation og skilsmisse. Al indhold er baseret på Familieretsloven (2018), Ægtefælleloven (2018) og Familieretshusets praksis.
 

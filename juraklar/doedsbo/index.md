@@ -1,4 +1,4 @@
-# Dødsbobehandling — Wiki Index
+# Dødsbobehandling
 
 Denne wiki dækker alle aspekter af dansk dødsbobehandling med særligt fokus på privat skifte. Materialet er organiseret i lovdokumenter, vejledende artikler, begrebsordliste, temaer, grupper og rådgivningsprompts.
 
